@@ -9,12 +9,17 @@ public class AIPlayer implements Player {
      @return the column to drop the piece, zero-indexed
      */
     public int play(int[][] board, int playerNum) {
+
+        System.out.println("GOT INTO THE AI PLAY METHOD");
+
         // if any drop will make connect 4, do it
         for (int i=0; i<board[0].length; i++) {
+            System.out.println("CHECKING DROP FOR " + i);
             if (checkDrop(board, playerNum, i) == 4)
                 return i;
         }
 
+        System.out.println("EXITED LOOP");
         // otherwise, drop at random
         return (int) (Math.random() * board[0].length);
     }
@@ -54,16 +59,16 @@ public class AIPlayer implements Player {
                 // check if the piece is correct
                 if (board[newPos[0]][newPos[1]] == playerNum) {
                     count++;
-                }
+                } else break;
 
-            } while (count < 4);
+            } while (count < Constants.WIN_COND);
 
             if (count > maxConnect) {
                 maxConnect = count;
             }
         }
 
-        return 0;
+        return maxConnect;
 
     }
 

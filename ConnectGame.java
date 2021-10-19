@@ -3,10 +3,6 @@
   Maintains Human and AI players
 */
 public class ConnectGame {
-    private static final int ROWS = 6;
-    private static final int COLS = 7;
-    private static final int WIN_COND = 4;
-
     // TODO: make private (can create getter methods)
     public int[][] board; // -1 - empty, 0 - player1, 1 - player2
     public Player[] players;
@@ -31,9 +27,9 @@ public class ConnectGame {
                 players[i] = new AIPlayer();
         }
         // initialize empty board
-        board = new int[ROWS][COLS];
-        for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < COLS; j++) {
+        board = new int[Constants.ROWS][Constants.COLS];
+        for (int i = 0; i < Constants.ROWS; i++) {
+            for (int j = 0; j < Constants.COLS; j++) {
                 board[i][j] = -1;
             }
         }
@@ -66,12 +62,12 @@ public class ConnectGame {
     public void printBoard() {
 
         // iterate through rows
-        for (int i = 0; i < ROWS; i++) {
+        for (int i = 0; i < Constants.ROWS; i++) {
 
             System.out.print("|");
 
             // iterate through cols
-            for (int j = 0; j < COLS; j++) {
+            for (int j = 0; j < Constants.COLS; j++) {
 
                 // show the correct piece
                 switch (board[i][j]) {
@@ -92,7 +88,7 @@ public class ConnectGame {
         }
 
         // column labels
-        for (int i=0; i < COLS; i++) {
+        for (int i=0; i < Constants.COLS; i++) {
             System.out.print("-" + (i+1));
         }
         System.out.println("-");
@@ -107,7 +103,7 @@ public class ConnectGame {
         if (board[0][col] != -1) {
             throw new IllegalArgumentException("Column " + (col + 1) + " is full.");
         }
-        for (int i = ROWS - 1; i >= 0; i--) {
+        for (int i = Constants.ROWS - 1; i >= 0; i--) {
             if (board[i][col] == -1) {
                 board[i][col] = player;
                 break;

@@ -6,7 +6,7 @@
 class ConnectGameTester_GonKan {
     public static void main(String[] args) {
 
-        ConnectGame game = new ConnectGame(2);
+        ConnectGame game = new ConnectGame(1);
 
         game.playGame(0);
 
