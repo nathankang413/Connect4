@@ -75,9 +75,15 @@ public class ConnectGame {
 
                 // show the correct piece
                 switch (board[i][j]) {
-                    case -1 -> System.out.print(" ");
-                    case 0 -> System.out.print("X");
-                    case 1 -> System.out.print("O");
+                    case -1:
+                        System.out.print(" ");
+                        break;
+                    case 0:
+                        System.out.print("X");
+                        break;
+                    case 1:
+                        System.out.print("O");
+                        break;
                 }
                 System.out.print("|");
 
