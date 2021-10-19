@@ -1,5 +1,3 @@
-package Connect4;
-
 /**
   A Connect 4 Game
   Maintains Human and AI players
