@@ -51,7 +51,7 @@ public class ConnectGame {
             System.out.println();
             System.out.println("Player " + (currPlayer+1) + "'s Turn");
             printBoard();
-            dropPiece(players[currPlayer].play(board), currPlayer);
+            dropPiece(players[currPlayer].play(board, currPlayer), currPlayer);
             currPlayer = (currPlayer + 1) % 2;
         }
 
@@ -129,8 +129,6 @@ public class ConnectGame {
 
                 if (board[i][j] > -1) {
                     int count = 1;
-
-
 
                     for (int[] dir : dirs) { // check in all directions
                         while (count<4 && board[i+count*dir[0]][j+count*dir[1]]==board[i][j]) {
