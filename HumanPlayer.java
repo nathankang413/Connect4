@@ -18,7 +18,7 @@ class HumanPlayer implements Player {
      @param board the game board
      @return the column to drop the piece, zero-indexed
      */
-    public int play(int[][] board) {
+    public int play(int[][] board, int playerNum) {
         int col;
         do {
             System.out.println("Choose a column to drop your piece :  ");
