@@ -1,4 +1,3 @@
-package Connect4;
 import java.util.Scanner;
 
 /**

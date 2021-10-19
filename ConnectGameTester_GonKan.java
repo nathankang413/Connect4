@@ -1,4 +1,3 @@
-package Connect4;
 
 /**
   Tester class for ConnectGame
