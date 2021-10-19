@@ -51,7 +51,7 @@ public class ConnectGame {
             System.out.println();
             System.out.println("Player " + (currPlayer+1) + "'s Turn");
             printBoard();
-            dropPiece(players[currPlayer].play(board), currPlayer);
+            dropPiece(players[currPlayer].play(board, currPlayer), currPlayer);
             currPlayer = (currPlayer + 1) % 2;
         }
 
@@ -75,15 +75,9 @@ public class ConnectGame {
 
                 // show the correct piece
                 switch (board[i][j]) {
-                    case -1:
-                        System.out.print(" ");
-                        break;
-                    case 0:
-                        System.out.print("X");
-                        break;
-                    case 1:
-                        System.out.print("O");
-                        break;
+                    case -1 -> System.out.print(" ");
+                    case 0 -> System.out.print("X");
+                    case 1 -> System.out.print("O");
                 }
                 System.out.print("|");
 
