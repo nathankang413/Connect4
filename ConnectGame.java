@@ -120,30 +120,72 @@ public class ConnectGame {
      @return -1 for no win, 0 or 1 for which player wins
      */
     private int checkWin() {
-
-        int[][] dirs = {{0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}, {0, -1}};
-
-        // brute force scanning right, right-down, down
-        for (int i=0; i<ROWS; i++) {
-            for (int j=0; j<COLS; j++) {
-
-                if (board[i][j] > -1) {
-                    int count = 1;
-
-
-
-                    for (int[] dir : dirs) { // check in all directions
-                        while (count<4 && board[i+count*dir[0]][j+count*dir[1]]==board[i][j]) {
-                            count++;
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                // check for horizontal win
+                if (j + WIN_COND <= COLS) {
+                    boolean oneWins = true;
+                    boolean twoWins = true;
+                    for (int k = 0; k < WIN_COND; k++) {
+                        if (board[i][j + k] != 0) {
+                            oneWins = false;
                         }
-                        if (count >= 4)
-                            return board[i][j];
+                        if (board[i][j + k] != 1) {
+                            twoWins = false;
+                        }
                     }
+                    if (oneWins) return 0;
+                    if (twoWins) return 1;
+                }
+                // check for vertical win
+                if (i + WIN_COND <= ROWS) {
+                    boolean oneWins = true;
+                    boolean twoWins = true;
+                    for (int k = 0; k < WIN_COND; k++) {
+                        if (board[i + k][j] != 0) {
+                            oneWins = false;
+                        }
+                        if (board[i + k][j] != 1) {
+                            twoWins = false;
+                        }
+                    }
+                    if (oneWins) return 0;
+                    if (twoWins) return 1;
+                }
 
+                // check for diagonal win
+                if (i + WIN_COND <= ROWS && j + WIN_COND <= COLS) {
+                    boolean oneWins = true;
+                    boolean twoWins = true;
+                    for (int k = 0; k < WIN_COND; k++) {
+                        if (board[i + k][j + k] != 0) {
+                            oneWins = false;
+                        }
+                        if (board[i + k][j + k] != 1) {
+                            twoWins = false;
+                        }
+                    }
+                    if (oneWins) return 0;
+                    if (twoWins) return 1;
+                }
+
+                // check for diagonal win
+                if (i + WIN_COND <= ROWS && j - WIN_COND + 1 >= 0) {
+                    boolean oneWins = true;
+                    boolean twoWins = true;
+                    for (int k = 0; k < WIN_COND; k++) {
+                        if (board[i + k][j - k] != 0) {
+                            oneWins = false;
+                        }
+                        if (board[i + k][j - k] != 1) {
+                            twoWins = false;
+                        }
+                    }
+                    if (oneWins) return 0;
+                    if (twoWins) return 1;
                 }
             }
         }
-
         return -1;
     }
 }
