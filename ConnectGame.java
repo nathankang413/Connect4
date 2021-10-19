@@ -44,8 +44,7 @@ public class ConnectGame {
       @param startPlayer the starting player, either 0 or 1
     */
     public void playGame(int startPlayer) {
-
-      // game loop
+        // game loop
         int currPlayer = startPlayer;
         while (checkWin() < 0) {
             System.out.println();
@@ -67,12 +66,10 @@ public class ConnectGame {
 
         // iterate through rows
         for (int i = 0; i < ROWS; i++) {
-
             System.out.print("|");
 
             // iterate through cols
             for (int j = 0; j < COLS; j++) {
-
                 // show the correct piece
                 switch (board[i][j]) {
                     case -1:
@@ -92,8 +89,8 @@ public class ConnectGame {
         }
 
         // column labels
-        for (int i=0; i < COLS; i++) {
-            System.out.print("-" + (i+1));
+        for (int i = 0; i < COLS; i++) {
+            System.out.print("-" + (i + 1));
         }
         System.out.println("-");
     }
