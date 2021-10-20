@@ -39,7 +39,7 @@ public class ConnectGame {
       Runs the main game loop
       @param startPlayer the starting player, either 0 or 1
     */
-    public void playGame(int startPlayer) {
+    public int playGame(int startPlayer) {
         // game loop
         int currPlayer = startPlayer;
         while (checkWin() < 0) {
@@ -53,6 +53,8 @@ public class ConnectGame {
         System.out.println();
         System.out.println("Player " + (checkWin()+1) + " Wins!!");
         printBoard();
+
+        return checkWin();
     }
 
     /**
