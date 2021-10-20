@@ -10,18 +10,25 @@ public class AIPlayer implements Player {
      */
     public int play(int[][] board, int playerNum) {
 
-        System.out.println("GOT INTO THE AI PLAY METHOD");
-
-        // if any drop will make connect 4, do it
+        // find the drops which will make the biggest connect
+        int[] bestDrops = new int[7];
+        int numDrops = 0;
+        int bestConnect = 0;
+        
         for (int i=0; i<board[0].length; i++) {
-            System.out.println("CHECKING DROP FOR " + i);
-            if (checkDrop(board, playerNum, i) == 4)
-                return i;
+            int connect = checkDrop(board, playerNum, i);
+            if (connect == 4) return i;
+            else if (connect > bestConnect) {
+                bestConnect = connect;
+                numDrops = 1;
+                bestDrops[0] = i;
+            } else if (connect == bestConnect) {
+                bestDrops[numDrops++] = i;
+            }
         }
 
-        System.out.println("EXITED LOOP");
-        // otherwise, drop at random
-        return (int) (Math.random() * board[0].length);
+        int randInd = (int) (Math.random() * numDrops);
+        return bestDrops[randInd];
     }
 
     /**
@@ -46,26 +53,40 @@ public class AIPlayer implements Player {
         }
         
         int maxConnect = 0;
-        int[][] dirs = {{-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}};
-        for (int[] dir : dirs) {
+        int[][] dirs = {{0, 1}, {1, 1}, {1, 0}, {1, -1}};
+
+        // check in all directions
+        for (int[] dir : dirs) { 
+
             int count = 1;
-            do {
-                int[] newPos = {dropPos[0] + dir[0], dropPos[1] + dir[1]};
+
+            while (true) {
+                
+                int newPosX = dropPos[0] + count * dir[0];
+                int newPosY = dropPos[1] + count * dir[1];
 
                 // check out of bounds
-                if (newPos[0] >= board.length || newPos[0] < 0) break;
-                if (newPos[1] >=board[newPos[0]].length || newPos[1] < 0) break;
-
-                // check if the piece is correct
-                if (board[newPos[0]][newPos[1]] == playerNum) {
+                if (newPosX < 0 || newPosX >= Constants.ROWS) 
+                    break;
+                if (newPosY < 0 || newPosY >= Constants.COLS)
+                    break;
+                
+                // check the correct piece
+                if (board[newPosX][newPosY] == playerNum) {
                     count++;
-                } else break;
+                } else {
+                    break;
+                }
 
-            } while (count < Constants.WIN_COND);
+                if (count >= Constants.WIN_COND) {
+                    return 4;
+                }
 
-            if (count > maxConnect) {
-                maxConnect = count;
             }
+
+            // update maxConnect if necessary
+            if (count > maxConnect) 
+                maxConnect = count;
         }
 
         return maxConnect;

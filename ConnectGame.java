@@ -40,8 +40,7 @@ public class ConnectGame {
       @param startPlayer the starting player, either 0 or 1
     */
     public void playGame(int startPlayer) {
-
-      // game loop
+        // game loop
         int currPlayer = startPlayer;
         while (checkWin() < 0) {
             System.out.println();
@@ -117,23 +116,43 @@ public class ConnectGame {
      */
     private int checkWin() {
 
-        int[][] dirs = {{0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}, {0, -1}};
+        int[][] dirs = {{0, 1}, {1, 1}, {1, 0}, {1, -1}};
 
-        // brute force scanning right, right-down, down
-        for (int i=0; i<ROWS; i++) {
-            for (int j=0; j<COLS; j++) {
+        // brute force scanning every position
+        for (int i=0; i<Constants.ROWS; i++) {
+            for (int j=0; j<Constants.COLS; j++) {
 
+                // if position has a piece
                 if (board[i][j] > -1) {
-                    int count = 1;
 
-                    for (int[] dir : dirs) { // check in all directions
-                        while (count<4 && board[i+count*dir[0]][j+count*dir[1]]==board[i][j]) {
-                            count++;
+                    // check in all directions
+                    for (int[] dir : dirs) { 
+
+                        int count = 1;
+                        while (true) {
+                            
+                            int newPosX = i + count * dir[0];
+                            int newPosY = j + count * dir[1];
+
+                            // check out of bounds
+                            if (newPosX < 0 || newPosX >= Constants.ROWS) 
+                                break;
+                            if (newPosY < 0 || newPosY >= Constants.COLS)
+                                break;
+                            
+                            // check the correct piece
+                            if (board[i][j] == board[newPosX][newPosY]) {
+                                count++;
+                            } else {
+                                break;
+                            }
+
+                            if (count >= Constants.WIN_COND) {
+                                return board[i][j];
+                            }
+
                         }
-                        if (count >= 4)
-                            return board[i][j];
                     }
-
                 }
             }
         }
