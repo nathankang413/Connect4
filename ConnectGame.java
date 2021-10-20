@@ -4,8 +4,8 @@
 */
 public class ConnectGame {
     // TODO: make private (can create getter methods)
-    public int[][] board; // -1 - empty, 0 - player1, 1 - player2
-    public Player[] players;
+    private int[][] board; // -1 - empty, 0 - player1, 1 - player2
+    protected Player[] players;
 
     /**
       Creates a new ConnectGame object with the given number of players
@@ -35,18 +35,35 @@ public class ConnectGame {
         }
     }
 
+    protected ConnectGame (Player[] players) {
+        this.players = players;
+
+        // initialize empty board
+        board = new int[Constants.ROWS][Constants.COLS];
+        for (int i = 0; i < Constants.ROWS; i++) {
+            for (int j = 0; j < Constants.COLS; j++) {
+                board[i][j] = -1;
+            }
+        }
+    }
+
     /**
       Runs the main game loop
       @param startPlayer the starting player, either 0 or 1
     */
-    public int playGame(int startPlayer) {
+    public double playGame(int startPlayer) {
         // game loop
         int currPlayer = startPlayer;
         while (checkWin() < 0) {
             System.out.println();
             System.out.println("Player " + (currPlayer+1) + "'s Turn");
             printBoard();
-            dropPiece(players[currPlayer].play(board, currPlayer), currPlayer);
+            try {
+                dropPiece(players[currPlayer].play(board, currPlayer), currPlayer);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Player " + (currPlayer+1) + " played an illegal move.");
+                return (currPlayer+1) % 2;
+            }
             currPlayer = (currPlayer + 1) % 2;
         }
 
@@ -116,7 +133,12 @@ public class ConnectGame {
      Checks the board state for a 4-in-a-row
      @return -1 for no win, 0 or 1 for which player wins
      */
-    private int checkWin() {
+    private double checkWin() {
+
+        for (int i=0; i<Constants.COLS; i++) {
+            if (board[0][i] < 0) break;
+            else if (i >= Constants.COLS-1) return 0.5;
+        }
 
         int[][] dirs = {{0, 1}, {1, 1}, {1, 0}, {1, -1}};
 
