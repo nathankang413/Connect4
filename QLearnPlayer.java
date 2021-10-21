@@ -31,68 +31,57 @@ public class QLearnPlayer extends AIPlayer {
 
     }
 
-    public void update (double win) { // TODO: REDO
-        System.out.println("running update");
+    public void update (double win) {
+        System.out.println("running update " + win);
 
-        int stateLen = Constants.ROWS * Constants.COLS;
         int currInd = 0;
+        String gameMove = moves.get(currInd).toString();
+
+        StringBuilder str = new StringBuilder();
 
         while (fileRead.hasNext()) {
 
-            // get current Move in the list of game moves
-            Move currMove = moves.get(currInd);
-
-            // read move from file and break into components
             String readLine = fileRead.nextLine();
-            String stateMove = readLine.substring(0, stateLen+2);
+            int splitInd1 = readLine.indexOf(":");
+            int splitInd2 = readLine.indexOf(":", splitInd1+1);
+            String readStateMove = readLine.substring(0, splitInd1);
 
-            int breakInd1 = readLine.indexOf(":");
-            int breakInd2 = readLine.substring(breakInd1+1).indexOf(":") + breakInd1+1;
+            Boolean updated = false;
+            while (currInd < moves.size() && readStateMove.compareTo(gameMove) >= 0) {
 
-            double total = Double.parseDouble(readLine.substring(breakInd1+1, breakInd2));
-            int count = Integer.parseInt(readLine.substring(breakInd2+1));
+                gameMove = moves.get(currInd).toString();
 
-            System.out.println();
-            System.out.println("Read state-move:   " + stateMove);
-            System.out.println("Current game move: " + currMove);
+                if (readStateMove.equals(gameMove)) {
+                    double total = Double.parseDouble(readLine.substring(splitInd1+1, splitInd2));
+                    int count = Integer.parseInt(readLine.substring(splitInd2+1));
 
-            // if the read move is in the list of moves, update and write
-            if (stateMove.equals(currMove.toString())) {
-                
-                System.out.println("State-move and game move match");
+                    total += win;
+                    count ++;
+                    currInd++;
+                    updated = true;
 
-                total += win;
-                count ++;
-                currInd++;
-                fileWrite.println(stateMove + ":" + total + ":" + count);
+                    str.append(gameMove + ":" + total + ":" + count + "\n");
 
-            } // if the read move comes after the next game move, add the game move
-            else if (stateMove.compareTo(currMove.toString()) > 0) {
-
-                while (stateMove.compareTo(currMove.toString()) > 0) {
-                    System.out.println("game move was passed");
-
-                    fileWrite.println(currMove + ":" + win + ":" + 1);
-                    currMove = moves.get(++currInd);
+                } else {
+                    str.append(gameMove + ":" + win + ":" + 1 + "\n");
+                    currInd++;
                 }
-
-                fileWrite.println(readLine);
-
-            } // if the read move was not played in the game, write it back and move on
-            else {
-
-                System.out.println("state-move and game move do not match");
-
-                fileWrite.println(readLine);
             }
-        }
 
+            if (!updated) {
+                str.append(readLine + "\n");
+            }
+
+        }
+        
         for (int i=currInd; i<moves.size(); i++) {
-            Move currMove = moves.get(i);
-            fileWrite.println(currMove + ":" + win + ":" + 1);
+            gameMove = moves.get(i).toString();
+            str.append(gameMove + ":" + win + ":" + 1 + "\n");
         }
 
+        fileWrite.print(str.toString());
         fileWrite.close();
+
     }
 
     private String convertBoard (int[][] board) {
