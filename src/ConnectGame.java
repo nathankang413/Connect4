@@ -4,7 +4,7 @@
 */
 public class ConnectGame {
     // TODO: make private (can create getter methods)
-    private int[][] board; // -1 - empty, 0 - player1, 1 - player2
+    private final int[][] board; // -1 - empty, 0 - player1, 1 - player2
     protected Player[] players;
 
     /**

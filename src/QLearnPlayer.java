@@ -4,8 +4,8 @@ import java.util.*;
 public class QLearnPlayer extends AIPlayer {
 
     private int useQ;
-    private ArrayList<Move> gameMoves;
-    private TreeMap<String, Double[]> movesMap;
+    private final ArrayList<Move> gameMoves;
+    private final TreeMap<String, Double[]> movesMap;
 
     public QLearnPlayer() throws IOException {
         gameMoves = new ArrayList<Move>();
@@ -32,7 +32,7 @@ public class QLearnPlayer extends AIPlayer {
 
     }
 
-    public void update (double win) throws IOException {
+    public void update(double win) throws IOException {
 
         readFile();
 
@@ -75,7 +75,7 @@ public class QLearnPlayer extends AIPlayer {
         }
     }
 
-    private String convertBoard (int[][] board) {
+    private String convertBoard(int[][] board) {
         StringBuilder str = new StringBuilder();
         for (int i = 0; i< Constants.ROWS; i++) {
             for (int j = 0; j< Constants.COLS; j++) {
@@ -86,18 +86,18 @@ public class QLearnPlayer extends AIPlayer {
         return str.toString();
     }
 
-    private class Move {
-        private String state;
-        private int move;
+    private static class Move {
+        private final String state;
+        private final int move;
 
-        public Move (String state, int move) {
+        public Move(String state, int move) {
             this.state = state;
             this.move = move;
-        } 
+        }
 
-        public String toString () {
+        @Override
+        public String toString() {
             return state + "-" + move;
         }
     }
-
 }
