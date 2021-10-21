@@ -37,7 +37,7 @@ public class ConnectGame {
         }
     }
 
-    protected ConnectGame (Player[] players) {
+    protected ConnectGame(Player[] players) {
         this.players = players;
 
         // initialize empty board
