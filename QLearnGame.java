@@ -10,13 +10,8 @@ public class QLearnGame extends ConnectGame {
         double result = super.playGame(startPlayer);
         System.out.println("Finished Game");
         for (int i=0; i<2; i++) {
-            if (i == result) {
-                QLearnPlayer player = (QLearnPlayer) players[i];
-                player.update(1);
-            } else {
-                QLearnPlayer player = (QLearnPlayer) players[i];
-                player.update(0);
-            }
+            QLearnPlayer player = (QLearnPlayer) players[i];
+            player.update(Math.abs(i-result));
         }
 
         return result;
