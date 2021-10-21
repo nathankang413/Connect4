@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 /**
   A Connect 4 Game
   Maintains Human and AI players

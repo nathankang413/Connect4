@@ -3,14 +3,10 @@ import java.util.*;
 
 public class QLearnPlayer extends AIPlayer {
 
-    private Scanner fileRead;
-    private PrintWriter fileWrite;
     private int useQ;
     private ArrayList<Move> moves;
 
-    public QLearnPlayer() throws IOException {
-        fileRead = new Scanner(new File("qualities.txt"));
-        fileWrite = new PrintWriter("qualities.txt");
+    public QLearnPlayer() {
         moves = new ArrayList<Move>();
     }
 
@@ -31,13 +27,26 @@ public class QLearnPlayer extends AIPlayer {
 
     }
 
-    public void update (double win) {
+    public void update (double win) throws IOException {
+
+        // Read file line by line
+            // insert into tree map
+
+        // for each current move
+            // if key already exists, update value
+            // else insert new key/value into treemap
+
+
+        Scanner fileRead = new Scanner(new File("qualities.txt"));
+
         System.out.println("running update " + win);
 
         int currInd = 0;
         String gameMove = moves.get(currInd).toString();
 
         StringBuilder str = new StringBuilder();
+
+        TreeMap<String, Double[]> map = new TreeMap<>();
 
         while (fileRead.hasNext()) {
 
@@ -78,6 +87,8 @@ public class QLearnPlayer extends AIPlayer {
             gameMove = moves.get(i).toString();
             str.append(gameMove + ":" + win + ":" + 1 + "\n");
         }
+
+        PrintWriter fileWrite = new PrintWriter("qualities.txt");
 
         fileWrite.print(str.toString());
         fileWrite.close();
