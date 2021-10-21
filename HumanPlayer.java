@@ -4,7 +4,7 @@ import java.util.Scanner;
  A Human Player which gets inputs from human users
  */
 class HumanPlayer implements Player {
-    private Scanner scanner;
+    private final Scanner scanner;
 
     /**
      Creates a new HumanPlayer object
@@ -19,12 +19,20 @@ class HumanPlayer implements Player {
      @return the column to drop the piece, zero-indexed
      */
     public int play(int[][] board, int playerNum) {
-        int col;
-        do {
-            System.out.println("Choose a column to drop your piece :  ");
-            col = scanner.nextInt();
-        } while (col <= 0 || col > board[0].length);
-
+        int col = -1;
+        boolean invalid = true;
+        while (invalid) {
+            try {
+                System.out.println("Choose a column to drop your piece: ");
+                col = scanner.nextInt();
+                if (col > 0 && col <= Constants.COLS) {
+                    invalid = false;
+                }
+            } catch(Exception e) {
+                scanner.next();
+            }
+            if (invalid) System.out.println("Invalid input!");
+        }
         return col - 1;
     }
 }
