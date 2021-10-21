@@ -15,7 +15,7 @@ public class AIPlayer implements Player {
         int numDrops = 0;
         int bestConnect = 0;
         
-        for (int i=0; i<board[0].length; i++) {
+        for (int i = 0; i < board[0].length; i++) {
             int connect = checkDrop(board, playerNum, i);
             if (connect == 4) return i;
             else if (connect > bestConnect) {
