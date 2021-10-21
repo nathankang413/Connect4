@@ -1,3 +1,5 @@
+package game;
+
 /**
  A Player interface for the ConnectGame class
  */

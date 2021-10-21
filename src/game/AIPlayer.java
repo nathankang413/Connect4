@@ -1,3 +1,5 @@
+package game;
+
 /**
  An AI Player which determines moves algorithmically
  */

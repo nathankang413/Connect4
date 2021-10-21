@@ -1,7 +1,12 @@
+package game;
+
+import static game.Constants.*;
+
 /**
   A Connect 4 Game
   Maintains Human and AI players
 */
+
 public class ConnectGame {
     // TODO: make private (can create getter methods)
     private final int[][] board; // -1 - empty, 0 - player1, 1 - player2
@@ -27,10 +32,10 @@ public class ConnectGame {
                 players[i] = new AIPlayer();
         }
         // initialize empty board
-        board = new int[Constants.ROWS][Constants.COLS];
-        for (int i = 0; i < Constants.ROWS; i++) {
-            for (int j = 0; j < Constants.COLS; j++) {
-                board[i][j] = -1;
+        board = new int[ROWS][COLS];
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                board[i][j] = EMPTY;
             }
         }
     }
@@ -39,9 +44,9 @@ public class ConnectGame {
         this.players = players;
 
         // initialize empty board
-        board = new int[Constants.ROWS][Constants.COLS];
-        for (int i = 0; i < Constants.ROWS; i++) {
-            for (int j = 0; j < Constants.COLS; j++) {
+        board = new int[ROWS][COLS];
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
                 board[i][j] = -1;
             }
         }
@@ -80,12 +85,12 @@ public class ConnectGame {
     public void printBoard() {
 
         // iterate through rows
-        for (int i = 0; i < Constants.ROWS; i++) {
+        for (int i = 0; i < ROWS; i++) {
 
             System.out.print("|");
 
             // iterate through cols
-            for (int j = 0; j < Constants.COLS; j++) {
+            for (int j = 0; j < COLS; j++) {
 
                 // show the correct piece
                 switch (board[i][j]) {
@@ -106,7 +111,7 @@ public class ConnectGame {
         }
 
         // column labels
-        for (int i=0; i < Constants.COLS; i++) {
+        for (int i = 0; i < COLS; i++) {
             System.out.print("-" + (i+1));
         }
         System.out.println("-");
@@ -121,7 +126,7 @@ public class ConnectGame {
         if (board[0][col] != -1) {
             throw new IllegalArgumentException("Column " + (col + 1) + " is full.");
         }
-        for (int i = Constants.ROWS - 1; i >= 0; i--) {
+        for (int i = ROWS - 1; i >= 0; i--) {
             if (board[i][col] == -1) {
                 board[i][col] = player;
                 break;
@@ -135,16 +140,16 @@ public class ConnectGame {
      */
     private double checkWin() {
 
-        for (int i=0; i<Constants.COLS; i++) {
+        for (int i = 0; i < COLS; i++) {
             if (board[0][i] < 0) break;
-            else if (i >= Constants.COLS-1) return 0.5;
+            else if (i >= COLS-1) return 0.5;
         }
 
         int[][] dirs = {{0, 1}, {1, 1}, {1, 0}, {1, -1}};
 
         // brute force scanning every position
-        for (int i=0; i<Constants.ROWS; i++) {
-            for (int j=0; j<Constants.COLS; j++) {
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
 
                 // if position has a piece
                 if (board[i][j] > -1) {
@@ -159,9 +164,9 @@ public class ConnectGame {
                             int newPosY = j + count * dir[1];
 
                             // check out of bounds
-                            if (newPosX < 0 || newPosX >= Constants.ROWS) 
+                            if (newPosX < 0 || newPosX >= ROWS)
                                 break;
-                            if (newPosY < 0 || newPosY >= Constants.COLS)
+                            if (newPosY < 0 || newPosY >= COLS)
                                 break;
                             
                             // check the correct piece
@@ -171,7 +176,7 @@ public class ConnectGame {
                                 break;
                             }
 
-                            if (count >= Constants.WIN_COND) {
+                            if (count >= WIN_COND) {
                                 return board[i][j];
                             }
 

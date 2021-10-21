@@ -1,3 +1,5 @@
+package game;
+
 import java.io.*;
 import java.util.*;
 
@@ -71,7 +73,7 @@ public class QLearnPlayer extends AIPlayer {
         }
 
         // write Treemap to file
-        PrintWriter fileWrite = new PrintWriter("qualities.txt");
+        PrintWriter fileWrite = new PrintWriter("game/qualities.txt");
         for (String key : movesMap.keySet()) {
             Double[] totalCount = movesMap.get(key);
             fileWrite.println(key + ":" + totalCount[0] + ":" + totalCount[1]);
@@ -82,7 +84,7 @@ public class QLearnPlayer extends AIPlayer {
 
     private void readFile() throws IOException {
 
-        Scanner fileRead = new Scanner(new File("qualities.txt"));
+        Scanner fileRead = new Scanner(new File("game/qualities.txt"));
 
         // Read file line by line - insert into tree map
         while (fileRead.hasNextLine()) {
