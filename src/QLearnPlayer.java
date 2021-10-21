@@ -3,9 +3,10 @@ import java.util.*;
 
 public class QLearnPlayer extends AIPlayer {
 
-    private int useQ;
-    private final ArrayList<Move> gameMoves;
-    private final TreeMap<String, Double[]> movesMap;
+    private double useRand;
+    private ArrayList<Move> gameMoves;
+    private TreeMap<String, Double[]> movesMap;
+    private static final int MAX_STATES = 5000;
 
     public QLearnPlayer() throws IOException {
         gameMoves = new ArrayList<Move>();
@@ -13,26 +14,45 @@ public class QLearnPlayer extends AIPlayer {
         movesMap = new TreeMap<>();
         readFile();
 
+        double numMapped = movesMap.size();
+        useRand = Math.exp(- numMapped / MAX_STATES);
     }
 
     public int play(int[][] board, int playerNum) {
         
-        // some random check
-
         // if using a random value, generate random value
-        if (true) {
+        if (Math.random() < useRand) {
             int move = (int) (Math.random() * Constants.COLS);
             gameMoves.add(new Move(convertBoard(board), move));
             return move;
         }
         // if not, check best states
-        else {}
-
-        return -1;
-
+        else {
+            double bestQ = 0;
+            int bestMove = -1;
+            for (int i=0; i<Constants.COLS; i++) {
+                String stateMove = convertBoard(board)+"-"+i;
+                if (movesMap.containsKey(stateMove)) {
+                    double averageQ = movesMap.get(stateMove)[0] / movesMap.get(stateMove)[1];
+                    if (averageQ > bestQ) {
+                        bestMove = i;
+                        bestQ = averageQ;
+                    }
+                }
+            }
+            if (bestMove >= 0) {
+                gameMoves.add(new Move(convertBoard(board), bestMove));
+                return bestMove;
+            }
+            else {
+                int move = (int) (Math.random() * Constants.COLS);
+                gameMoves.add(new Move(convertBoard(board), move));
+                return move; 
+            }
+        }
     }
 
-    public void update(double win) throws IOException {
+    public void update (double win) throws IOException {
 
         readFile();
 
@@ -75,7 +95,7 @@ public class QLearnPlayer extends AIPlayer {
         }
     }
 
-    private String convertBoard(int[][] board) {
+    private String convertBoard (int[][] board) {
         StringBuilder str = new StringBuilder();
         for (int i = 0; i< Constants.ROWS; i++) {
             for (int j = 0; j< Constants.COLS; j++) {
@@ -86,18 +106,18 @@ public class QLearnPlayer extends AIPlayer {
         return str.toString();
     }
 
-    private static class Move {
-        private final String state;
-        private final int move;
+    private class Move {
+        private String state;
+        private int move;
 
-        public Move(String state, int move) {
+        public Move (String state, int move) {
             this.state = state;
             this.move = move;
-        }
+        } 
 
-        @Override
-        public String toString() {
+        public String toString () {
             return state + "-" + move;
         }
     }
+
 }
