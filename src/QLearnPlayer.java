@@ -77,8 +77,8 @@ public class QLearnPlayer extends AIPlayer {
 
     private String convertBoard (int[][] board) {
         StringBuilder str = new StringBuilder();
-        for (int i=0; i<Constants.ROWS; i++) {
-            for (int j=0; j<Constants.COLS; j++) {
+        for (int i = 0; i< Constants.ROWS; i++) {
+            for (int j = 0; j< Constants.COLS; j++) {
                 str.append(board[i][j]+1);
 
             }

@@ -3,7 +3,7 @@ import java.util.Scanner;
 /**
  A Human Player which gets inputs from human users
  */
-class HumanPlayer implements Player {
+public class HumanPlayer implements Player {
     private final Scanner scanner;
 
     /**
