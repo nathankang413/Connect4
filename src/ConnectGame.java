@@ -56,15 +56,15 @@ public class ConnectGame {
         int currPlayer = startPlayer;
         while (checkWin() < 0) {
             System.out.println();
-            System.out.println("Player " + (currPlayer+1) + "'s Turn");
+            System.out.println("Player " + (currPlayer + 1) + "'s Turn");
             printBoard();
             try {
                 dropPiece(players[currPlayer].play(board, currPlayer), currPlayer);
             } catch (IllegalArgumentException e) {
-                System.out.println("Player " + (currPlayer+1) + " played an illegal move.");
-                return (currPlayer+1) % 2;
+                System.out.println("Player " + (currPlayer + 1) + " played an illegal move.");
+                return (currPlayer + 1) % 2;
             }
-            currPlayer = (currPlayer + 1) % 2;
+            currPlayer = 1 - currPlayer;
         }
 
         System.out.println();
