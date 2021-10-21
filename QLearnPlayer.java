@@ -4,10 +4,15 @@ import java.util.*;
 public class QLearnPlayer extends AIPlayer {
 
     private int useQ;
-    private ArrayList<Move> moves;
+    private ArrayList<Move> gameMoves;
+    private TreeMap<String, Double[]> movesMap;
 
-    public QLearnPlayer() {
-        moves = new ArrayList<Move>();
+    public QLearnPlayer() throws IOException {
+        gameMoves = new ArrayList<Move>();
+
+        movesMap = new TreeMap<>();
+        readFile();
+
     }
 
     public int play(int[][] board, int playerNum) {
@@ -17,7 +22,7 @@ public class QLearnPlayer extends AIPlayer {
         // if using a random value, generate random value
         if (true) {
             int move = (int) (Math.random() * Constants.COLS);
-            moves.add(new Move(convertBoard(board), move));
+            gameMoves.add(new Move(convertBoard(board), move));
             return move;
         }
         // if not, check best states
@@ -29,70 +34,45 @@ public class QLearnPlayer extends AIPlayer {
 
     public void update (double win) throws IOException {
 
-        // Read file line by line
-            // insert into tree map
+        readFile();
 
         // for each current move
             // if key already exists, update value
             // else insert new key/value into treemap
+        for (Move move : gameMoves) {
+            if (movesMap.containsKey(move.toString())) {
+                Double[] totalCount = movesMap.get(move.toString());
+                totalCount[0] += win;
+                totalCount[1] ++;
+                movesMap.put(move.toString(), totalCount);
+            } else {
+                movesMap.put(move.toString(), new Double[] {win, 1.0});
+            }
+        }
 
+        // write Treemap to file
+        PrintWriter fileWrite = new PrintWriter("qualities.txt");
+        for (String key : movesMap.keySet()) {
+            Double[] totalCount = movesMap.get(key);
+            fileWrite.println(key + ":" + totalCount[0] + ":" + totalCount[1]);
+        }
+        fileWrite.close();
+
+    }
+
+    private void readFile() throws IOException {
 
         Scanner fileRead = new Scanner(new File("qualities.txt"));
 
-        System.out.println("running update " + win);
-
-        int currInd = 0;
-        String gameMove = moves.get(currInd).toString();
-
-        StringBuilder str = new StringBuilder();
-
-        TreeMap<String, Double[]> map = new TreeMap<>();
-
-        while (fileRead.hasNext()) {
-
+        // Read file line by line - insert into tree map
+        while (fileRead.hasNextLine()) {
             String readLine = fileRead.nextLine();
-            int splitInd1 = readLine.indexOf(":");
-            int splitInd2 = readLine.indexOf(":", splitInd1+1);
-            String readStateMove = readLine.substring(0, splitInd1);
+            String[] splitString = readLine.split(":");
+            String moveString = splitString[0];
+            Double[] totalCount = {Double.parseDouble(splitString[1]), Double.parseDouble(splitString[2])};
 
-            Boolean updated = false;
-            while (currInd < moves.size() && readStateMove.compareTo(gameMove) >= 0) {
-
-                gameMove = moves.get(currInd).toString();
-
-                if (readStateMove.equals(gameMove)) {
-                    double total = Double.parseDouble(readLine.substring(splitInd1+1, splitInd2));
-                    int count = Integer.parseInt(readLine.substring(splitInd2+1));
-
-                    total += win;
-                    count ++;
-                    currInd++;
-                    updated = true;
-
-                    str.append(gameMove + ":" + total + ":" + count + "\n");
-
-                } else {
-                    str.append(gameMove + ":" + win + ":" + 1 + "\n");
-                    currInd++;
-                }
-            }
-
-            if (!updated) {
-                str.append(readLine + "\n");
-            }
-
+            movesMap.put(moveString, totalCount);
         }
-        
-        for (int i=currInd; i<moves.size(); i++) {
-            gameMove = moves.get(i).toString();
-            str.append(gameMove + ":" + win + ":" + 1 + "\n");
-        }
-
-        PrintWriter fileWrite = new PrintWriter("qualities.txt");
-
-        fileWrite.print(str.toString());
-        fileWrite.close();
-
     }
 
     private String convertBoard (int[][] board) {

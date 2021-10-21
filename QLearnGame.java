@@ -2,7 +2,7 @@ import java.io.IOException;
 
 public class QLearnGame extends ConnectGame {
 
-    public QLearnGame () {
+    public QLearnGame () throws IOException {
         super( new QLearnPlayer[] {new QLearnPlayer(), new QLearnPlayer()} );
     }
 
