@@ -49,7 +49,7 @@ public class AIPlayer implements Player {
       @param col
       @return
      */
-    private int checkDrop(int[][] board, int playerNum, int col) {
+    protected int checkDrop(int[][] board, int playerNum, int col) {
 
         // if piece would be out of bounds
         if (board[0][col] > -1) return 0;

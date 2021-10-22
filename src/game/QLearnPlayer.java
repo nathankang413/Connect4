@@ -23,9 +23,23 @@ public class QLearnPlayer extends AIPlayer {
     }
 
     public int play(int[][] board, int playerNum) {
+
+        // if can win in one, play it
+        for (int i=0; i < board[0].length; i++) {
+            if (checkDrop(board, playerNum, i) == 4) {
+                return i;
+            }
+        }
+
+        // if opponent can win in one, prevent it
+        for (int i=0; i < board[0].length; i++) {
+            if (checkDrop(board, 1-playerNum, i) == 4) {
+                return i;
+            }
+        }
         
         // if using a random value, generate random value
-        if (Math.random() < useRand) {
+        if (Math.random() < 0) { // TODO: reset to useRand
             System.out.println("Using random move");
             int move = (int) (Math.random() * COLS);
             gameMoves.add(new Move(convertBoard(board), move));
@@ -64,6 +78,9 @@ public class QLearnPlayer extends AIPlayer {
 
         readFile();
 
+        // loss = -1, tie = 0, win = 1
+        win = win*2 - 1;
+
         // for each current move
             // if key already exists, update value
             // else insert new key/value into treemap
@@ -79,7 +96,7 @@ public class QLearnPlayer extends AIPlayer {
         }
 
         // write Treemap to file
-        PrintWriter fileWrite = new PrintWriter("game/qualities.txt");
+        PrintWriter fileWrite = new PrintWriter("src/game/qualities.txt");
         for (String key : movesMap.keySet()) {
             Double[] totalCount = movesMap.get(key);
             fileWrite.println(key + ":" + totalCount[0] + ":" + totalCount[1]);
@@ -90,7 +107,7 @@ public class QLearnPlayer extends AIPlayer {
 
     private void readFile() throws IOException {
 
-        Scanner fileRead = new Scanner(new File("game/qualities.txt"));
+        Scanner fileRead = new Scanner(new File("src/game/qualities.txt"));
 
         // Read file line by line - insert into tree map
         while (fileRead.hasNextLine()) {
