@@ -10,7 +10,7 @@ public class QLearnPlayer extends AIPlayer {
     private final double useRand;
     private final ArrayList<Move> gameMoves;
     private TreeMap<String, Double[]> movesMap;
-    private static final int MAX_STATES = 5000;
+    private static final int MAX_STATES = 10000;
 
     public QLearnPlayer() throws IOException {
         gameMoves = new ArrayList<>();
@@ -27,6 +27,7 @@ public class QLearnPlayer extends AIPlayer {
         // if can win in one, play it
         for (int i=0; i < board[0].length; i++) {
             if (checkDrop(board, playerNum, i) == 4) {
+                gameMoves.add(new Move(convertBoard(board), i));
                 return i;
             }
         }
@@ -34,12 +35,13 @@ public class QLearnPlayer extends AIPlayer {
         // if opponent can win in one, prevent it
         for (int i=0; i < board[0].length; i++) {
             if (checkDrop(board, 1-playerNum, i) == 4) {
+                gameMoves.add(new Move(convertBoard(board), i));
                 return i;
             }
         }
         
         // if using a random value, generate random value
-        if (Math.random() < useRand) { // TODO: reset to useRand
+        if (Math.random() < useRand) {
             // System.out.println("Using random move");
             int move = (int) (Math.random() * COLS);
             gameMoves.add(new Move(convertBoard(board), move));
