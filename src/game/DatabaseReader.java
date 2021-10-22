@@ -60,6 +60,7 @@ public class DatabaseReader {
             int move = getUserInput();
             if (move == -1) {
                 board = stringToBoard( path.remove(path.size()-1) );
+                player = 1 - player;
             }
             else if (move == -2) {
                 break;
