@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
+import java.util.HashMap;
 
 import static game.Constants.COLS;
 import static game.Constants.ROWS;
@@ -20,7 +21,7 @@ public class QLearnPlayer extends AIPlayer {
     public QLearnPlayer() {
         gameMoves = new ArrayList<>();
 
-        movesMap = new TreeMap<>();
+        movesMap = new HashMap<>();
         readMovesMap();
 
         double numMapped = movesMap.size();
@@ -28,7 +29,6 @@ public class QLearnPlayer extends AIPlayer {
     }
 
     public int play(int[][] board, int playerNum) {
-
         // if can win in one, play it
         for (int i = 0; i < board[0].length; i++) {
             if (checkDrop(board, playerNum, i) == 4) {
@@ -100,11 +100,15 @@ public class QLearnPlayer extends AIPlayer {
             }
         }
 
+        TreeMap<String, Double[]> treeMap = new TreeMap<>();
+        for (Map.Entry<String, Double[]> entry : movesMap.entrySet()) {
+            treeMap.put(entry.getKey(), entry.getValue());
+        }
         // write movesMap to file
         PrintWriter fileWrite = new PrintWriter("src/game/qualities.txt");
-        for (String key : movesMap.keySet()) {
-            Double[] totalCount = movesMap.get(key);
-            fileWrite.println(key + ":" + totalCount[0] + ":" + totalCount[1]);
+        for (Map.Entry<String, Double[]> entry : treeMap.entrySet()) {
+            Double[] totalCount = entry.getValue();
+            fileWrite.println(entry.getKey() + ":" + totalCount[0] + ":" + totalCount[1]);
         }
         fileWrite.close();
     }
@@ -113,7 +117,7 @@ public class QLearnPlayer extends AIPlayer {
         try {
             Scanner fileRead = new Scanner(new File("src/game/qualities.txt"));
 
-            // Read file line by line - insert into tree map
+            // Read file line by line - insert into movesMap
             while (fileRead.hasNextLine()) {
                 String readLine = fileRead.nextLine();
                 String[] splitString = readLine.split(":");
