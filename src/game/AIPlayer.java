@@ -17,6 +17,8 @@ public class AIPlayer implements Player {
         int numDrops = 0;
         int bestConnect = 0;
         
+        // if it can win in 1 move, play that move; 
+        // otherwise, store the best consecutive made with any move
         for (int i = 0; i < board[0].length; i++) {
             int connect = checkDrop(board, playerNum, i);
             if (connect == 4) return i;
@@ -26,6 +28,13 @@ public class AIPlayer implements Player {
                 bestDrops[0] = i;
             } else if (connect == bestConnect) {
                 bestDrops[numDrops++] = i;
+            }
+        }
+
+        // if the opponent can win in one, prevent it
+        for (int i=0; i < board[0].length; i++) {
+            if (checkDrop(board, 1-playerNum, i) == 4) {
+                return i;
             }
         }
 
@@ -62,26 +71,34 @@ public class AIPlayer implements Player {
 
             int count = 1;
 
-            while (true) {
-                
-                int newPosX = dropPos[0] + count * dir[0];
-                int newPosY = dropPos[1] + count * dir[1];
+            for (int i=-1; i<2; i+=2) { // go in both directions
 
-                // check out of bounds
-                if (newPosX < 0 || newPosX >= Constants.ROWS) 
-                    break;
-                if (newPosY < 0 || newPosY >= Constants.COLS)
-                    break;
-                
-                // check the correct piece
-                if (board[newPosX][newPosY] == playerNum) {
-                    count++;
-                } else {
-                    break;
-                }
+                int distance = 1;
 
-                if (count >= Constants.WIN_COND) {
-                    return 4;
+                while (true) {
+                
+                    int newPosX = dropPos[0] + distance * dir[0] * i;
+                    int newPosY = dropPos[1] + distance * dir[1] * i;
+    
+                    // check out of bounds
+                    if (newPosX < 0 || newPosX >= Constants.ROWS) 
+                        break;
+                    if (newPosY < 0 || newPosY >= Constants.COLS)
+                        break;
+                    
+                    // check the correct piece
+                    if (board[newPosX][newPosY] == playerNum) {
+                        distance++;
+                        count++;
+                    } else {
+                        break;
+                    }
+    
+                    if (count >= Constants.WIN_COND) {
+                        System.out.println("found win");
+                        return 4;
+                    }
+    
                 }
 
             }
