@@ -39,7 +39,7 @@ public class QLearnPlayer extends AIPlayer {
         }
         
         // if using a random value, generate random value
-        if (Math.random() < 0) { // TODO: reset to useRand
+        if (Math.random() < useRand) { // TODO: reset to useRand
             System.out.println("Using random move");
             int move = (int) (Math.random() * COLS);
             gameMoves.add(new Move(convertBoard(board), move));
@@ -48,7 +48,7 @@ public class QLearnPlayer extends AIPlayer {
         // if not, check best states
         else {
             System.out.println("Checking past experience");
-            double bestQ = 0;
+            double bestQ = -1;
             int bestMove = -1;
             for (int i = 0; i < COLS; i++) {
                 String stateMove = convertBoard(board)+"-"+i;

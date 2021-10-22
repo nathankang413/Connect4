@@ -8,6 +8,10 @@ public class QLearnGame extends ConnectGame {
         super(new QLearnPlayer[]{new QLearnPlayer(), new QLearnPlayer()} );
     }
 
+    public QLearnGame(boolean human) throws IOException {
+        super(new Player[]{human ? new HumanPlayer() : new AIPlayer(), new QLearnPlayer() });
+    }
+
     public double playGame(int startPlayer) {
         double result = super.playGame(startPlayer);
         System.out.println("Finished Game");
@@ -15,6 +19,8 @@ public class QLearnGame extends ConnectGame {
             try {
                 QLearnPlayer player = (QLearnPlayer) players[i];
                 player.update(Math.abs(i-result));
+            } catch (ClassCastException e) {
+                System.out.println(e);
             } catch (IOException e) {
                 System.out.println(e);
             }
