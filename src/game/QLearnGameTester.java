@@ -1,6 +1,7 @@
 package game;
 
 import java.io.*;
+import java.util.*;
 
 public class QLearnGameTester {
     
@@ -8,33 +9,51 @@ public class QLearnGameTester {
 
         double total;
         int count;
+        int tieCount;
 
 
-        // // 1000 games QLearn vs QLearn
-        // total = 0;
-        // count = 1000;
-        // for (int i=0; i<1000; i++) {
-        //     QLearnGame game = new QLearnGame();
-        //     total += game.playGame(0, false);
-        // }
-        // System.out.println("Player 1 QLearn win rate: " + (1- total/count));
-
-
-        for (int j=0; j<4; j++) {
-            // 1000 games AI vs QLearn
-            total = 0;
-            count = 1000;
-            for (int i=0; i<1000; i++) {
-                QLearnGame game = new QLearnGame(false);
-                total += game.playGame(i%2, false);
+        // 1000 games QLearn vs QLearn
+        total = 0;
+        count = 1000;
+        tieCount = 0;
+        for (int i=0; i<1000; i++) {
+            QLearnGame game = new QLearnGame();
+            double result = game.playGame(0, false);
+            total += result;
+            if (result == 0.5) {
+                tieCount++;
             }
-            System.out.println("QLearn win rate: " + (total/count));
         }
+        System.out.println("Player 1 QLearn win rate: " + (1- total/count));
+        System.out.println("Ties: " + tieCount);
+
+        // 1000 games AI vs QLearn
+        total = 0;
+        count = 1000;
+        for (int i=0; i<1000; i++) {
+            QLearnGame game = new QLearnGame(false);
+            double result = game.playGame(0, false);
+            total += result;
+            if (result == 0.5) {
+                tieCount++;
+            }
+        }
+        System.out.println("QLearn win rate: " + (total/count));
+        System.out.println("Ties: " + tieCount);
+
+        // Count number of state-move pairs recorded
+        Scanner s = new Scanner(new File("src/game/qualities.txt"));
+        int countQ = 0;
+        while (s.hasNextLine()) {
+            countQ ++;
+            s.nextLine();
+        }
+        System.out.println("Positions reached: " + countQ);
 
 
-        // QLearnGame game = new QLearnGame(false);
+        // QLearnGame game = new QLearnGame(true);
         // try {
-        //     game.playGame(1);
+        //     game.playGame((int) (Math.random()+0.5));
         // } catch (ClassCastException e) {
         //     System.out.println(e);
         // }
