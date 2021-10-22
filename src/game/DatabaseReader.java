@@ -9,6 +9,7 @@ public class DatabaseReader {
     private static TreeMap<String, Double[]> movesMap;
     private static int[][] board;
     private static ArrayList<String> path;
+    private static Scanner user;
     
     public static void main (String[] args) throws IOException {
 
@@ -26,7 +27,7 @@ public class DatabaseReader {
         }
 
         // initialize scanner for user input
-        Scanner user = new Scanner(System.in);
+        user = new Scanner(System.in);
 
         // initialize current Branch to remember pathing
         path = new ArrayList<>();
@@ -156,8 +157,6 @@ public class DatabaseReader {
     }
 
     private static int getUserInput() {
-
-        Scanner user = new Scanner(System.in);
 
         int col = -1;
         boolean invalid = true;
