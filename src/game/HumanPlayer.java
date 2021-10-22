@@ -3,22 +3,23 @@ package game;
 import java.util.Scanner;
 
 /**
- A Human Player which gets inputs from human users
+ * A Human Player which gets inputs from human users
  */
 public class HumanPlayer implements Player {
     private final Scanner scanner;
 
     /**
-     Creates a new HumanPlayer object
+     * Creates a new HumanPlayer object
      */
     public HumanPlayer() {
         scanner = new Scanner(System.in);
     }
 
     /**
-     Plays one turn of connect for
-     @param board the game board
-     @return the column to drop the piece, zero-indexed
+     * Plays one turn of connect for
+     *
+     * @param board the game board
+     * @return the column to drop the piece, zero-indexed
      */
     public int play(int[][] board, int playerNum) {
         int col = -1;
@@ -30,7 +31,7 @@ public class HumanPlayer implements Player {
                 if (col > 0 && col <= Constants.COLS) {
                     invalid = false;
                 }
-            } catch(Exception e) {
+            } catch (Exception e) {
                 scanner.next();
             }
             if (invalid) System.out.println("Invalid input!");

@@ -1,9 +1,10 @@
 package game;
 
 /**
- game.Tester class for ConnectGame
- TODO: rename to ConnectGameTester_GonKan for submission
- @author Nathan Gong and Nathan Kang
+ * game.Tester class for ConnectGame
+ * TODO: rename to ConnectGameTester_GonKan for submission
+ *
+ * @author Nathan Gong and Nathan Kang
  */
 class ConnectGameTester_GonKan {
     public static void main(String[] args) {

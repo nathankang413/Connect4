@@ -1,17 +1,21 @@
 package game;
 
-import java.util.*;
-import java.io.*;
-import static game.Constants.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.TreeMap;
+
+import static game.Constants.COLS;
+import static game.Constants.ROWS;
 
 public class DatabaseReader {
-
     private static TreeMap<String, Double[]> movesMap;
     private static int[][] board;
     private static ArrayList<String> path;
     private static Scanner user;
-    
-    public static void main (String[] args) throws IOException {
+
+    public static void main(String[] args) throws IOException {
 
         // read the file
         movesMap = new TreeMap<>();
@@ -20,8 +24,8 @@ public class DatabaseReader {
         // initialize blank board
         board = new int[ROWS][COLS];
         int player = 0;
-        for (int i=0; i<ROWS; i++) {
-            for (int j=0; j<COLS; j++) {
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
                 board[i][j] = -1;
             }
         }
@@ -38,13 +42,13 @@ public class DatabaseReader {
 
             // get all options at that moment
             System.out.println("Potential moves: (win% - count)");
-            for (int i=0; i<COLS; i++) {
+            for (int i = 0; i < COLS; i++) {
 
-                System.out.print((i+1) + ": ");
+                System.out.print((i + 1) + ": ");
 
                 String key = boardToString(board) + "-" + i;
                 if (movesMap.containsKey(key)) {
-                    
+
                     double totalQ = movesMap.get(key)[0];
                     double count = movesMap.get(key)[1];
 
@@ -59,13 +63,11 @@ public class DatabaseReader {
             // get user input
             int move = getUserInput();
             if (move == -1) {
-                board = stringToBoard( path.remove(path.size()-1) );
+                board = stringToBoard(path.remove(path.size() - 1));
                 player = 1 - player;
-            }
-            else if (move == -2) {
+            } else if (move == -2) {
                 break;
-            }
-            else {
+            } else {
                 path.add(boardToString(board));
                 dropPiece(move, player);
                 player = 1 - player;
@@ -75,8 +77,7 @@ public class DatabaseReader {
     }
 
     private static void readFile() throws IOException {
-
-        Scanner fileRead = new Scanner(new File("src/game/qualities.txt"));
+        Scanner fileRead = new Scanner(new File("game/qualities.txt"));
 
         // Read file line by line - insert into tree map
         while (fileRead.hasNextLine()) {
@@ -93,9 +94,9 @@ public class DatabaseReader {
 
         StringBuilder str = new StringBuilder();
 
-        for (int i=0; i<ROWS; i++) {
-            for (int j=0; j<COLS; j++) {
-                str.append(board[i][j]+1);
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                str.append(board[i][j] + 1);
             }
         }
 
@@ -104,12 +105,12 @@ public class DatabaseReader {
     }
 
     private static int[][] stringToBoard(String str) {
-        
+
         int[][] board = new int[ROWS][COLS];
 
-        for (int i=0; i<ROWS; i++) {
-            for (int j=0; j<COLS; j++) {
-                int value = Integer.parseInt(str.substring(i*COLS+j, i*COLS+j+1)) - 1;
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                int value = Integer.parseInt(str.substring(i * COLS + j, i * COLS + j + 1)) - 1;
                 board[i][j] = value;
             }
         }
@@ -118,7 +119,7 @@ public class DatabaseReader {
     }
 
     /**
-     Displays the text version of the board
+     * Displays the text version of the board
      */
     private static void printBoard() {
 
@@ -152,13 +153,12 @@ public class DatabaseReader {
 
         // column labels
         for (int i = 0; i < COLS; i++) {
-            System.out.print("-" + (i+1));
+            System.out.print("-" + (i + 1));
         }
         System.out.println("-");
     }
 
     private static int getUserInput() {
-
         int col = -1;
         boolean invalid = true;
         while (invalid) {
@@ -173,7 +173,7 @@ public class DatabaseReader {
                 if (col > 0 && col <= Constants.COLS) {
                     invalid = false;
                 }
-            } catch(Exception e) {
+            } catch (Exception e) {
                 user.next();
             }
             if (invalid) System.out.println("Invalid input!");
@@ -192,5 +192,4 @@ public class DatabaseReader {
             }
         }
     }
-
 }
