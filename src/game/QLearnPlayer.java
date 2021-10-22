@@ -40,14 +40,14 @@ public class QLearnPlayer extends AIPlayer {
         
         // if using a random value, generate random value
         if (Math.random() < useRand) { // TODO: reset to useRand
-            System.out.println("Using random move");
+            // System.out.println("Using random move");
             int move = (int) (Math.random() * COLS);
             gameMoves.add(new Move(convertBoard(board), move));
             return move;
         }
         // if not, check best states
         else {
-            System.out.println("Checking past experience");
+            // System.out.println("Checking past experience");
             double bestQ = -1;
             int bestMove = -1;
             for (int i = 0; i < COLS; i++) {
@@ -61,12 +61,12 @@ public class QLearnPlayer extends AIPlayer {
                 }
             }
             if (bestMove >= 0) {
-                System.out.println("Using past experience");
+                // System.out.println("Using past experience");
                 gameMoves.add(new Move(convertBoard(board), bestMove));
                 return bestMove;
             }
             else {
-                System.out.println("Couldn't find past experience");
+                // System.out.println("Couldn't find past experience");
                 int move = (int) (Math.random() * COLS);
                 gameMoves.add(new Move(convertBoard(board), move));
                 return move; 

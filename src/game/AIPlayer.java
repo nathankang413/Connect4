@@ -95,7 +95,7 @@ public class AIPlayer implements Player {
                     }
     
                     if (count >= Constants.WIN_COND) {
-                        System.out.println("found win");
+                        // System.out.println("found win");
                         return 4;
                     }
     

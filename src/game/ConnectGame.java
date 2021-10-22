@@ -57,24 +57,33 @@ public class ConnectGame {
       @param startPlayer the starting player, either 0 or 1
     */
     public double playGame(int startPlayer) {
+        return playGame(startPlayer, true);
+    }
+
+    public double playGame(int startPlayer, boolean showBoard) {
         // game loop
         int currPlayer = startPlayer;
         while (checkWin() < 0) {
-            System.out.println();
-            System.out.println("Player " + (currPlayer + 1) + "'s Turn");
-            printBoard();
+            if (showBoard) {
+                System.out.println();
+                System.out.println("Player " + (currPlayer + 1) + "'s Turn");
+                printBoard();
+            }
             try {
                 dropPiece(players[currPlayer].play(board, currPlayer), currPlayer);
             } catch (IllegalArgumentException e) {
-                System.out.println("Player " + (currPlayer + 1) + " played an illegal move.");
+                if (showBoard)
+                    System.out.println("Player " + (currPlayer + 1) + " played an illegal move.");
                 return (currPlayer + 1) % 2;
             }
             currPlayer = 1 - currPlayer;
         }
 
-        System.out.println();
-        System.out.println("Player " + (checkWin()+1) + " Wins!!");
-        printBoard();
+        if (showBoard) {
+            System.out.println();
+            System.out.println("Player " + (checkWin()+1) + " Wins!!");
+            printBoard();
+        }
 
         return checkWin();
     }
