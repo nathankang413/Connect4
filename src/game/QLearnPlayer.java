@@ -9,7 +9,7 @@ public class QLearnPlayer extends AIPlayer {
 
     private final double useRand;
     private final ArrayList<Move> gameMoves;
-    private final TreeMap<String, Double[]> movesMap;
+    private TreeMap<String, Double[]> movesMap;
     private static final int MAX_STATES = 5000;
 
     public QLearnPlayer() throws IOException {
