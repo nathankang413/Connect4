@@ -1,6 +1,6 @@
 package game;
 
-import static game.Constants.*;
+import static game.Constants.Game.*;
 
 /**
  * A Connect 4 Game

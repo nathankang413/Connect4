@@ -6,8 +6,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.TreeMap;
 
-import static game.Constants.COLS;
-import static game.Constants.ROWS;
+import static game.Constants.Game.*;
 
 public class DatabaseReader {
     private static TreeMap<String, Double[]> movesMap;
@@ -170,7 +169,7 @@ public class DatabaseReader {
                 if (input.equals("b")) return -1;
                 col = Integer.parseInt(input);
 
-                if (col > 0 && col <= Constants.COLS) {
+                if (col > 0 && col <= COLS) {
                     invalid = false;
                 }
             } catch (Exception e) {

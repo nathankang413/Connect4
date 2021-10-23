@@ -1,6 +1,7 @@
 package game;
 
 import java.util.Scanner;
+import static game.Constants.Game.*;
 
 /**
  * A Human Player which gets inputs from human users
@@ -28,7 +29,7 @@ public class HumanPlayer implements Player {
             try {
                 System.out.println("Choose a column to drop your piece: ");
                 col = scanner.nextInt();
-                if (col > 0 && col <= Constants.COLS) {
+                if (col > 0 && col <= COLS) {
                     invalid = false;
                 }
             } catch (Exception e) {

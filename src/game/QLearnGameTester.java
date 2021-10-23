@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
-import static game.Constants.*;
+import static game.Constants.Game.*;
 
 public class QLearnGameTester {
     public static void main(String[] args) throws IOException {

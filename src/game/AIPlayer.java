@@ -1,5 +1,7 @@
 package game;
 
+import static game.Constants.Game.*;
+
 /**
  * An AI Player which determines moves algorithmically
  */
@@ -79,9 +81,9 @@ public class AIPlayer implements Player {
                     int newPosY = dropPos[1] + distance * dir[1] * i;
 
                     // check out of bounds
-                    if (newPosX < 0 || newPosX >= Constants.ROWS)
+                    if (newPosX < 0 || newPosX >= ROWS)
                         break;
-                    if (newPosY < 0 || newPosY >= Constants.COLS)
+                    if (newPosY < 0 || newPosY >= COLS)
                         break;
 
                     // check the correct piece
@@ -91,7 +93,7 @@ public class AIPlayer implements Player {
                     } else {
                         break;
                     }
-                    if (count >= Constants.WIN_COND) {
+                    if (count >= WIN_COND) {
                         // System.out.println("found win");
                         return 4;
                     }

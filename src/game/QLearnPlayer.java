@@ -9,8 +9,7 @@ import java.util.Scanner;
 import java.util.TreeMap;
 import java.util.HashMap;
 
-import static game.Constants.COLS;
-import static game.Constants.ROWS;
+import static game.Constants.Game.*;
 
 public class QLearnPlayer extends AIPlayer {
     private static final int MAX_STATES = 10000;
