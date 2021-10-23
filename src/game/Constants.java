@@ -12,5 +12,7 @@ public class Constants {
 
     public class GUI {
         public static final int DIAMETER = 100;
+        public static final int MARGIN = 10;
+        public static final int SPACING = DIAMETER + 2 * MARGIN;
     }
 }
