@@ -7,6 +7,7 @@ import java.util.Scanner;
 import java.util.TreeMap;
 
 import static game.Constants.Game.*;
+import static game.Constants.QLearn.*;
 
 public class DatabaseReader {
     private static TreeMap<String, Double[]> movesMap;
@@ -76,7 +77,7 @@ public class DatabaseReader {
     }
 
     private static void readFile() throws IOException {
-        Scanner fileRead = new Scanner(new File("game/qualities.txt"));
+        Scanner fileRead = new Scanner(new File(QUALITIES_FILE));
 
         // Read file line by line - insert into tree map
         while (fileRead.hasNextLine()) {

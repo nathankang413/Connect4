@@ -10,6 +10,7 @@ import java.util.TreeMap;
 import java.util.HashMap;
 
 import static game.Constants.Game.*;
+import static game.Constants.QLearn.*;
 
 public class QLearnPlayer extends AIPlayer {
     private static final int MAX_STATES = 10000;
@@ -104,7 +105,7 @@ public class QLearnPlayer extends AIPlayer {
             treeMap.put(entry.getKey(), entry.getValue());
         }
         // write movesMap to file
-        PrintWriter fileWrite = new PrintWriter("src/game/qualities.txt");
+        PrintWriter fileWrite = new PrintWriter(QUALITIES_FILE);
         for (Map.Entry<String, Double[]> entry : treeMap.entrySet()) {
             Double[] totalCount = entry.getValue();
             fileWrite.println(entry.getKey() + ":" + totalCount[0] + ":" + totalCount[1]);
@@ -114,7 +115,7 @@ public class QLearnPlayer extends AIPlayer {
 
     private void readMovesMap() {
         try {
-            Scanner fileRead = new Scanner(new File("src/game/qualities.txt"));
+            Scanner fileRead = new Scanner(new File(QUALITIES_FILE));
 
             // Read file line by line - insert into movesMap
             while (fileRead.hasNextLine()) {

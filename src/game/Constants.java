@@ -15,4 +15,8 @@ public class Constants {
         public static final int MARGIN = 10;
         public static final int SPACING = DIAMETER + 2 * MARGIN;
     }
+
+    public class QLearn {
+        public static final String QUALITIES_FILE = "src/game/test.txt";
+    }
 }
