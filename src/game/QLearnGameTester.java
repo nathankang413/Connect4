@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import static game.Constants.Game.*;
+import static game.Constants.QLearn.*;
 
 public class QLearnGameTester {
     public static void main(String[] args) throws IOException {
@@ -32,7 +33,7 @@ public class QLearnGameTester {
         count = 1000;
         for (int i = 0; i < 1000; i++) {
             QLearnGame game = new QLearnGame(false);
-            double result = game.playGame(PLAYER_1, false);
+            double result = game.playGame(i%2==0 ? PLAYER_1 : PLAYER_2, false);
             total += result;
             if (result == 0.5) {
                 tieCount++;
@@ -42,7 +43,7 @@ public class QLearnGameTester {
         System.out.println("Ties: " + tieCount);
 
         // Count number of state-move pairs recorded
-        Scanner s = new Scanner(new File("game/qualities.txt"));
+        Scanner s = new Scanner(new File(QUALITIES_FILE));
         int countQ = 0;
         while (s.hasNextLine()) {
             countQ++;
