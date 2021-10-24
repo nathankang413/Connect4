@@ -7,14 +7,25 @@ import game.players.Player;
 import static game.Constants.Game.*;
 
 /**
- * A Connect 4 Game
+ * A Singleton Connect 4 Game
  * Maintains Human and AI players
  */
 
 public class ConnectGame {
     // TODO: make private (can create getter methods)
+    private static ConnectGame instance;
     private final int[][] board; // -1 - empty, 0 - player1, 1 - player2
     protected Player[] players;
+    private int currPlayer;
+
+    public static void initialize(int numPlayers) {
+        if (instance != null) throw new RuntimeException("ConnectGame has already been initialized.");
+        instance = new ConnectGame(numPlayers);
+    }
+
+    public static ConnectGame getInstance() {
+        return instance;
+    }
 
     /**
      * Creates a new ConnectGame object with the given number of players
@@ -22,7 +33,7 @@ public class ConnectGame {
      *
      * @param numPlayers should be between 0 and 2, inclusive
      */
-    public ConnectGame(int numPlayers) {
+    private ConnectGame(int numPlayers) {
         // numPlayers: 0 - 2 AI, 1 - 1 Human/AI, 2 - 2 Human
         if (numPlayers > 2 || numPlayers < 0) {
             throw new IllegalArgumentException("numPlayers " + numPlayers + "is outside range 0-2");
@@ -68,30 +79,38 @@ public class ConnectGame {
 
     public double playGame(int startPlayer, boolean showBoard) {
         // game loop
-        int currPlayer = startPlayer;
-        while (checkWin() < 0) {
-            if (showBoard) {
-                System.out.println();
-                System.out.println("Player " + (currPlayer + 1) + "'s Turn");
-                printBoard();
-            }
-            try {
-                dropPiece(players[currPlayer].play(board, currPlayer), currPlayer);
-            } catch (IllegalArgumentException e) {
-                if (showBoard)
-                    System.out.println("Player " + (currPlayer + 1) + " played an illegal move.");
-                return 1 - currPlayer;
-            }
-            currPlayer = 1 - currPlayer;
-        }
-
-        if (showBoard) {
-            System.out.println();
-            System.out.println("Player " + (checkWin() + 1) + " Wins!!");
-            printBoard();
-        }
-
+        currPlayer = startPlayer;
+//        while (checkWin() < 0) {
+//            if (showBoard) {
+//                System.out.println();
+//                System.out.println("Player " + (currPlayer + 1) + "'s Turn");
+//                printBoard();
+//            }
+//            try {
+//                dropPiece(players[currPlayer].play(board, currPlayer), currPlayer);
+//            } catch (IllegalArgumentException e) {
+//                if (showBoard)
+//                    System.out.println("Player " + (currPlayer + 1) + " played an illegal move.");
+//                return 1 - currPlayer;
+//            }
+//            currPlayer = 1 - currPlayer;
+//        }
+//
+//        if (showBoard) {
+//            System.out.println();
+//            System.out.println("Player " + (checkWin() + 1) + " Wins!!");
+//            printBoard();
+//        }
+//
         return checkWin();
+    }
+
+    /**
+     * Getter method for board
+     * @return board
+     */
+    public int[][] getBoard() {
+        return board;
     }
 
     /**
@@ -125,22 +144,31 @@ public class ConnectGame {
         System.out.println("-");
     }
 
+    public int[] move(int col) {
+        int[] res = dropPiece(col, currPlayer);
+        currPlayer = 1 - currPlayer;
+        return res;
+    }
+
     /**
      * Drops a piece in the given column
      *
      * @param col    the column to drop the piece in
      * @param player the player dropping the piece, either 0 or 1
+     * @return the position at which the piece landed
      */
-    private void dropPiece(int col, int player) {
+    private int[] dropPiece(int col, int player) {
         if (board[0][col] != EMPTY) {
             throw new IllegalArgumentException("Column " + (col + 1) + " is full.");
         }
-        for (int i = ROWS - 1; i >= 0; i--) {
+        int i;
+        for (i = ROWS - 1; i >= 0; i--) {
             if (board[i][col] == EMPTY) {
                 board[i][col] = player;
                 break;
             }
         }
+        return new int[]{i, col};
     }
 
     /**

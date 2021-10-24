@@ -5,26 +5,17 @@ import acm.graphics.GRect;
 import acm.program.GraphicsProgram;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import static game.Constants.GUI.*;
 import static game.Constants.Game.*;
 
-public class Display extends GraphicsProgram {
-    private int[][] board; // TODO: use something else to get the actual board state in the game
+public class Display extends GraphicsProgram implements MouseListener {
+    private Position[][] positions;
 
-    public static void main(String[] args) {
-        new Display().start(args);
-        System.out.println("here");
-
-    }
-
-    private Display() {
-        board = new int[ROWS][COLS];
-        for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < COLS; j++) {
-                board[i][j] = i % 2;
-            }
-        }
+    public Display() {
+        addMouseListeners();
     }
 
     public void run() {
@@ -34,15 +25,30 @@ public class Display extends GraphicsProgram {
             add(frame[i]);
         }
 
-        Position[][] positions = new Position[ROWS][COLS];
+        positions = new Position[ROWS][COLS];
+        int[][] board = ConnectGame.getInstance().getBoard();
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
-
                 positions[i][j] = new Position(j * SPACING + MARGIN, i * SPACING + MARGIN, board[i][j]);
                 add(positions[i][j]);
-
             }
         }
+    }
+
+    public void updateScreen(int row, int col) {
+        if (row >= ROWS || row < 0 || col >= COLS || col < 0)
+            throw new IllegalArgumentException("Invalid position");
+        remove(positions[row][col]);
+        positions[row][col] = new Position(col * SPACING + MARGIN, row * SPACING + MARGIN, ConnectGame.getInstance().getBoard()[row][col]);
+        add(positions[row][col]);
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent mouseEvent) {
+        int col = (mouseEvent.getX() - MARGIN) / SPACING;
+        int[] pos = ConnectGame.getInstance().move(col);
+        updateScreen(pos[0], pos[1]);
+        System.out.println("ayo why you click me? anyways the col is " + col);
     }
 
     private class Position extends GOval {
