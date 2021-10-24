@@ -1,4 +1,6 @@
-package game;
+package game.test;
+
+import game.ConnectGame;
 
 /**
  * game.Tester class for ConnectGame

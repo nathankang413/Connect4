@@ -1,5 +1,9 @@
 package game;
 
+import game.players.AIPlayer;
+import game.players.HumanPlayer;
+import game.players.Player;
+
 import static game.Constants.Game.*;
 
 /**

@@ -1,4 +1,6 @@
-package game;
+package game.test;
+
+import game.QLearnGame;
 
 import java.io.File;
 import java.io.IOException;

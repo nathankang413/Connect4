@@ -1,4 +1,4 @@
-package game;
+package game.players;
 
 import static game.Constants.Game.*;
 
