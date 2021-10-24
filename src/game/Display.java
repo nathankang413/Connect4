@@ -1,61 +1,76 @@
 package game;
 
-import java.awt.Color;
-import acm.program.GraphicsProgram;
-import acm.graphics.GRect;
 import acm.graphics.GOval;
+import acm.graphics.GRect;
+import acm.program.GraphicsProgram;
 
-import static game.Constants.Game.*;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import static game.Constants.GUI.*;
+import static game.Constants.Game.*;
 
-public class Display extends GraphicsProgram {
-    
-    public static void main(String[] args) {
-        new Display().start(args);
+public class Display extends GraphicsProgram implements MouseListener {
+    private Position[][] positions;
 
-        System.out.println("here");
-
-
+    public Display() {
+        addMouseListeners();
     }
 
     public void run() {
-
         Column[] frame = new Column[COLS];
-        for (int i=0; i<COLS; i++) {
-            frame[i] = new Column(i*SPACING, 0);
+        for (int i = 0; i < COLS; i++) {
+            frame[i] = new Column(i * SPACING, 0);
             add(frame[i]);
         }
 
-        Position[][] positions = new Position[ROWS][COLS];
-        for (int i=0; i<ROWS; i++) {
-            for (int j=0; j<COLS; j++) {
-
-                positions[i][j] = new Position(j*SPACING + MARGIN, i*SPACING + MARGIN);
+        positions = new Position[ROWS][COLS];
+        int[][] board = ConnectGame.getInstance().getBoard();
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                positions[i][j] = new Position(j * SPACING + MARGIN, i * SPACING + MARGIN, board[i][j]);
                 add(positions[i][j]);
-
             }
         }
     }
-}
 
-class Position extends GOval {
-
-    public Position(int x, int y) {
-        super(x, y, DIAMETER, DIAMETER);
-
-        setFillColor(Color.LIGHT_GRAY);
-        setFilled(true);
+    public void updateScreen(int row, int col) {
+        if (row >= ROWS || row < 0 || col >= COLS || col < 0)
+            throw new IllegalArgumentException("Invalid position");
+        remove(positions[row][col]);
+        positions[row][col] = new Position(col * SPACING + MARGIN, row * SPACING + MARGIN, ConnectGame.getInstance().getBoard()[row][col]);
+        add(positions[row][col]);
     }
 
-}
-
-class Column extends GRect {
-
-    public Column (int x, int y) {
-        super(x, y, SPACING, ROWS*(SPACING));
-
-        setFillColor(Color.BLUE);
-        setFilled(true);
+    @Override
+    public void mouseClicked(MouseEvent mouseEvent) {
+        int col = (mouseEvent.getX() - MARGIN) / SPACING;
+        int[] pos = ConnectGame.getInstance().move(col);
+        updateScreen(pos[0], pos[1]);
+        System.out.println("ayo why you click me? anyways the col is " + col);
     }
 
+    private class Position extends GOval {
+        public Position(int x, int y, int type) {
+            super(x, y, DIAMETER, DIAMETER);
+
+            if (type == EMPTY)
+                setFillColor(Color.LIGHT_GRAY);
+            else if (type == PLAYER_1)
+                setFillColor(Color.YELLOW);
+            else
+                setFillColor(Color.RED);
+            setFilled(true);
+        }
+    }
+
+    private class Column extends GRect {
+        public Column(int x, int y) {
+            super(x, y, SPACING, ROWS * (SPACING));
+
+            setFillColor(Color.BLUE);
+            setFilled(true);
+        }
+    }
 }

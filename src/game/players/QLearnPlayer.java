@@ -1,4 +1,6 @@
-package game;
+package game.players;
+
+import game.players.AIPlayer;
 
 import java.io.File;
 import java.io.IOException;

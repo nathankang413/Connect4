@@ -1,4 +1,4 @@
-package game;
+package game.players;
 
 import java.util.Scanner;
 import static game.Constants.Game.*;

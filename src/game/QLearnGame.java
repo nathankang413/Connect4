@@ -1,5 +1,10 @@
 package game;
 
+import game.players.AIPlayer;
+import game.players.HumanPlayer;
+import game.players.Player;
+import game.players.QLearnPlayer;
+
 import java.io.IOException;
 
 public class QLearnGame extends ConnectGame {

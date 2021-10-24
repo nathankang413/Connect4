@@ -1,4 +1,4 @@
-package game;
+package game.players;
 
 /**
  * A Player interface for the ConnectGame class
