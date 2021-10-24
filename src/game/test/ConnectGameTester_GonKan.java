@@ -5,7 +5,6 @@ import game.Display;
 
 /**
  * game.Tester class for ConnectGame
- * TODO: rename to ConnectGameTester_GonKan for submission
  *
  * @author Nathan Gong and Nathan Kang
  */

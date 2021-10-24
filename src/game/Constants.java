@@ -17,6 +17,6 @@ public class Constants {
     }
 
     public class QLearn {
-        public static final String QUALITIES_FILE = "src/game/test.txt";
+        public static final String QUALITIES_FILE = "src/game/qualities.txt";
     }
 }
