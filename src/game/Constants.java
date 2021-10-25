@@ -14,6 +14,8 @@ public class Constants {
         public static final int DIAMETER = 100;
         public static final int MARGIN = 10;
         public static final int SPACING = DIAMETER + 2 * MARGIN;
+        public static final int TEXT_MARGIN = 100;
+        public static final int TEXT_PADDING = 10;
     }
 
     public class QLearn {

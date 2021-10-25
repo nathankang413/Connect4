@@ -2,6 +2,7 @@ package game;
 
 import acm.graphics.GOval;
 import acm.graphics.GRect;
+import acm.graphics.GLabel;
 import acm.program.GraphicsProgram;
 
 import java.awt.*;
@@ -19,9 +20,16 @@ public class Display extends GraphicsProgram implements MouseListener {
     }
 
     public void run() {
+
+        // TODO: IN PROGRESS
+        TextDisplay label = new TextDisplay("This is a label");
+        label.setFont("Arial-bold-100");
+        add(label);
+        label.setLabel("New Labe");
+
         Column[] frame = new Column[COLS];
         for (int i = 0; i < COLS; i++) {
-            frame[i] = new Column(i * SPACING, 0);
+            frame[i] = new Column(i * SPACING, TEXT_MARGIN);
             add(frame[i]);
         }
 
@@ -29,7 +37,7 @@ public class Display extends GraphicsProgram implements MouseListener {
         int[][] board = ConnectGame.getInstance().getBoard();
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
-                positions[i][j] = new Position(j * SPACING + MARGIN, i * SPACING + MARGIN, board[i][j]);
+                positions[i][j] = new Position(j * SPACING + MARGIN, i * SPACING + MARGIN + TEXT_MARGIN, board[i][j]);
                 add(positions[i][j]);
             }
         }
@@ -48,6 +56,14 @@ public class Display extends GraphicsProgram implements MouseListener {
         int col = (mouseEvent.getX() - MARGIN) / SPACING;
         ConnectGame.getInstance().move(col);
         updateScreen();
+    }
+
+    private class TextDisplay extends GLabel {
+
+        public TextDisplay(String str) {
+            super(str, TEXT_PADDING, TEXT_MARGIN-TEXT_PADDING);
+        }
+
     }
 
     private class Position extends GOval {
