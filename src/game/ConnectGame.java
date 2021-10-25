@@ -115,15 +115,9 @@ public class ConnectGame {
             for (int j = 0; j < COLS; j++) {
                 // show the correct piece
                 switch (board[i][j]) {
-                    case EMPTY:
-                        System.out.print(" ");
-                        break;
-                    case PLAYER_1:
-                        System.out.print("X");
-                        break;
-                    case PLAYER_2:
-                        System.out.print("O");
-                        break;
+                    case EMPTY -> System.out.print(" ");
+                    case PLAYER_1 -> System.out.print("X");
+                    case PLAYER_2 -> System.out.print("O");
                 }
                 System.out.print("|");
             }
@@ -179,7 +173,7 @@ public class ConnectGame {
      *
      * @return -1 for no win, 0 or 1 for which player wins
      */
-    private double checkWin() {
+    public double checkWin() {
         for (int i = 0; i < COLS; i++) {
             if (board[0][i] < 0) break;
             else if (i >= COLS - 1) return 0.5;

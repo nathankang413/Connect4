@@ -14,6 +14,7 @@ import static game.Constants.Game.*;
 
 public class Display extends GraphicsProgram implements MouseListener {
     private Position[][] positions;
+    private TextDisplay text;
     private ConnectGame game;
 
     public Display(ConnectGame game) {
@@ -24,8 +25,8 @@ public class Display extends GraphicsProgram implements MouseListener {
     public void run() {
 
         // TODO: IN PROGRESS
-        TextDisplay label = new TextDisplay("Player 1's Turn", Color.RED);
-        add(label);
+        text = new TextDisplay("Connect 4", Color.RED);
+        add(text);
 
         Column[] frame = new Column[COLS];
         for (int i = 0; i < COLS; i++) {
@@ -53,9 +54,23 @@ public class Display extends GraphicsProgram implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
-        int col = (mouseEvent.getX() - MARGIN) / SPACING;
-        game.move(col);
-        updateScreen();
+        if (game.checkWin() == EMPTY) {
+            int col = (mouseEvent.getX() - MARGIN) / SPACING;
+            game.move(col);
+            updateScreen();
+
+            // update text if game is over
+            if (game.checkWin() != EMPTY) {
+                if (game.checkWin() % 1 == 0.5) {
+                    text.setLabel("It's a tie!!");
+                } else {
+                    switch ((int) game.checkWin()) {
+                        case PLAYER_1 -> text.setLabel("Player 1 Wins!");
+                        case PLAYER_2 -> text.setLabel("Player 2 Wins!");
+                    }
+                }
+            }
+        }
     }
 
     private class TextDisplay extends GLabel {
