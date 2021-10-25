@@ -38,9 +38,7 @@ public class Display extends GraphicsProgram implements MouseListener {
     public void updateScreen(int row, int col) {
         if (row >= ROWS || row < 0 || col >= COLS || col < 0)
             throw new IllegalArgumentException("Invalid position");
-        remove(positions[row][col]);
-        positions[row][col] = new Position(col * SPACING + MARGIN, row * SPACING + MARGIN, ConnectGame.getInstance().getBoard()[row][col]);
-        add(positions[row][col]);
+        positions[row][col].changeColor(ConnectGame.getInstance().getBoard()[row][col]);
     }
 
     @Override
@@ -55,12 +53,16 @@ public class Display extends GraphicsProgram implements MouseListener {
         public Position(int x, int y, int type) {
             super(x, y, DIAMETER, DIAMETER);
 
-            if (type == EMPTY)
-                setFillColor(Color.LIGHT_GRAY);
-            else if (type == PLAYER_1)
-                setFillColor(Color.YELLOW);
-            else
-                setFillColor(Color.RED);
+            changeColor(type);
+        }
+
+        public void changeColor(int type) {
+            switch (type) {
+                case EMPTY -> setFillColor(Color.LIGHT_GRAY);
+                case PLAYER_1 -> setFillColor(Color.YELLOW);
+                case PLAYER_2 -> setFillColor(Color.RED);
+            }
+
             setFilled(true);
         }
     }
