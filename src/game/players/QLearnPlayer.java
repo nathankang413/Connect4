@@ -1,7 +1,5 @@
 package game.players;
 
-import game.players.AIPlayer;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -144,15 +142,7 @@ public class QLearnPlayer extends AIPlayer {
         return str.toString();
     }
 
-    private class Move {
-        private final String state;
-        private final int move;
-
-        public Move(String state, int move) {
-            this.state = state;
-            this.move = move;
-        }
-
+    private record Move(String state, int move) {
         public String toString() {
             return state + "-" + move;
         }

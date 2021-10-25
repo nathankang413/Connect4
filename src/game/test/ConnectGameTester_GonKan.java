@@ -11,7 +11,7 @@ import game.Display;
  */
 class ConnectGameTester_GonKan {
     public static void main(String[] args) {
-        ConnectGame.initialize(2);
+        ConnectGame.initialize(1);
         ConnectGame game = ConnectGame.getInstance();
         Display display = new Display();
         display.start(args);

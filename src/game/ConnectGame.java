@@ -44,8 +44,9 @@ public class ConnectGame {
         for (int i = 0; i < 2; i++) {
             if (i < numPlayers) {
                 players[i] = new HumanPlayer();
-            } else
+            } else {
                 players[i] = new AIPlayer();
+            }
         }
         // initialize empty board
         board = new int[ROWS][COLS];
@@ -144,10 +145,20 @@ public class ConnectGame {
         System.out.println("-");
     }
 
-    public int[] move(int col) {
-        int[] res = dropPiece(col, currPlayer);
+    /**
+     * Adds piece to board given human input
+     * @param col - the column to drop the next piece
+     */
+    public void move(int col) {
+        if (!(players[currPlayer] instanceof HumanPlayer)) {
+            throw new RuntimeException("Move cannot be called when it's the AI Player's turn.");
+        }
+        dropPiece(col, currPlayer);
         currPlayer = 1 - currPlayer;
-        return res;
+        if (!(players[currPlayer] instanceof HumanPlayer)) {
+            dropPiece(players[currPlayer].play(board, currPlayer), currPlayer);
+            currPlayer = 1 - currPlayer;
+        }
     }
 
     /**

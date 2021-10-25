@@ -35,18 +35,19 @@ public class Display extends GraphicsProgram implements MouseListener {
         }
     }
 
-    public void updateScreen(int row, int col) {
-        if (row >= ROWS || row < 0 || col >= COLS || col < 0)
-            throw new IllegalArgumentException("Invalid position");
-        positions[row][col].changeColor(ConnectGame.getInstance().getBoard()[row][col]);
+    public void updateScreen() {
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                positions[i][j].changeColor(ConnectGame.getInstance().getBoard()[i][j]);
+            }
+        }
     }
 
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
         int col = (mouseEvent.getX() - MARGIN) / SPACING;
-        int[] pos = ConnectGame.getInstance().move(col);
-        updateScreen(pos[0], pos[1]);
-        System.out.println("ayo why you click me? anyways the col is " + col);
+        ConnectGame.getInstance().move(col);
+        updateScreen();
     }
 
     private class Position extends GOval {
