@@ -7,7 +7,7 @@ import game.players.Player;
 import static game.Constants.Game.*;
 
 /**
- * A Singleton Connect 4 Game
+ * A Connect 4 Game
  * Maintains Human and AI players
  */
 
@@ -18,14 +18,6 @@ public class ConnectGame {
     protected Player[] players;
     private int currPlayer;
 
-    public static void initialize(int numPlayers) {
-        if (instance != null) throw new RuntimeException("ConnectGame has already been initialized.");
-        instance = new ConnectGame(numPlayers);
-    }
-
-    public static ConnectGame getInstance() {
-        return instance;
-    }
 
     /**
      * Creates a new ConnectGame object with the given number of players
@@ -33,7 +25,7 @@ public class ConnectGame {
      *
      * @param numPlayers should be between 0 and 2, inclusive
      */
-    private ConnectGame(int numPlayers) {
+    public ConnectGame(int numPlayers) {
         // numPlayers: 0 - 2 AI, 1 - 1 Human/AI, 2 - 2 Human
         if (numPlayers > 2 || numPlayers < 0) {
             throw new IllegalArgumentException("numPlayers " + numPlayers + "is outside range 0-2");

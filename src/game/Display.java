@@ -14,18 +14,18 @@ import static game.Constants.Game.*;
 
 public class Display extends GraphicsProgram implements MouseListener {
     private Position[][] positions;
+    private ConnectGame game;
 
-    public Display() {
+    public Display(ConnectGame game) {
+        this.game = game;
         addMouseListeners();
     }
 
     public void run() {
 
         // TODO: IN PROGRESS
-        TextDisplay label = new TextDisplay("This is a label");
-        label.setFont("Arial-bold-100");
+        TextDisplay label = new TextDisplay("Player 1's Turn", Color.RED);
         add(label);
-        label.setLabel("New Labe");
 
         Column[] frame = new Column[COLS];
         for (int i = 0; i < COLS; i++) {
@@ -34,7 +34,7 @@ public class Display extends GraphicsProgram implements MouseListener {
         }
 
         positions = new Position[ROWS][COLS];
-        int[][] board = ConnectGame.getInstance().getBoard();
+        int[][] board = game.getBoard();
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
                 positions[i][j] = new Position(j * SPACING + MARGIN, i * SPACING + MARGIN + TEXT_MARGIN, board[i][j]);
@@ -46,7 +46,7 @@ public class Display extends GraphicsProgram implements MouseListener {
     public void updateScreen() {
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
-                positions[i][j].changeColor(ConnectGame.getInstance().getBoard()[i][j]);
+                positions[i][j].changeColor(game.getBoard()[i][j]);
             }
         }
     }
@@ -54,14 +54,16 @@ public class Display extends GraphicsProgram implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
         int col = (mouseEvent.getX() - MARGIN) / SPACING;
-        ConnectGame.getInstance().move(col);
+        game.move(col);
         updateScreen();
     }
 
     private class TextDisplay extends GLabel {
 
-        public TextDisplay(String str) {
+        public TextDisplay(String str, Color color) {
             super(str, TEXT_PADDING, TEXT_MARGIN-TEXT_PADDING);
+            setFont(FONT);
+            setColor(color);
         }
 
     }
