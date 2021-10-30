@@ -10,12 +10,11 @@ import game.Display;
  */
 class ConnectGameTester_GonKan {
     public static void main(String[] args) {
-        ConnectGame.initialize(2);
-        ConnectGame game = ConnectGame.getInstance();
-        Display display = new Display();
+        ConnectGame game = new ConnectGame(2);
+        Display display = new Display(game);
         display.start(args);
         System.out.println("here");
-        game.playGame(0, false);
+//        game.playGame(0, false);
 
         // Player p = new HumanPlayer();
         // System.out.println(p.play(game.board));

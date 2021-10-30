@@ -7,7 +7,7 @@ import game.players.Player;
 import static game.Constants.Game.*;
 
 /**
- * A Singleton Connect 4 Game
+ * A Connect 4 Game
  * Maintains Human and AI players
  */
 
@@ -18,14 +18,6 @@ public class ConnectGame {
     protected Player[] players;
     private int currPlayer;
 
-    public static void initialize(int numPlayers) {
-        if (instance != null) throw new RuntimeException("ConnectGame has already been initialized.");
-        instance = new ConnectGame(numPlayers);
-    }
-
-    public static ConnectGame getInstance() {
-        return instance;
-    }
 
     /**
      * Creates a new ConnectGame object with the given number of players
@@ -33,7 +25,7 @@ public class ConnectGame {
      *
      * @param numPlayers should be between 0 and 2, inclusive
      */
-    private ConnectGame(int numPlayers) {
+    public ConnectGame(int numPlayers) {
         // numPlayers: 0 - 2 AI, 1 - 1 Human/AI, 2 - 2 Human
         if (numPlayers > 2 || numPlayers < 0) {
             throw new IllegalArgumentException("numPlayers " + numPlayers + "is outside range 0-2");
@@ -44,8 +36,9 @@ public class ConnectGame {
         for (int i = 0; i < 2; i++) {
             if (i < numPlayers) {
                 players[i] = new HumanPlayer();
-            } else
+            } else {
                 players[i] = new AIPlayer();
+            }
         }
         // initialize empty board
         board = new int[ROWS][COLS];
@@ -122,15 +115,9 @@ public class ConnectGame {
             for (int j = 0; j < COLS; j++) {
                 // show the correct piece
                 switch (board[i][j]) {
-                    case EMPTY:
-                        System.out.print(" ");
-                        break;
-                    case PLAYER_1:
-                        System.out.print("X");
-                        break;
-                    case PLAYER_2:
-                        System.out.print("O");
-                        break;
+                    case EMPTY -> System.out.print(" ");
+                    case PLAYER_1 -> System.out.print("X");
+                    case PLAYER_2 -> System.out.print("O");
                 }
                 System.out.print("|");
             }
@@ -144,10 +131,20 @@ public class ConnectGame {
         System.out.println("-");
     }
 
-    public int[] move(int col) {
-        int[] res = dropPiece(col, currPlayer);
+    /**
+     * Adds piece to board given human input
+     * @param col - the column to drop the next piece
+     */
+    public void move(int col) {
+        if (!(players[currPlayer] instanceof HumanPlayer)) {
+            throw new RuntimeException("Move cannot be called when it's the AI Player's turn.");
+        }
+        dropPiece(col, currPlayer);
         currPlayer = 1 - currPlayer;
-        return res;
+        if (!(players[currPlayer] instanceof HumanPlayer)) {
+            dropPiece(players[currPlayer].play(board, currPlayer), currPlayer);
+            currPlayer = 1 - currPlayer;
+        }
     }
 
     /**
@@ -176,7 +173,7 @@ public class ConnectGame {
      *
      * @return -1 for no win, 0 or 1 for which player wins
      */
-    private double checkWin() {
+    public double checkWin() {
         for (int i = 0; i < COLS; i++) {
             if (board[0][i] < 0) break;
             else if (i >= COLS - 1) return 0.5;
