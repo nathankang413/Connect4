@@ -1,7 +1,8 @@
 package game.test;
 
 import game.ConnectGame;
-import game.Display;
+import game.ConnectDisplay;
+import static game.Constants.Game.*;
 
 /**
  * game.Tester class for ConnectGame
@@ -10,8 +11,8 @@ import game.Display;
  */
 class ConnectGameTester_GonKan {
     public static void main(String[] args) {
-        ConnectGame game = new ConnectGame(2);
-        Display display = new Display(game);
+        ConnectGame game = new ConnectGame(2, PLAYER_1);
+        ConnectDisplay display = new ConnectDisplay(game);
         display.start(args);
         System.out.println("here");
 //        game.playGame(0, false);

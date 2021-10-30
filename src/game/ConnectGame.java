@@ -12,7 +12,6 @@ import static game.Constants.Game.*;
  */
 
 public class ConnectGame {
-    // TODO: make private (can create getter methods)
     private static ConnectGame instance;
     private final int[][] board; // -1 - empty, 0 - player1, 1 - player2
     protected Player[] players;
@@ -23,18 +22,20 @@ public class ConnectGame {
      * Creates a new ConnectGame object with the given number of players
      * Remaining players are filled with AI
      *
-     * @param numPlayers should be between 0 and 2, inclusive
+     * @param numHumans should be between 0 and 2, inclusive
      */
-    public ConnectGame(int numPlayers) {
-        // numPlayers: 0 - 2 AI, 1 - 1 Human/AI, 2 - 2 Human
-        if (numPlayers > 2 || numPlayers < 0) {
-            throw new IllegalArgumentException("numPlayers " + numPlayers + "is outside range 0-2");
+    public ConnectGame(int numHumans, int startPlayer) {
+        // numHumans: 0 - 2 AI, 1 - 1 Human/AI, 2 - 2 Human
+        if (numHumans > 2 || numHumans < 0) {
+            throw new IllegalArgumentException("numHumans " + numHumans + "is outside range 0-2");
         }
+
+        currPlayer = startPlayer;
 
         // initialize correct number of Human/AI Players
         players = new Player[2];
         for (int i = 0; i < 2; i++) {
-            if (i < numPlayers) {
+            if (i < numHumans) {
                 players[i] = new HumanPlayer();
             } else {
                 players[i] = new AIPlayer();
@@ -61,42 +62,42 @@ public class ConnectGame {
         }
     }
 
-    /**
-     * Runs the main game loop
-     *
-     * @param startPlayer the starting player, either 0 or 1
-     */
-    public double playGame(int startPlayer) {
-        return playGame(startPlayer, true);
-    }
-
-    public double playGame(int startPlayer, boolean showBoard) {
-        // game loop
-        currPlayer = startPlayer;
-//        while (checkWin() < 0) {
-//            if (showBoard) {
-//                System.out.println();
-//                System.out.println("Player " + (currPlayer + 1) + "'s Turn");
-//                printBoard();
-//            }
-//            try {
-//                dropPiece(players[currPlayer].play(board, currPlayer), currPlayer);
-//            } catch (IllegalArgumentException e) {
-//                if (showBoard)
-//                    System.out.println("Player " + (currPlayer + 1) + " played an illegal move.");
-//                return 1 - currPlayer;
-//            }
-//            currPlayer = 1 - currPlayer;
-//        }
+//    /**
+//     * Runs the main game loop
+//     *
+//     * @param startPlayer the starting player, either 0 or 1
+//     */
+//    public double playGame(int startPlayer) {
+//        return playGame(startPlayer, true);
+//    }
 //
-//        if (showBoard) {
-//            System.out.println();
-//            System.out.println("Player " + (checkWin() + 1) + " Wins!!");
-//            printBoard();
-//        }
-//
-        return checkWin();
-    }
+//    public double playGame(int startPlayer, boolean showBoard) {
+//        // game loop
+//        currPlayer = startPlayer;
+////        while (checkWin() < 0) {
+////            if (showBoard) {
+////                System.out.println();
+////                System.out.println("Player " + (currPlayer + 1) + "'s Turn");
+////                printBoard();
+////            }
+////            try {
+////                dropPiece(players[currPlayer].play(board, currPlayer), currPlayer);
+////            } catch (IllegalArgumentException e) {
+////                if (showBoard)
+////                    System.out.println("Player " + (currPlayer + 1) + " played an illegal move.");
+////                return 1 - currPlayer;
+////            }
+////            currPlayer = 1 - currPlayer;
+////        }
+////
+////        if (showBoard) {
+////            System.out.println();
+////            System.out.println("Player " + (checkWin() + 1) + " Wins!!");
+////            printBoard();
+////        }
+////
+//        return checkWin();
+//    }
 
     /**
      * Getter method for board
@@ -131,37 +132,56 @@ public class ConnectGame {
         System.out.println("-");
     }
 
-    /**
-     * Adds piece to board given human input
-     * @param col - the column to drop the next piece
-     */
-    public void move(int col) {
-        if (!(players[currPlayer] instanceof HumanPlayer)) {
-            throw new RuntimeException("Move cannot be called when it's the AI Player's turn.");
+    public int getCurrPlayerNum() { return currPlayer; }
+
+    public Player getCurrPlayer() { return players[currPlayer]; }
+
+//    /**
+//     * Adds piece to board given human input
+//     * @param col - the column to drop the next piece
+//     */
+//    public void move(int col) {
+//        if (!(players[currPlayer] instanceof HumanPlayer)) {
+//            throw new RuntimeException("Move cannot be called when it's the AI Player's turn.");
+//        }
+//        dropPiece(col, currPlayer);
+//        currPlayer = 1 - currPlayer;
+//        if (!(players[currPlayer] instanceof HumanPlayer)) {
+//            dropPiece(players[currPlayer].play(board, currPlayer), currPlayer);
+//            currPlayer = 1 - currPlayer;
+//        }
+//    }
+
+    public void runAITurn() {
+        if (players[currPlayer] instanceof HumanPlayer) {
+            throw new RuntimeException("runAITurn was called when it is a Human's turn.");
         }
-        dropPiece(col, currPlayer);
+        dropPiece(players[currPlayer].play(board, currPlayer));
         currPlayer = 1 - currPlayer;
+    }
+
+    public void runHumanTurn(int col) {
         if (!(players[currPlayer] instanceof HumanPlayer)) {
-            dropPiece(players[currPlayer].play(board, currPlayer), currPlayer);
-            currPlayer = 1 - currPlayer;
+            throw new RuntimeException("runHumanTurn was called when it is an AI's turn.");
         }
+        dropPiece(col);
+        currPlayer = 1 - currPlayer;
     }
 
     /**
      * Drops a piece in the given column
      *
      * @param col    the column to drop the piece in
-     * @param player the player dropping the piece, either 0 or 1
      * @return the position at which the piece landed
      */
-    private int[] dropPiece(int col, int player) {
+    public int[] dropPiece(int col) {
         if (board[0][col] != EMPTY) {
             throw new IllegalArgumentException("Column " + (col + 1) + " is full.");
         }
         int i;
         for (i = ROWS - 1; i >= 0; i--) {
             if (board[i][col] == EMPTY) {
-                board[i][col] = player;
+                board[i][col] = currPlayer;
                 break;
             }
         }
