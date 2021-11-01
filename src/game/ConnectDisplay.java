@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionAdapter;
 
 import static game.Constants.GUI.*;
 import static game.Constants.Game.*;
@@ -149,27 +150,35 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
 
     private class Column extends GRect {
         public Column(int x, int y) {
-            super(x, y, SPACING, ROWS * (SPACING));
+            super(x, y, SPACING, ROWS * SPACING);
 
             setFillColor(Color.BLUE);
             setFilled(true);
 
-            addMouseListeners(new MouseHighlighter());
+            addMouseListeners(new MouseHighlighter(x, y, x+SPACING, y+ROWS*SPACING));
         }
 
+        private class MouseHighlighter extends MouseMotionAdapter {
 
-        private class MouseHighlighter extends MouseAdapter {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                setFillColor(new Color(51,153,255));
+            private int xLeft, xRight, yUp, yDown;
+
+            public MouseHighlighter(int xLeft, int yUp, int xRight, int yDown) {
+                super();
+
+                this.xLeft = xLeft;
+                this.xRight = xRight;
+                this.yUp = yUp;
+                this.yDown = yDown;
             }
 
             @Override
-            public void mouseExited(MouseEvent e) {
-                setFillColor(Color.BLUE);
+            public void mouseMoved(MouseEvent e) {
+                if (e.getX() > xLeft && e.getX() < xRight && e.getY() > yUp && e.getY() < yDown) {
+                    setFillColor(new Color(51,153,255));
+                } else {
+                    setFillColor(Color.BLUE);
+                }
             }
         }
-
-
     }
 }
