@@ -110,6 +110,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
     }
 
     private void updateWinText() {
+        text.setColor(Color.BLUE);
         if (game.checkWin() % 1 == 0.5) {
             text.setLabel("It's a tie!!");
         } else {
