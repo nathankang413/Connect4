@@ -18,7 +18,7 @@ import static game.Constants.Game.*;
 public class ConnectDisplay extends GraphicsProgram implements MouseListener {
     private Column[] frame;
     private Position[][] positions;
-    private TextDisplay text;
+    private TextDisplay title;
     private ConnectGame game;
 
     public ConnectDisplay(ConnectGame game) {
@@ -32,25 +32,29 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
     @Override
     public void run() {
 
-        text = new TextDisplay("", Color.RED);
+        title = new TextDisplay("", Color.RED);
         updatePlayerText();
-        add(text);
+//        add(title);
 
         // set up frame and positions for display
         frame = new Column[COLS];
         for (int i = 0; i < COLS; i++) {
             frame[i] = new Column(i * SPACING, TEXT_MARGIN);
-            add(frame[i]);
+//            add(frame[i]);
         }
 
         positions = new Position[ROWS][COLS];
         int[][] board = game.getBoard();
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
-                positions[i][j] = new Position(j * SPACING + MARGIN, i * SPACING + MARGIN + TEXT_MARGIN, board[i][j]);
-                add(positions[i][j]);
+                positions[i][j] = new Position(j * SPACING + POS_MARGIN, i * SPACING + POS_MARGIN + TEXT_MARGIN, board[i][j]);
+//                add(positions[i][j]);
             }
         }
+
+        // buttons
+        Button butt = new PlayButton(BOARD_WIDTH+BUTTON_PADDING, TEXT_MARGIN, "Play");
+//        add(butt);
 
         // if game starts with AI, play all AI moves as necessary
         runAILoop();
@@ -63,8 +67,9 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
         if (game.checkWin() == EMPTY) {
 
             // drop the Piece
-            int col = (mouseEvent.getX() - MARGIN) / SPACING;
-            game.runHumanTurn(col);
+            int col = (mouseEvent.getX() - POS_MARGIN) / SPACING;
+            if (col >= 0 && col < COLS)
+                game.runHumanTurn(col);
             updatePlayerText();
             updateScreen();
 
@@ -102,40 +107,94 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
     }
 
     private void updatePlayerText() {
-        text.setLabel("Player " + (game.getCurrPlayerNum()+1) + "'s Turn");
+        title.setLabel("Player " + (game.getCurrPlayerNum()+1) + "'s Turn");
         switch(game.getCurrPlayerNum()) {
-            case PLAYER_1 -> text.setColor(Color.YELLOW);
-            case PLAYER_2 -> text.setColor(Color.RED);
+            case PLAYER_1 -> title.setColor(Color.YELLOW);
+            case PLAYER_2 -> title.setColor(Color.RED);
         }
     }
 
     private void updateWinText() {
-        text.setColor(Color.BLUE);
+        title.setColor(Color.BLUE);
         if (game.checkWin() % 1 == 0.5) {
-            text.setLabel("It's a tie!!");
+            title.setLabel("It's a tie!!");
         } else {
             switch ((int) game.checkWin()) {
-                case PLAYER_1 -> text.setLabel("Player 1 Wins!");
-                case PLAYER_2 -> text.setLabel("Player 2 Wins!");
+                case PLAYER_1 -> title.setLabel("Player 1 Wins!");
+                case PLAYER_2 -> title.setLabel("Player 2 Wins!");
             }
         }
+    }
+
+    private abstract class Button extends GRect {
+
+        GLabel buttonText;
+
+        public Button (int x, int y, String str) {
+            super(x, y, BUTTON_WIDTH, BUTTON_HEIGHT);
+
+            setFillColor(Color.GREEN);
+            setFilled(true);
+            add(this);
+
+            buttonText = new GLabel(str, x+ BUTTON_PADDING, y+BUTTON_HEIGHT- BUTTON_PADDING);
+            buttonText.setFont(BUTTON_FONT);
+            add(buttonText);
+
+            addMouseListeners(new ButtonClick(x, x+BUTTON_WIDTH, y, y+BUTTON_HEIGHT));
+        }
+
+        protected abstract void buttonAction();
+
+        private class ButtonClick extends MouseAdapter {
+            int xLeft, xRight, yUp, yDown;
+
+            public ButtonClick(int xLeft, int xRight, int yUp, int yDown) {
+                this.xLeft = xLeft;
+                this.xRight = xRight;
+                this.yUp = yUp;
+                this.yDown = yDown;
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (e.getX() > xLeft && e.getX() < xRight && e.getY() > yUp && e.getY() < yDown)
+                    buttonAction();
+            }
+        }
+    }
+
+    private class PlayButton extends Button {
+
+        public PlayButton(int x, int y, String str) {
+            super(x, y, str);
+        }
+
+        protected void buttonAction() {
+            // TODO
+            System.out.println("yep");
+        }
+
     }
 
     private class TextDisplay extends GLabel {
 
         public TextDisplay(String str, Color color) {
             super(str, TEXT_PADDING, TEXT_MARGIN-TEXT_PADDING);
-            setFont(FONT);
+            setFont(TITLE_FONT);
             setColor(color);
+            add(this);
         }
 
     }
 
     private class Position extends GOval {
         public Position(int x, int y, int type) {
-            super(x, y, DIAMETER, DIAMETER);
+            super(x, y, POS_DIAMETER, POS_DIAMETER);
 
             changeColor(type);
+
+            add(this);
         }
 
         public void changeColor(int type) {
@@ -157,11 +216,12 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
             setFilled(true);
 
             addMouseListeners(new MouseHighlighter(x, y, x+SPACING, y+ROWS*SPACING));
+            add(this);
         }
 
         private class MouseHighlighter extends MouseMotionAdapter {
 
-            private int xLeft, xRight, yUp, yDown;
+            private final int xLeft, xRight, yUp, yDown;
 
             public MouseHighlighter(int xLeft, int yUp, int xRight, int yDown) {
                 super();
