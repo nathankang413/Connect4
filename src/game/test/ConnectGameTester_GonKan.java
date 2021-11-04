@@ -11,8 +11,8 @@ import static game.Constants.Game.*;
  */
 class ConnectGameTester_GonKan {
     public static void main(String[] args) {
-        ConnectGame game = new ConnectGame(2, PLAYER_1);
-        ConnectDisplay display = new ConnectDisplay(game);
+//        ConnectGame game = new ConnectGame(2, PLAYER_1);
+        ConnectDisplay display = new ConnectDisplay();
         display.start(args);
         System.out.println("here");
 //        game.playGame(0, false);

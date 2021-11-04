@@ -21,8 +21,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
     private TextDisplay title;
     private ConnectGame game;
 
-    public ConnectDisplay(ConnectGame game) {
-        this.game = game;
+    public ConnectDisplay() {
         addMouseListeners();
     }
 
@@ -32,39 +31,28 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
     @Override
     public void run() {
 
-        title = new TextDisplay("", Color.RED);
-        updatePlayerText();
-//        add(title);
+        title = new TextDisplay("Connect 4", Color.BLUE);
 
         // set up frame and positions for display
         frame = new Column[COLS];
         for (int i = 0; i < COLS; i++) {
             frame[i] = new Column(i * SPACING, TEXT_MARGIN);
-//            add(frame[i]);
         }
 
         positions = new Position[ROWS][COLS];
-        int[][] board = game.getBoard();
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
-                positions[i][j] = new Position(j * SPACING + POS_MARGIN, i * SPACING + POS_MARGIN + TEXT_MARGIN, board[i][j]);
-//                add(positions[i][j]);
+                positions[i][j] = new Position(j * SPACING + POS_MARGIN, i * SPACING + POS_MARGIN + TEXT_MARGIN, EMPTY);
             }
         }
 
         // buttons
         Button butt = new PlayButton(BOARD_WIDTH+BUTTON_PADDING, TEXT_MARGIN, "Play");
-//        add(butt);
-
-        // if game starts with AI, play all AI moves as necessary
-        runAILoop();
-
-        System.out.println("Completed initiation");
     }
 
     @Override
     public void mousePressed(MouseEvent mouseEvent) {
-        if (game.checkWin() == EMPTY) {
+        if (game != null && game.checkWin() == EMPTY) {
 
             // drop the Piece
             int col = (mouseEvent.getX() - POS_MARGIN) / SPACING;
@@ -171,8 +159,9 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
         }
 
         protected void buttonAction() {
-            // TODO
-            System.out.println("yep");
+            game = new ConnectGame(2, 1);
+            updateScreen();
+            updatePlayerText();
         }
 
     }
