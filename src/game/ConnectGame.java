@@ -301,7 +301,7 @@ public class ConnectGame {
 
                 fullHistory.put(moveString, totalCount);
             }
-        } catch (Exception e) {
+        } catch (FileNotFoundException e) {
             System.out.println(e);
             throw new IllegalArgumentException("Missing or invalid qualities.txt file");
         }
