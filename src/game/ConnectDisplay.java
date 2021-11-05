@@ -130,6 +130,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
     private class PlayButton extends Button {
         public PlayButton(int x, int y, String str) {
             super(x, y, str);
+        }
 
         private int numPlayers;
 
