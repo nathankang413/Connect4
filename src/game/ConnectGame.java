@@ -10,7 +10,7 @@ import java.io.PrintWriter;
 import java.util.*;
 
 import static game.Constants.Game.*;
-import static game.Constants.QLearn.*;
+import static game.Constants.QLearn.QUALITIES_FILE;
 
 /**
  * A Connect 4 Game
@@ -110,6 +110,7 @@ public class ConnectGame {
 
     /**
      * Getter method for board
+     *
      * @return board
      */
     public int[][] getBoard() {
@@ -141,9 +142,13 @@ public class ConnectGame {
         System.out.println("-");
     }
 
-    public int getCurrPlayerNum() { return currPlayer; }
+    public int getCurrPlayerNum() {
+        return currPlayer;
+    }
 
-    public Player getCurrPlayer() { return players[currPlayer]; }
+    public Player getCurrPlayer() {
+        return players[currPlayer];
+    }
 
 //    /**
 //     * Adds piece to board given human input
@@ -184,7 +189,7 @@ public class ConnectGame {
     /**
      * Drops a piece in the given column
      *
-     * @param col    the column to drop the piece in
+     * @param col the column to drop the piece in
      * @return the position at which the piece landed  -TODO: remove return?
      */
     public int[] dropPiece(int col) {
@@ -258,7 +263,7 @@ public class ConnectGame {
 
         // iterate backwards through currHistory, alternate winning and losing qualities
         // TODO: get rid of magic numbers
-        for (int i=currHistory.size()-1; i>=0; i--) {
+        for (int i = currHistory.size() - 1; i >= 0; i--) {
             if (tie) {
                 addToHistory(currHistory.get(i).toString(), 0.0);
             } else if (winner) {
@@ -276,10 +281,10 @@ public class ConnectGame {
         if (fullHistory.containsKey(key)) {
             Double[] totalCount = fullHistory.get(key);
             totalCount[0] += value;
-            totalCount[1] ++;
+            totalCount[1]++;
             fullHistory.put(key, totalCount);
         } else {
-            fullHistory.put(key, new Double[] {1.0, value});
+            fullHistory.put(key, new Double[]{1.0, value});
         }
     }
 
@@ -308,10 +313,10 @@ public class ConnectGame {
         try {
             PrintWriter fileWrite = new PrintWriter(QUALITIES_FILE);
             TreeMap<String, Double[]> sortedHistory = new TreeMap<>();
-            for (Map.Entry<String, Double[]> entry: fullHistory.entrySet()) {
+            for (Map.Entry<String, Double[]> entry : fullHistory.entrySet()) {
                 sortedHistory.put(entry.getKey(), entry.getValue());
             }
-            for (Map.Entry<String, Double[]> entry: sortedHistory.entrySet()) {
+            for (Map.Entry<String, Double[]> entry : sortedHistory.entrySet()) {
                 Double[] totalCount = entry.getValue();
                 fileWrite.println(entry.getKey() + ":" + totalCount[0] + ":" + totalCount[1]);
             }
