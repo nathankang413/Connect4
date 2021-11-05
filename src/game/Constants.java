@@ -21,7 +21,7 @@ public class Constants {
         public static final String TITLE_FONT = "Arial-bold-100";
 
         public static final int BUTTON_HEIGHT = 50;
-        public static final int BUTTON_WIDTH = 160;
+        public static final int BUTTON_WIDTH = 200;
         public static final int BUTTON_PADDING = 10;
         public static final String BUTTON_FONT = "Arial-bold-40";
     }

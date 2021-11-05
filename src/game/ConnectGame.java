@@ -4,7 +4,16 @@ import game.players.AIPlayer;
 import game.players.HumanPlayer;
 import game.players.Player;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
 import static game.Constants.Game.*;
+import static game.Constants.QLearn.*;
 
 /**
  * A Connect 4 Game
@@ -16,7 +25,8 @@ public class ConnectGame {
     private final int[][] board; // -1 - empty, 0 - player1, 1 - player2
     protected Player[] players;
     private int currPlayer;
-
+    private ArrayList<Move> currHistory;
+    private Map<String, Double[]> fullHistory;
 
     /**
      * Creates a new ConnectGame object with the given number of players
@@ -48,6 +58,8 @@ public class ConnectGame {
                 board[i][j] = EMPTY;
             }
         }
+
+        currHistory = new ArrayList<>();
     }
 
     protected ConnectGame(Player[] players) {
@@ -152,11 +164,14 @@ public class ConnectGame {
 //        }
 //    }
 
+    // TODO: condense AITurn and HumanTurn into 1 method?
     public void runAITurn() {
         if (players[currPlayer] instanceof HumanPlayer) {
             throw new RuntimeException("runAITurn was called when it is a Human's turn.");
         }
-        dropPiece(players[currPlayer].play(board, currPlayer));
+        int col = players[currPlayer].play(board, currPlayer);
+        currHistory.add(new Move(boardToString(), col));
+        dropPiece(col);
         currPlayer = 1 - currPlayer;
     }
 
@@ -164,6 +179,7 @@ public class ConnectGame {
         if (!(players[currPlayer] instanceof HumanPlayer)) {
             throw new RuntimeException("runHumanTurn was called when it is an AI's turn.");
         }
+        currHistory.add(new Move(boardToString(), col));
         dropPiece(col);
         currPlayer = 1 - currPlayer;
     }
@@ -172,7 +188,7 @@ public class ConnectGame {
      * Drops a piece in the given column
      *
      * @param col    the column to drop the piece in
-     * @return the position at which the piece landed
+     * @return the position at which the piece landed  -TODO: remove return?
      */
     public int[] dropPiece(int col) {
         if (board[0][col] != EMPTY) {
@@ -236,4 +252,89 @@ public class ConnectGame {
 
         return -1;
     }
+
+    public void updateHistory() {
+
+        readHistory();
+
+        boolean tie = checkWin() == 0.5;
+        boolean winner = true;
+
+        // iterate backwards through currHistory, alternate winning and losing qualities
+        for (int i=currHistory.size()-1; i>=0; i--) {
+            if (tie) {
+                addToHistory(currHistory.get(i).toString(), 0.0);
+            } else if (winner) {
+                addToHistory(currHistory.get(i).toString(), 1.0);
+            } else {
+                addToHistory(currHistory.get(i).toString(), -1.0);
+            }
+            winner = !winner;
+        }
+
+        writeHistory();
+    }
+
+    private void addToHistory(String key, Double value) {
+        if (fullHistory.containsKey(key)) {
+            Double[] totalCount = fullHistory.get(key);
+            totalCount[0] += value;
+            totalCount[1] ++;
+            fullHistory.put(key, totalCount);
+        } else {
+            fullHistory.put(key, new Double[] {1.0, value});
+        }
+    }
+
+    private void readHistory() {
+        fullHistory = new HashMap<>();
+
+        try {
+            Scanner fileRead = new Scanner(new File(QUALITIES_FILE));
+
+            // Read file line by line - insert into movesMap
+            while (fileRead.hasNextLine()) {
+                String readLine = fileRead.nextLine();
+                String[] splitString = readLine.split(":");
+                String moveString = splitString[0];
+                Double[] totalCount = {Double.parseDouble(splitString[1]), Double.parseDouble(splitString[2])};
+
+                fullHistory.put(moveString, totalCount);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            throw new IllegalArgumentException("Missing or invalid qualities.txt file");
+        }
+    }
+
+    private void writeHistory() {
+        try {
+            PrintWriter fileWrite = new PrintWriter(QUALITIES_FILE);
+            for (Map.Entry<String, Double[]> entry: fullHistory.entrySet()) {
+                Double[] totalCount = entry.getValue();
+                fileWrite.println(entry.getKey() + ":" + totalCount[0] + ":" + totalCount[1]);
+            }
+
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
+        }
+    }
+
+    private String boardToString() {
+        StringBuilder str = new StringBuilder();
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                str.append(board[i][j] + 1);
+            }
+        }
+        return str.toString();
+    }
+
+    private record Move(String state, int move) {
+        public String toString() {
+            return state + "-" + move;
+        }
+    }
+
 }
+
