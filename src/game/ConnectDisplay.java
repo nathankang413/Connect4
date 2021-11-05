@@ -2,27 +2,36 @@ package game;
 
 import acm.graphics.GOval;
 import acm.graphics.GRect;
-import acm.graphics.GLabel;
 import acm.program.GraphicsProgram;
 import game.players.HumanPlayer;
 
 import java.awt.*;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
+import game.util.Button;
+import game.util.Slot;
+import game.util.TextDisplay;
 
 import static game.Constants.GUI.*;
 import static game.Constants.Game.*;
 
 public class ConnectDisplay extends GraphicsProgram implements MouseListener {
     private Column[] frame;
-    private Position[][] positions;
+    private Slot[][] positions;
     private TextDisplay title;
     private ConnectGame game;
+    private static ConnectDisplay instance;
 
-    public ConnectDisplay() {
+    private ConnectDisplay() {
         addMouseListeners();
+    }
+
+    public static ConnectDisplay getInstance() {
+        if (instance == null) {
+            instance = new ConnectDisplay();
+        }
+        return instance;
     }
 
     /**
@@ -30,7 +39,6 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
      */
     @Override
     public void run() {
-
         title = new TextDisplay("Connect 4", Color.BLUE);
 
         // set up frame and positions for display
@@ -39,10 +47,10 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
             frame[i] = new Column(i * SPACING, TEXT_MARGIN);
         }
 
-        positions = new Position[ROWS][COLS];
+        positions = new Slot[ROWS][COLS];
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
-                positions[i][j] = new Position(j * SPACING + POS_MARGIN, i * SPACING + POS_MARGIN + TEXT_MARGIN, EMPTY);
+                positions[i][j] = new Slot(j * SPACING + POS_MARGIN, i * SPACING + POS_MARGIN + TEXT_MARGIN, EMPTY);
             }
         }
 
@@ -114,46 +122,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
         }
     }
 
-    private abstract class Button extends GRect {
-
-        GLabel buttonText;
-
-        public Button (int x, int y, String str) {
-            super(x, y, BUTTON_WIDTH, BUTTON_HEIGHT);
-
-            setFillColor(Color.GREEN);
-            setFilled(true);
-            add(this);
-
-            buttonText = new GLabel(str, x+ BUTTON_PADDING, y+BUTTON_HEIGHT- BUTTON_PADDING);
-            buttonText.setFont(BUTTON_FONT);
-            add(buttonText);
-
-            addMouseListeners(new ButtonClick(x, x+BUTTON_WIDTH, y, y+BUTTON_HEIGHT));
-        }
-
-        protected abstract void buttonAction();
-
-        private class ButtonClick extends MouseAdapter {
-            int xLeft, xRight, yUp, yDown;
-
-            public ButtonClick(int xLeft, int xRight, int yUp, int yDown) {
-                this.xLeft = xLeft;
-                this.xRight = xRight;
-                this.yUp = yUp;
-                this.yDown = yDown;
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if (e.getX() > xLeft && e.getX() < xRight && e.getY() > yUp && e.getY() < yDown)
-                    buttonAction();
-            }
-        }
-    }
-
     private class PlayButton extends Button {
-
         public PlayButton(int x, int y, String str) {
             super(x, y, str);
         }
@@ -162,38 +131,6 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
             game = new ConnectGame(2, 1);
             updateScreen();
             updatePlayerText();
-        }
-
-    }
-
-    private class TextDisplay extends GLabel {
-
-        public TextDisplay(String str, Color color) {
-            super(str, TEXT_PADDING, TEXT_MARGIN-TEXT_PADDING);
-            setFont(TITLE_FONT);
-            setColor(color);
-            add(this);
-        }
-
-    }
-
-    private class Position extends GOval {
-        public Position(int x, int y, int type) {
-            super(x, y, POS_DIAMETER, POS_DIAMETER);
-
-            changeColor(type);
-
-            add(this);
-        }
-
-        public void changeColor(int type) {
-            switch (type) {
-                case EMPTY -> setFillColor(Color.LIGHT_GRAY);
-                case PLAYER_1 -> setFillColor(Color.YELLOW);
-                case PLAYER_2 -> setFillColor(Color.RED);
-            }
-
-            setFilled(true);
         }
     }
 
@@ -209,7 +146,6 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
         }
 
         private class MouseHighlighter extends MouseMotionAdapter {
-
             private final int xLeft, xRight, yUp, yDown;
 
             public MouseHighlighter(int xLeft, int yUp, int xRight, int yDown) {
