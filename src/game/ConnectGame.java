@@ -142,11 +142,11 @@ public class ConnectGame {
         System.out.println("-");
     }
 
-    public int getCurrPlayerNum() {
+    public int currentPlayerNum() {
         return currPlayer;
     }
 
-    public Player getCurrPlayer() {
+    public Player currentPlayer() {
         return players[currPlayer];
     }
 
@@ -190,9 +190,8 @@ public class ConnectGame {
      * Drops a piece in the given column
      *
      * @param col the column to drop the piece in
-     * @return the position at which the piece landed  -TODO: remove return?
      */
-    public int[] dropPiece(int col) {
+    public void dropPiece(int col) {
         if (board[0][col] != EMPTY) {
             throw new IllegalArgumentException("Column " + (col + 1) + " is full.");
         }
@@ -203,7 +202,6 @@ public class ConnectGame {
                 break;
             }
         }
-        return new int[]{i, col};
     }
 
     /**
@@ -341,6 +339,5 @@ public class ConnectGame {
             return state + "-" + move;
         }
     }
-
 }
 

@@ -82,7 +82,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
     }
 
     private void runAILoop() {
-        while (game.checkWin() == EMPTY && !(game.getCurrPlayer() instanceof HumanPlayer)) {
+        while (game.checkWin() == EMPTY && !(game.currentPlayer() instanceof HumanPlayer)) {
             game.runAITurn();
             pause(100);
             updateScreen();
@@ -108,8 +108,8 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
     }
 
     private void updatePlayerText() {
-        title.setLabel("Player " + (game.getCurrPlayerNum()+1) + "'s Turn");
-        switch(game.getCurrPlayerNum()) {
+        title.setLabel("Player " + (game.currentPlayerNum()+1) + "'s Turn");
+        switch(game.currentPlayerNum()) {
             case PLAYER_1 -> title.setColor(Color.YELLOW);
             case PLAYER_2 -> title.setColor(Color.RED);
         }
