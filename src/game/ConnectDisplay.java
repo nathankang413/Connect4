@@ -1,6 +1,5 @@
 package game;
 
-import acm.graphics.GOval;
 import acm.graphics.GRect;
 import acm.program.GraphicsProgram;
 import game.players.HumanPlayer;
@@ -55,7 +54,11 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
         }
 
         // buttons
-        Button butt = new PlayButton(BOARD_WIDTH+BUTTON_PADDING, TEXT_MARGIN, "Play");
+        for (int i=0; i<=2; i++) {
+            new PlayButton(BOARD_WIDTH + BUTTON_PADDING, TEXT_MARGIN + i*(BUTTON_HEIGHT+BUTTON_PADDING), 2-i);
+        }
+
+//        Button butt = new PlayButton(BOARD_WIDTH+BUTTON_PADDING, TEXT_MARGIN, 1);
     }
 
     @Override
@@ -74,24 +77,26 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
 
             if (game.checkWin() != EMPTY)
                 updateWinText();
+                game.updateHistory();
         }
-
-        /*
-        TODO: for some reason it only repaints after the entire mousePressed method finishes,
-        TODO: so pauses from the AI occur without preceding changes in display
-         */
     }
 
     private void runAILoop() {
         while (game.checkWin() == EMPTY && !(game.getCurrPlayer() instanceof HumanPlayer)) {
             game.runAITurn();
-            pause(500);
+            pause(100);
             updateScreen();
             updatePlayerText();
         }
 
         if (game.checkWin() != EMPTY)
             updateWinText();
+
+        /*
+        TODO: for some reason it only repaints after the entire mousePressed method finishes,
+        TODO: so pauses from the AI occur without preceding changes in display
+        TODO: especially annoying for AI v AI games
+         */
     }
 
     private void updateScreen() {
@@ -125,12 +130,20 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
     private class PlayButton extends Button {
         public PlayButton(int x, int y, String str) {
             super(x, y, str);
+
+        private int numPlayers;
+
+        public PlayButton(int x, int y, int numPlayers) {
+            super(x, y, numPlayers + " Players");
+
+            this.numPlayers = numPlayers;
         }
 
         protected void buttonAction() {
-            game = new ConnectGame(2, 1);
+            game = new ConnectGame(numPlayers, (int) (Math.random() + 0.5));
             updateScreen();
             updatePlayerText();
+            runAILoop();
         }
     }
 
