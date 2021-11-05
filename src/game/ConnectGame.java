@@ -7,10 +7,7 @@ import game.players.Player;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 import static game.Constants.Game.*;
 import static game.Constants.QLearn.*;
@@ -254,13 +251,13 @@ public class ConnectGame {
     }
 
     public void updateHistory() {
-
         readHistory();
 
         boolean tie = checkWin() == 0.5;
         boolean winner = true;
 
         // iterate backwards through currHistory, alternate winning and losing qualities
+        // TODO: get rid of magic numbers
         for (int i=currHistory.size()-1; i>=0; i--) {
             if (tie) {
                 addToHistory(currHistory.get(i).toString(), 0.0);
@@ -310,7 +307,11 @@ public class ConnectGame {
     private void writeHistory() {
         try {
             PrintWriter fileWrite = new PrintWriter(QUALITIES_FILE);
+            TreeMap<String, Double[]> sortedHistory = new TreeMap<>();
             for (Map.Entry<String, Double[]> entry: fullHistory.entrySet()) {
+                sortedHistory.put(entry.getKey(), entry.getValue());
+            }
+            for (Map.Entry<String, Double[]> entry: sortedHistory.entrySet()) {
                 Double[] totalCount = entry.getValue();
                 fileWrite.println(entry.getKey() + ":" + totalCount[0] + ":" + totalCount[1]);
             }
