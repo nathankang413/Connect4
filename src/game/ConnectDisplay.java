@@ -75,9 +75,10 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
             // if next player is AI
             runAILoop();
 
-            if (game.checkWin() != EMPTY)
+            if (game.checkWin() != EMPTY) {
                 updateWinText();
                 game.updateHistory();
+            }
         }
     }
 
