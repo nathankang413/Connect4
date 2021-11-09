@@ -1,27 +1,25 @@
 package game;
 
-import acm.graphics.GRect;
 import acm.program.GraphicsProgram;
 import game.players.HumanPlayer;
-
-import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionAdapter;
 import game.util.Button;
 import game.util.Column;
 import game.util.Slot;
 import game.util.TextDisplay;
 
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import static game.Constants.GUI.*;
 import static game.Constants.Game.*;
 
 public class ConnectDisplay extends GraphicsProgram implements MouseListener {
+    private static ConnectDisplay instance;
     private Column[] frame;
     private Slot[][] positions;
     private TextDisplay title;
     private ConnectGame game;
-    private static ConnectDisplay instance;
 
     private ConnectDisplay() {
         addMouseListeners();
@@ -43,8 +41,8 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
 
         // set up frame and positions for display
         frame = new Column[COLS];
-        for (int i = 0; i < COLS; i++) {
-            frame[i] = new Column(i * SPACING, TEXT_MARGIN);
+        for (int j = 0; j < COLS; j++) {
+            frame[j] = new Column(j * SPACING, TEXT_MARGIN);
         }
 
         positions = new Slot[ROWS][COLS];
@@ -55,11 +53,9 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
         }
 
         // buttons
-        for (int i=0; i<=2; i++) {
-            new PlayButton(BOARD_WIDTH + BUTTON_PADDING, TEXT_MARGIN + i*(BUTTON_HEIGHT+BUTTON_PADDING), 2-i);
+        for (int i = 0; i <= 2; i++) {
+            new PlayButton(BOARD_WIDTH + BUTTON_PADDING, TEXT_MARGIN + i * (BUTTON_HEIGHT + BUTTON_PADDING), 2 - i);
         }
-
-//        Button butt = new PlayButton(BOARD_WIDTH+BUTTON_PADDING, TEXT_MARGIN, 1);
     }
 
     @Override
@@ -110,8 +106,8 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
     }
 
     private void updatePlayerText() {
-        title.setLabel("Player " + (game.currentPlayerNum()+1) + "'s Turn");
-        switch(game.currentPlayerNum()) {
+        title.setLabel("Player " + (game.currentPlayerNum() + 1) + "'s Turn");
+        switch (game.currentPlayerNum()) {
             case PLAYER_1 -> title.setColor(Color.YELLOW);
             case PLAYER_2 -> title.setColor(Color.RED);
         }
@@ -130,11 +126,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
     }
 
     private class PlayButton extends Button {
-        public PlayButton(int x, int y, String str) {
-            super(x, y, str);
-        }
-
-        private int numPlayers;
+        private final int numPlayers;
 
         public PlayButton(int x, int y, int numPlayers) {
             super(x, y, numPlayers + " Players");
