@@ -25,7 +25,7 @@ public abstract class Button extends GRect {
         buttonText.setFont(BUTTON_FONT);
         display.add(buttonText);
 
-        display.addMouseListeners(new MouseAdapter() {
+        addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 if (
