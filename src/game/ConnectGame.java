@@ -254,6 +254,8 @@ public class ConnectGame {
     }
 
     public void updateHistory() {
+        System.out.println("updating");
+
         readHistory();
 
         boolean tie = checkWin() == 0.5;
@@ -302,7 +304,7 @@ public class ConnectGame {
                 fullHistory.put(moveString, totalCount);
             }
         } catch (FileNotFoundException e) {
-            System.out.println(e);
+            System.out.println("Missing or invalid qualities.txt file: " + e);
             throw new IllegalArgumentException("Missing or invalid qualities.txt file");
         }
     }
@@ -310,15 +312,13 @@ public class ConnectGame {
     private void writeHistory() {
         try {
             PrintWriter fileWrite = new PrintWriter(QUALITIES_FILE);
-            TreeMap<String, Double[]> sortedHistory = new TreeMap<>();
-            for (Map.Entry<String, Double[]> entry : fullHistory.entrySet()) {
-                sortedHistory.put(entry.getKey(), entry.getValue());
-            }
+            TreeMap<String, Double[]> sortedHistory = new TreeMap<>(fullHistory);
             for (Map.Entry<String, Double[]> entry : sortedHistory.entrySet()) {
                 Double[] totalCount = entry.getValue();
                 fileWrite.println(entry.getKey() + ":" + totalCount[0] + ":" + totalCount[1]);
             }
-
+            fileWrite.flush();
+            fileWrite.close();
         } catch (FileNotFoundException e) {
             System.out.println("File not found");
         }

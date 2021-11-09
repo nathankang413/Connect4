@@ -13,11 +13,11 @@ import static game.Constants.GUI.*;
 public abstract class Button extends GRect {
     GLabel buttonText;
 
-    public Button(int x, int y, String str) {
+    public Button(int x, int y, String str, Color color) {
         super(x, y, BUTTON_WIDTH, BUTTON_HEIGHT);
 
         ConnectDisplay display = ConnectDisplay.getInstance();
-        setFillColor(Color.GREEN);
+        setFillColor(color);
         setFilled(true);
         display.add(this);
 

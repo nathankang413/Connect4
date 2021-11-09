@@ -40,9 +40,8 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
         title = new TextDisplay("Connect 4", Color.BLUE);
 
         // set up frame and positions for display
-        frame = new Column[COLS];
         for (int j = 0; j < COLS; j++) {
-            frame[j] = new Column(j * SPACING, TEXT_MARGIN);
+            new Column(j * SPACING, TEXT_MARGIN);
         }
 
         positions = new Slot[ROWS][COLS];
@@ -56,6 +55,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
         for (int i = 0; i <= 2; i++) {
             new PlayButton(BOARD_WIDTH + BUTTON_PADDING, TEXT_MARGIN + i * (BUTTON_HEIGHT + BUTTON_PADDING), 2 - i);
         }
+        new DatabaseButton(BOARD_WIDTH + BUTTON_PADDING, TEXT_MARGIN + 3*(BUTTON_HEIGHT + BUTTON_PADDING));
     }
 
     @Override
@@ -129,7 +129,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
         private final int numPlayers;
 
         public PlayButton(int x, int y, int numPlayers) {
-            super(x, y, numPlayers + " Players");
+            super(x, y, numPlayers + " Players", Color.GREEN);
 
             this.numPlayers = numPlayers;
         }
@@ -139,6 +139,17 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
             updateScreen();
             updatePlayerText();
             runAILoop();
+        }
+    }
+
+    private class DatabaseButton extends Button {
+
+        public DatabaseButton(int x, int y) {
+            super (x, y, "", Color.CYAN);
+        }
+
+        protected void buttonAction() {
+
         }
     }
 }

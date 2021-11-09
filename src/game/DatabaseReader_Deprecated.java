@@ -9,7 +9,7 @@ import java.util.TreeMap;
 import static game.Constants.Game.*;
 import static game.Constants.QLearn.*;
 
-public class DatabaseReader {
+public class DatabaseReader_Deprecated {
     private static TreeMap<String, Double[]> movesMap;
     private static int[][] board;
     private static ArrayList<String> path;
