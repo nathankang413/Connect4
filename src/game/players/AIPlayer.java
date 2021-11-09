@@ -51,7 +51,6 @@ public abstract class AIPlayer implements Player {
                         break;
                     }
                     if (count >= WIN_COND) {
-                        // System.out.println("found win");
                         return 4;
                     }
                 }

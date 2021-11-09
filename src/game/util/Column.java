@@ -1,12 +1,11 @@
 package game.util;
 
-import acm.graphics.GPoint;
 import acm.graphics.GRect;
 import game.ConnectDisplay;
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 
 import static game.Constants.GUI.COLUMN_HIGHLIGHT;
 import static game.Constants.GUI.SPACING;
@@ -19,14 +18,15 @@ public class Column extends GRect {
         ConnectDisplay display = ConnectDisplay.getInstance();
         setFillColor(Color.BLUE);
         setFilled(true);
-        display.addMouseListeners(new MouseMotionAdapter() {
+        addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseMoved(MouseEvent e) {
-                if (getBounds().contains(new GPoint(e.getX(), e.getY()))) {
-                    setFillColor(COLUMN_HIGHLIGHT);
-                } else {
-                    setFillColor(Color.BLUE);
-                }
+            public void mouseEntered(MouseEvent e) {
+                setFillColor(COLUMN_HIGHLIGHT);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                setFillColor(Color.BLUE);
             }
         });
         display.add(this);
