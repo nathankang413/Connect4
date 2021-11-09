@@ -2,49 +2,7 @@ package game.players;
 
 import static game.Constants.Game.*;
 
-/**
- * An AI Player which determines moves algorithmically
- */
-public class AIPlayer implements Player {
-
-    /**
-     * Plays one turn of connect for
-     *
-     * @param board the game board
-     * @return the column to drop the piece, zero-indexed
-     */
-    public int play(int[][] board, int playerNum) {
-
-        // find the drops which will make the biggest connect
-        int[] bestDrops = new int[7];
-        int numDrops = 0;
-        int bestConnect = 0;
-
-        // if it can win in 1 move, play that move; 
-        // otherwise, store the best consecutive made with any move
-        for (int i = 0; i < board[0].length; i++) {
-            int connect = checkDrop(board, playerNum, i);
-            if (connect == 4) return i;
-            else if (connect > bestConnect) {
-                bestConnect = connect;
-                numDrops = 1;
-                bestDrops[0] = i;
-            } else if (connect == bestConnect) {
-                bestDrops[numDrops++] = i;
-            }
-        }
-
-        // if the opponent can win in one, prevent it
-        for (int i = 0; i < board[0].length; i++) {
-            if (checkDrop(board, 1 - playerNum, i) == 4) {
-                return i;
-            }
-        }
-
-        int randInd = (int) (Math.random() * numDrops);
-        return bestDrops[randInd];
-    }
-
+public abstract class AIPlayer implements Player {
     /**
      * TODO
      *
@@ -54,7 +12,6 @@ public class AIPlayer implements Player {
      * @return
      */
     protected int checkDrop(int[][] board, int playerNum, int col) {
-
         // if piece would be out of bounds
         if (board[0][col] > -1) return 0;
 
@@ -107,6 +64,5 @@ public class AIPlayer implements Player {
         }
 
         return maxConnect;
-
     }
 }

@@ -1,6 +1,6 @@
 package game;
 
-import game.players.AIPlayer;
+import game.players.AlgorithmicPlayer;
 import game.players.HumanPlayer;
 import game.players.Player;
 
@@ -45,7 +45,7 @@ public class ConnectGame {
             if (i < numHumans) {
                 players[i] = new HumanPlayer();
             } else {
-                players[i] = new AIPlayer();
+                players[i] = new AlgorithmicPlayer();
             }
         }
         // initialize empty board

@@ -1,5 +1,7 @@
 package game;
 
+import java.awt.*;
+
 public class Constants {
     public static class Game {
         public static final int ROWS = 6;
@@ -24,6 +26,8 @@ public class Constants {
         public static final int BUTTON_WIDTH = 200;
         public static final int BUTTON_PADDING = 10;
         public static final String BUTTON_FONT = "Arial-bold-40";
+
+        public static final Color COLUMN_HIGHLIGHT = new Color(51,153,255);
     }
 
     public static class QLearn {

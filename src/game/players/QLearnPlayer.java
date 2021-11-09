@@ -110,6 +110,7 @@ public class QLearnPlayer extends AIPlayer {
             Double[] totalCount = entry.getValue();
             fileWrite.println(entry.getKey() + ":" + totalCount[0] + ":" + totalCount[1]);
         }
+        fileWrite.flush();
         fileWrite.close();
     }
 

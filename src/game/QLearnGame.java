@@ -1,11 +1,9 @@
 package game;
 
-import game.players.AIPlayer;
+import game.players.AlgorithmicPlayer;
 import game.players.HumanPlayer;
 import game.players.Player;
 import game.players.QLearnPlayer;
-
-import java.io.IOException;
 
 public class QLearnGame extends ConnectGame {
 
@@ -14,7 +12,7 @@ public class QLearnGame extends ConnectGame {
     }
 
     public QLearnGame(boolean human) {
-        super(new Player[]{human ? new HumanPlayer() : new AIPlayer(), new QLearnPlayer()});
+        super(new Player[]{human ? new HumanPlayer() : new AlgorithmicPlayer(), new QLearnPlayer()});
     }
 
 //    public double playGame(int startPlayer) {

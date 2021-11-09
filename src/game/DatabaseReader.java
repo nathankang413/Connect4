@@ -16,7 +16,6 @@ public class DatabaseReader {
     private static Scanner user;
 
     public static void main(String[] args) throws IOException {
-
         // read the file
         movesMap = new TreeMap<>();
         readFile();
@@ -135,15 +134,9 @@ public class DatabaseReader {
 
                 // show the correct piece
                 switch (board[i][j]) {
-                    case -1:
-                        System.out.print(" ");
-                        break;
-                    case 0:
-                        System.out.print("X");
-                        break;
-                    case 1:
-                        System.out.print("O");
-                        break;
+                    case -1 -> System.out.print(" ");
+                    case 0 -> System.out.print("X");
+                    case 1 -> System.out.print("O");
                 }
                 System.out.print("|");
 

@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
 import game.util.Button;
+import game.util.Column;
 import game.util.Slot;
 import game.util.TextDisplay;
 
@@ -146,40 +147,6 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
             updateScreen();
             updatePlayerText();
             runAILoop();
-        }
-    }
-
-    private class Column extends GRect {
-        public Column(int x, int y) {
-            super(x, y, SPACING, ROWS * SPACING);
-
-            setFillColor(Color.BLUE);
-            setFilled(true);
-
-            addMouseListeners(new MouseHighlighter(x, y, x+SPACING, y+ROWS*SPACING));
-            add(this);
-        }
-
-        private class MouseHighlighter extends MouseMotionAdapter {
-            private final int xLeft, xRight, yUp, yDown;
-
-            public MouseHighlighter(int xLeft, int yUp, int xRight, int yDown) {
-                super();
-
-                this.xLeft = xLeft;
-                this.xRight = xRight;
-                this.yUp = yUp;
-                this.yDown = yDown;
-            }
-
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                if (e.getX() > xLeft && e.getX() < xRight && e.getY() > yUp && e.getY() < yDown) {
-                    setFillColor(new Color(51,153,255));
-                } else {
-                    setFillColor(Color.BLUE);
-                }
-            }
         }
     }
 }
