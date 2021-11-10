@@ -19,11 +19,11 @@ public abstract class Button extends GRect {
         ConnectDisplay display = ConnectDisplay.getInstance();
         setFillColor(color);
         setFilled(true);
-        display.add(this);
+        display.add(this); // TODO: remove display dependency
 
         buttonText = new GLabel(str, x + BUTTON_PADDING, y + BUTTON_HEIGHT - BUTTON_PADDING);
         buttonText.setFont(BUTTON_FONT);
-        display.add(buttonText);
+        display.add(buttonText); // TODO: remove display dependency
 
         addMouseListener(new MouseAdapter() {
             @Override

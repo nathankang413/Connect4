@@ -14,7 +14,7 @@ public class Slot extends GOval {
 
         changeColor(type);
 
-        ConnectDisplay.getInstance().add(this);
+        ConnectDisplay.getInstance().add(this); // TODO: remove display dependency
     }
 
     public void changeColor(int type) {

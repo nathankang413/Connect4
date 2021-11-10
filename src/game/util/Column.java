@@ -29,6 +29,6 @@ public class Column extends GRect {
                 setFillColor(Color.BLUE);
             }
         });
-        display.add(this);
+        display.add(this); // TODO: remove display dependency
     }
 }
