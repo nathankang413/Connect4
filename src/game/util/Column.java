@@ -1,7 +1,6 @@
 package game.util;
 
 import acm.graphics.GRect;
-import game.ConnectDisplay;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -15,7 +14,6 @@ public class Column extends GRect {
     public Column(int x, int y) {
         super(x, y, SPACING, ROWS * SPACING);
 
-        ConnectDisplay display = ConnectDisplay.getInstance();
         setFillColor(Color.BLUE);
         setFilled(true);
         addMouseListener(new MouseAdapter() {
@@ -29,6 +27,5 @@ public class Column extends GRect {
                 setFillColor(Color.BLUE);
             }
         });
-        display.add(this); // TODO: remove display dependency
     }
 }

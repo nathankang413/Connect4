@@ -3,8 +3,6 @@ package game.players;
 import java.util.ArrayList;
 import java.util.List;
 
-import static game.Constants.Game.*;
-
 /**
  * An AI Player which determines moves algorithmically
  */

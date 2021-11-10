@@ -37,16 +37,18 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
     @Override
     public void run() {
         title = new TextDisplay("Connect 4", Color.BLUE);
+        add(title);
 
         // set up frame and positions for display
         for (int j = 0; j < COLS; j++) {
-            new Column(j * SPACING, TEXT_MARGIN);
+            add(new Column(j * SPACING, TEXT_MARGIN));
         }
 
         positions = new Slot[ROWS][COLS];
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
                 positions[i][j] = new Slot(j * SPACING + POS_MARGIN, i * SPACING + POS_MARGIN + TEXT_MARGIN, EMPTY);
+                add(positions[i][j]);
             }
         }
 
@@ -131,7 +133,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
         private final int numPlayers;
 
         public PlayButton(int x, int y, int numPlayers) {
-            super(x, y, numPlayers + " Players", Color.GREEN);
+            super(x, y, numPlayers + " Player" + (numPlayers != 1 ? "s" : ""), Color.GREEN);
 
             this.numPlayers = numPlayers;
         }

@@ -1,7 +1,6 @@
 package game.util;
 
 import acm.graphics.GOval;
-import game.ConnectDisplay;
 
 import java.awt.*;
 
@@ -11,10 +10,7 @@ import static game.Constants.Game.*;
 public class Slot extends GOval {
     public Slot(int x, int y, int type) {
         super(x, y, POS_DIAMETER, POS_DIAMETER);
-
         changeColor(type);
-
-        ConnectDisplay.getInstance().add(this); // TODO: remove display dependency
     }
 
     public void changeColor(int type) {

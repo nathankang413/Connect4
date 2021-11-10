@@ -4,12 +4,12 @@ import static game.Constants.Game.*;
 
 public abstract class AIPlayer implements Player {
     /**
-     * TODO
+     * Determines the "score" for a given drop. The score is defined as the largest streak of pieces this drop will form.
      *
-     * @param board
-     * @param playerNum
-     * @param col
-     * @return
+     * @param board - the board
+     * @param playerNum - number of current player
+     * @param col - the column of the drop
+     * @return the score
      */
     protected int checkDrop(int[][] board, int playerNum, int col) {
         // if piece would be out of bounds

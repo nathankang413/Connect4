@@ -277,7 +277,7 @@ public class ConnectGame {
         writeHistory();
     }
 
-    private void addToHistory(String key, Double value) {
+    private void addToHistory(String key, double value) {
         if (fullHistory.containsKey(key)) {
             Double[] totalCount = fullHistory.get(key);
             totalCount[0] += value;
