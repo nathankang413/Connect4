@@ -1,11 +1,10 @@
 package game;
 
+import acm.graphics.GObject;
 import acm.program.GraphicsProgram;
 import game.players.HumanPlayer;
+import game.util.*;
 import game.util.Button;
-import game.util.Column;
-import game.util.Slot;
-import game.util.TextDisplay;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -56,6 +55,9 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
             new PlayButton(BOARD_WIDTH + BUTTON_PADDING, TEXT_MARGIN + i * (BUTTON_HEIGHT + BUTTON_PADDING), 2 - i);
         }
         new DatabaseButton(BOARD_WIDTH + BUTTON_PADDING, TEXT_MARGIN + 3*(BUTTON_HEIGHT + BUTTON_PADDING));
+
+        // TODO: instantiate percent bars to be added on DatabaseButton press
+
     }
 
     @Override
@@ -149,7 +151,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
         }
 
         protected void buttonAction() {
-
+            // TODO: should create a new game with live PercentBars
         }
     }
 }
