@@ -1,27 +1,31 @@
 package game;
 
-import acm.graphics.GObject;
 import acm.program.GraphicsProgram;
 import game.players.HumanPlayer;
 import game.util.*;
 import game.util.Button;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import javax.swing.Timer;
 
 import static game.Constants.GUI.*;
 import static game.Constants.Game.*;
 
-public class ConnectDisplay extends GraphicsProgram implements MouseListener {
+public class ConnectDisplay extends GraphicsProgram implements MouseListener, ActionListener {
     private static ConnectDisplay instance;
     private Column[] frame;
     private Slot[][] positions;
     private TextDisplay title;
     private ConnectGame game;
+    private Timer timer;
 
     private ConnectDisplay() {
         addMouseListeners();
+        timer = new Timer(DELAY, this);
     }
 
     public static ConnectDisplay getInstance() {
@@ -40,8 +44,10 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
         add(title);
 
         // set up frame and positions for display
+        frame = new Column[COLS];
         for (int j = 0; j < COLS; j++) {
-            add(new Column(j * SPACING, TEXT_MARGIN));
+            frame[j] = new Column(j * SPACING, TEXT_MARGIN);
+            add(frame[j]);
         }
 
         positions = new Slot[ROWS][COLS];
@@ -65,40 +71,51 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
     @Override
     public void mousePressed(MouseEvent mouseEvent) {
         if (game != null && game.checkWin() == EMPTY) {
-
-            // drop the Piece
-            int col = (mouseEvent.getX() - POS_MARGIN) / SPACING;
-            if (col >= 0 && col < COLS)
-                game.runHumanTurn(col);
+            // drop the piece
+            int col = -1;
+            for (int j = 0; j < COLS; j++) {
+                if (frame[j].contains(mouseEvent.getX(), mouseEvent.getY())) {
+                    col = j;
+                }
+            }
+            if (col == -1) return;
+            game.runHumanTurn(col);
+            if (game.checkWin() != EMPTY) {
+                handleWin();
+            }
             updatePlayerText();
             updateScreen();
-
-            // if next player is AI
-            runAILoop();
-
-            if (game.checkWin() != EMPTY) {
-                updateWinText();
-                game.updateHistory();
-            }
+            timer.restart();
         }
     }
 
-    private void runAILoop() {
-        while (game.checkWin() == EMPTY && !(game.currentPlayer() instanceof HumanPlayer)) {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        runAI();
+    }
+
+    private void runAI() {
+        if (!(game.currentPlayer() instanceof HumanPlayer)) {
             game.runAITurn();
-            pause(100);
             updateScreen();
             updatePlayerText();
         }
-
-        if (game.checkWin() != EMPTY)
-            updateWinText();
+        if (game.checkWin() != EMPTY) {
+            handleWin();
+        }
 
         /*
         TODO: for some reason it only repaints after the entire mousePressed method finishes,
         TODO: so pauses from the AI occur without preceding changes in display
         TODO: especially annoying for AI v AI games
          */
+    }
+
+    private void handleWin() {
+        if (game.checkWin() == EMPTY) throw new RuntimeException("handleWin was called when no player has won yet.");
+        timer.stop();
+        updateWinText();
+        game.updateHistory();
     }
 
     private void updateScreen() {
@@ -142,7 +159,8 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener {
             game = new ConnectGame(numPlayers, (int) (Math.random() + 0.5));
             updateScreen();
             updatePlayerText();
-            runAILoop();
+//            runAILoop();
+            timer.start();
         }
     }
 

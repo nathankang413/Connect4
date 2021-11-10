@@ -254,8 +254,6 @@ public class ConnectGame {
     }
 
     public void updateHistory() {
-        System.out.println("updating");
-
         readHistory();
 
         boolean tie = checkWin() == 0.5;

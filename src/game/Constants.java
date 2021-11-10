@@ -33,6 +33,8 @@ public class Constants {
         public static final String PERCENT_BAR_FONT = "Arial-20";
 
         public static final Color COLUMN_HIGHLIGHT = new Color(51,153,255);
+
+        public static final int DELAY = 350;
     }
 
     public static class QLearn {
