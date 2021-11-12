@@ -1,5 +1,6 @@
 package game;
 
+import acm.graphics.GObject;
 import acm.program.GraphicsProgram;
 import game.players.HumanPlayer;
 import game.util.*;
@@ -20,6 +21,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
     private Column[] frame;
     private Slot[][] positions;
     private TextDisplay title;
+    private PercentBar[] winRates;
     private ConnectGame game;
     private Timer timer;
 
@@ -58,13 +60,19 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
             }
         }
 
-        // buttons
+        // buttons - TODO: convert to menu
         for (int i = 0; i <= 2; i++) {
             new PlayButton(BOARD_WIDTH + BUTTON_PADDING, TEXT_MARGIN + i * (BUTTON_HEIGHT + BUTTON_PADDING), 2 - i);
         }
         new DatabaseButton(BOARD_WIDTH + BUTTON_PADDING, TEXT_MARGIN + 3*(BUTTON_HEIGHT + BUTTON_PADDING));
 
-        // TODO: instantiate percent bars to be added on DatabaseButton press
+        // win rate bars underneath the buttons
+        for (int i=0; i<COLS; i++) {
+            winRates[i] = new PercentBar(BOARD_WIDTH + BUTTON_PADDING,
+                    TEXT_MARGIN + 3 * (BUTTON_HEIGHT + BUTTON_PADDING) + i * (PERCENT_BAR_HEIGHT + PERCENT_BAR_PADDING),
+                    0.5);
+            add(winRates[i]); // should be toggled on and off
+        }
 
     }
 
@@ -143,6 +151,12 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
                 case PLAYER_1 -> title.setLabel("Player 1 Wins!");
                 case PLAYER_2 -> title.setLabel("Player 2 Wins!");
             }
+        }
+    }
+
+    private void add(Addable obj) {
+        for (GObject component : obj.getComponents()) {
+            add(component);
         }
     }
 

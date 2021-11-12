@@ -1,6 +1,7 @@
 package game.util;
 
 import acm.graphics.GLabel;
+import acm.graphics.GObject;
 import acm.graphics.GRect;
 import game.ConnectDisplay;
 
@@ -10,7 +11,7 @@ import java.awt.event.MouseEvent;
 
 import static game.Constants.GUI.*;
 
-public abstract class Button extends GRect {
+public abstract class Button extends GRect implements Addable{
     GLabel buttonText;
 
     public Button(int x, int y, String str, Color color) {
@@ -41,4 +42,9 @@ public abstract class Button extends GRect {
     }
 
     protected abstract void buttonAction();
+
+    @Override
+    public GObject[] getComponents() {
+        return new GObject[] {this, buttonText};
+    }
 }

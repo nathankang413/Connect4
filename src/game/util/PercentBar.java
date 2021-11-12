@@ -8,7 +8,7 @@ import java.awt.*;
 
 import static game.Constants.GUI.*;
 
-public class PercentBar {
+public class PercentBar implements Addable{
 
     private GRect total;
     private GRect percent;
