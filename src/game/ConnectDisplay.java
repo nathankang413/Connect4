@@ -69,9 +69,9 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
         // win rate bars underneath the buttons
         for (int i=0; i<COLS; i++) {
             winRates[i] = new PercentBar(BOARD_WIDTH + BUTTON_PADDING,
-                    TEXT_MARGIN + 3 * (BUTTON_HEIGHT + BUTTON_PADDING) + i * (PERCENT_BAR_HEIGHT + PERCENT_BAR_PADDING),
-                    0.5);
-            add(winRates[i]); // should be toggled on and off
+                    TEXT_MARGIN + 4 * (BUTTON_HEIGHT + BUTTON_PADDING) + i * (PERCENT_BAR_HEIGHT + PERCENT_BAR_PADDING),
+                    0.5); // TODO: simplify y-value, remove magic number
+            add(winRates[i]); // TODO: should be toggled on and off
         }
 
     }
@@ -86,11 +86,13 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
                     col = j;
                 }
             }
-            if (col == -1) return;
+
+            if (col == -1) return; // if click not on board
             game.runHumanTurn(col);
-            if (game.checkWin() != EMPTY) {
-                handleWin();
-            }
+            // TODO: commented out b/c runAI also called handleWin - should be checked
+//            if (game.checkWin() != EMPTY) {
+//                handleWin();
+//            }
             updatePlayerText();
             updateScreen();
             timer.restart();
@@ -111,12 +113,6 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
         if (game.checkWin() != EMPTY) {
             handleWin();
         }
-
-        /*
-        TODO: for some reason it only repaints after the entire mousePressed method finishes,
-        TODO: so pauses from the AI occur without preceding changes in display
-        TODO: especially annoying for AI v AI games
-         */
     }
 
     private void handleWin() {

@@ -275,14 +275,40 @@ public class ConnectGame {
         writeHistory();
     }
 
+    public double[] getWinRates() {
+        if (fullHistory == null) {
+            readHistory();
+        }
+
+        double[] winRates = new double[COLS];
+        for (int i=0; i<COLS; i++) {
+            String key = boardToString() + "-" + i;
+            if (fullHistory.containsKey(key)) {
+
+                double totalQ = fullHistory.get(key)[0];
+                double count = fullHistory.get(key)[1];
+
+                double winRate = (totalQ + count) / 2 / count;
+
+                winRates[i] = winRate;
+
+            } else {
+                winRates[i] = -1;
+            }
+        }
+
+        return winRates;
+    }
+
     private void addToHistory(String key, double value) {
+        // TODO: some bug with moves not being added when AI plays
         if (fullHistory.containsKey(key)) {
             Double[] totalCount = fullHistory.get(key);
             totalCount[0] += value;
             totalCount[1]++;
             fullHistory.put(key, totalCount);
         } else {
-            fullHistory.put(key, new Double[]{1.0, value});
+            fullHistory.put(key, new Double[]{value, 1.0});
         }
     }
 
@@ -323,6 +349,7 @@ public class ConnectGame {
     }
 
     private String boardToString() {
+        // TODO: dependent on "color" ie if player 1 goes first vs player 2
         StringBuilder str = new StringBuilder();
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
