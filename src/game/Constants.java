@@ -13,6 +13,10 @@ public class Constants {
     }
 
     public static class GUI {
+        public static final int WINDOW_WIDTH = 1200;
+        public static final int WINDOW_HEIGHT = 1000;
+        public static final int WINDOW_RESIZE_WAIT = 10;
+
         public static final int POS_DIAMETER = 100;
         public static final int POS_MARGIN = 10;
         public static final int SPACING = POS_DIAMETER + 2 * POS_MARGIN;
@@ -34,7 +38,7 @@ public class Constants {
 
         public static final Color COLUMN_HIGHLIGHT = new Color(51,153,255);
 
-        public static final int DELAY = 350;
+        public static final int AI_DELAY = 350;
     }
 
     public static class QLearn {

@@ -31,13 +31,13 @@ public class ConnectGame {
      *
      * @param numHumans should be between 0 and 2, inclusive
      */
-    public ConnectGame(int numHumans, int startPlayer) {
+    public ConnectGame(int numHumans) {
         // numHumans: 0 - 2 AI, 1 - 1 Human/AI, 2 - 2 Human
         if (numHumans > 2 || numHumans < 0) {
             throw new IllegalArgumentException("numHumans " + numHumans + "is outside range 0-2");
         }
 
-        currPlayer = startPlayer;
+        currPlayer = 0;
 
         // initialize correct number of Human/AI Players
         players = new Player[2];

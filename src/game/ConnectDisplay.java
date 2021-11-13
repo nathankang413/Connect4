@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import javax.swing.Timer;
+import javax.swing.*;
 
 import static game.Constants.GUI.*;
 import static game.Constants.Game.*;
@@ -27,7 +27,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
 
     private ConnectDisplay() {
         addMouseListeners();
-        timer = new Timer(DELAY, this);
+        timer = new Timer(AI_DELAY, this);
     }
 
     public static ConnectDisplay getInstance() {
@@ -42,6 +42,10 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
      */
     @Override
     public void run() {
+
+        this.resize(WINDOW_WIDTH,WINDOW_HEIGHT);
+        pause(WINDOW_RESIZE_WAIT);
+
         title = new TextDisplay("Connect 4", Color.BLUE);
         add(title);
 
@@ -156,6 +160,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
         }
     }
 
+    // TODO: convert to menu
     private class PlayButton extends Button {
         private final int numPlayers;
 
@@ -166,7 +171,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
         }
 
         protected void buttonAction() {
-            game = new ConnectGame(numPlayers, (int) (Math.random() + 0.5));
+            game = new ConnectGame(numPlayers);
             updateScreen();
             updatePlayerText();
 //            runAILoop();
