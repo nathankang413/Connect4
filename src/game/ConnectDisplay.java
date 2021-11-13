@@ -23,7 +23,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
     private TextDisplay title;
     private PercentBar[] winRates;
     private ConnectGame game;
-    private Timer timer;
+    private final Timer timer;
 
     private ConnectDisplay() {
         addMouseListeners();
@@ -43,7 +43,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
     @Override
     public void run() {
 
-        this.resize(WINDOW_WIDTH,WINDOW_HEIGHT);
+        this.setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         pause(WINDOW_RESIZE_WAIT);
 
         title = new TextDisplay("Connect 4", Color.BLUE);
@@ -93,10 +93,9 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
 
             if (col == -1) return; // if click not on board
             game.runHumanTurn(col);
-            // TODO: commented out b/c runAI also called handleWin - should be checked
-//            if (game.checkWin() != EMPTY) {
-//                handleWin();
-//            }
+            if (game.checkWin() != EMPTY) {
+                handleWin();
+            }
             updatePlayerText();
             updateScreen();
             timer.restart();
@@ -113,9 +112,10 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
             game.runAITurn();
             updateScreen();
             updatePlayerText();
-        }
-        if (game.checkWin() != EMPTY) {
-            handleWin();
+
+            if (game.checkWin() != EMPTY) {
+                handleWin();
+            }
         }
     }
 
