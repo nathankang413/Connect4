@@ -113,25 +113,33 @@ public class ConnectGame {
         return players[currPlayer];
     }
 
-    // TODO: condense AITurn and HumanTurn into 1 method?
+    public void runTurn(int col) {
+        currHistory.add(new Move(boardToString(), col));
+        try {
+            dropPiece(col);
+            currPlayer = 1 - currPlayer;
+        } catch (IllegalArgumentException e) {
+            System.out.println("" + e);
+        }
+
+    }
+
     public void runAITurn() {
         if (players[currPlayer] instanceof HumanPlayer) {
             throw new RuntimeException("runAITurn was called when it is a Human's turn.");
         }
         int col = players[currPlayer].play(board, currPlayer);
-        currHistory.add(new Move(boardToString(), col));
-        dropPiece(col); // TODO: handle column fill errors
-        currPlayer = 1 - currPlayer;
+        runTurn(col);
     }
 
     public void runHumanTurn(int col) {
         if (!(players[currPlayer] instanceof HumanPlayer)) {
             throw new RuntimeException("runHumanTurn was called when it is an AI's turn.");
         }
-        currHistory.add(new Move(boardToString(), col));
-        dropPiece(col);
-        currPlayer = 1 - currPlayer;
+        runTurn(col);
     }
+
+
 
     /**
      * Drops a piece in the given column
