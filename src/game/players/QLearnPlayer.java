@@ -15,11 +15,9 @@ import static game.Constants.QLearn.*;
 public class QLearnPlayer extends AIPlayer {
     private static final int MAX_STATES = 10000;
     private final double useRand;
-    private final ArrayList<Move> gameMoves;
     private final Map<String, Double[]> movesMap;
 
     public QLearnPlayer() {
-        gameMoves = new ArrayList<>();
 
         movesMap = new HashMap<>();
         readMovesMap();
@@ -32,7 +30,6 @@ public class QLearnPlayer extends AIPlayer {
         // if can win in one, play it
         for (int i = 0; i < board[0].length; i++) {
             if (checkDrop(board, playerNum, i) == 4) {
-                gameMoves.add(new Move(convertBoard(board), i));
                 return i;
             }
         }
@@ -40,18 +37,15 @@ public class QLearnPlayer extends AIPlayer {
         // if opponent can win in one, prevent it
         for (int i = 0; i < board[0].length; i++) {
             if (checkDrop(board, 1 - playerNum, i) == 4) {
-                gameMoves.add(new Move(convertBoard(board), i));
                 return i;
             }
         }
 
         // if using a random value, generate random value
         if (Math.random() < useRand) {
-            // System.out.println("Using random move");
-            int move = (int) (Math.random() * COLS);
-            gameMoves.add(new Move(convertBoard(board), move));
-            return move;
+            return getRandomMove(board, playerNum);
         }
+
         // if not, check best states
         else {
             // System.out.println("Checking past experience");
@@ -68,50 +62,19 @@ public class QLearnPlayer extends AIPlayer {
                 }
             }
             if (bestMove >= 0) {
-                // System.out.println("Using past experience");
-                gameMoves.add(new Move(convertBoard(board), bestMove));
                 return bestMove;
             } else {
-                // System.out.println("Couldn't find past experience");
-                int move = (int) (Math.random() * COLS);
-                gameMoves.add(new Move(convertBoard(board), move));
-                return move;
+                return getRandomMove(board, playerNum);
             }
         }
     }
 
-    public void update(double win) throws IOException {
-        readMovesMap();
-
-        // loss = -1, tie = 0, win = 1
-        win = win * 2 - 1;
-
-        // for each current move
-        // if key already exists, update value
-        // else insert new key/value into treemap
-        for (Move move : gameMoves) {
-            if (movesMap.containsKey(move.toString())) {
-                Double[] totalCount = movesMap.get(move.toString());
-                totalCount[0] += win;
-                totalCount[1]++;
-                movesMap.put(move.toString(), totalCount);
-            } else {
-                movesMap.put(move.toString(), new Double[]{win, 1.0});
-            }
-        }
-
-        TreeMap<String, Double[]> treeMap = new TreeMap<>();
-        for (Map.Entry<String, Double[]> entry : movesMap.entrySet()) {
-            treeMap.put(entry.getKey(), entry.getValue());
-        }
-        // write movesMap to file
-        PrintWriter fileWrite = new PrintWriter(QUALITIES_FILE);
-        for (Map.Entry<String, Double[]> entry : treeMap.entrySet()) {
-            Double[] totalCount = entry.getValue();
-            fileWrite.println(entry.getKey() + ":" + totalCount[0] + ":" + totalCount[1]);
-        }
-        fileWrite.flush();
-        fileWrite.close();
+    private int getRandomMove(int[][] board, int playerNum) {
+        int move;
+        do { // generate randoms until get a legal move
+            move = (int) (Math.random() * COLS);
+        } while (checkDrop(board, playerNum, move) < 0);
+        return move;
     }
 
     private void readMovesMap() {
@@ -128,7 +91,7 @@ public class QLearnPlayer extends AIPlayer {
                 movesMap.put(moveString, totalCount);
             }
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println("" + e);
             throw new IllegalArgumentException("Missing or invalid qualities.txt file");
         }
     }
@@ -141,11 +104,5 @@ public class QLearnPlayer extends AIPlayer {
             }
         }
         return str.toString();
-    }
-
-    private record Move(String state, int move) {
-        public String toString() {
-            return state + "-" + move;
-        }
     }
 }
