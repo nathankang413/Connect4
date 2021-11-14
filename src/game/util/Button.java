@@ -11,22 +11,17 @@ import java.awt.event.MouseEvent;
 
 import static game.Constants.GUI.*;
 
-public abstract class Button extends GRect implements Addable{
+public abstract class Button implements Addable{
+    GRect buttonShape;
     GLabel buttonText;
 
     public Button(int x, int y, String str, Color color) {
-        super(x, y, BUTTON_WIDTH, BUTTON_HEIGHT);
 
-        ConnectDisplay display = ConnectDisplay.getInstance();
-        setFillColor(color);
-        setFilled(true);
-        display.add(this); // TODO: remove display dependency
+        buttonShape = new GRect(x, y, BUTTON_WIDTH, BUTTON_HEIGHT);
+        buttonShape.setFillColor(color);
+        buttonShape.setFilled(true);
 
-        buttonText = new GLabel(str, x + BUTTON_PADDING, y + BUTTON_HEIGHT - BUTTON_PADDING);
-        buttonText.setFont(BUTTON_FONT);
-        display.add(buttonText); // TODO: remove display dependency
-
-        addMouseListener(new MouseAdapter() {
+        buttonShape.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 if (
@@ -39,12 +34,15 @@ public abstract class Button extends GRect implements Addable{
                 }
             }
         });
+
+        buttonText = new GLabel(str, x + BUTTON_PADDING, y + BUTTON_HEIGHT - BUTTON_PADDING);
+        buttonText.setFont(BUTTON_FONT);
     }
 
     protected abstract void buttonAction();
 
     @Override
     public GObject[] getComponents() {
-        return new GObject[] {this, buttonText};
+        return new GObject[] {buttonShape, buttonText};
     }
 }
