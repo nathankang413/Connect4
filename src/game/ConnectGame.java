@@ -173,7 +173,7 @@ public class ConnectGame {
         }
         int col = players[currPlayer].play(board, currPlayer);
         currHistory.add(new Move(boardToString(), col));
-        dropPiece(col);
+        dropPiece(col); // TODO: handle column fill errors
         currPlayer = 1 - currPlayer;
     }
 
