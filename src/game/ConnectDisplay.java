@@ -27,6 +27,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
     private final Timer aiTimer;
     private GameType gameType;
     private boolean showDatabase;
+    private boolean autoReset;
 
     private ConnectDisplay() {
         addMouseListeners();
@@ -99,6 +100,11 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
         databaseButton.addActionListener(e -> showDatabase = !showDatabase);
         menu.add(databaseButton);
 
+        // Auto Reset button
+        JCheckBoxMenuItem resetButton = new JCheckBoxMenuItem("Automatic Reset");
+        resetButton.addActionListener(e -> autoReset = !autoReset);
+        menu.add(resetButton);
+
         // Game types buttons
         menu.addSeparator();
         ButtonGroup gameTypes = new ButtonGroup();
@@ -166,21 +172,31 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
 
     private void runAI() {
         if (!(game.currentPlayer() instanceof HumanPlayer)) {
-            game.runAITurn();
-            updateScreen();
-            updatePlayerText();
+            if (game.checkWin() == EMPTY) {
+                game.runAITurn();
+                updateScreen();
+                updatePlayerText();
 
-            if (game.checkWin() != EMPTY) {
-                handleWin();
+                if (game.checkWin() != EMPTY) {
+                    handleWin();
+                }
             }
         }
     }
 
     private void handleWin() {
         if (game.checkWin() == EMPTY) throw new RuntimeException("handleWin was called when no player has won yet.");
+
         aiTimer.stop();
         updateWinText();
         game.updateHistory();
+
+        if (autoReset) {
+            game = new ConnectGame(gameType.getPlayers());
+            updateScreen();
+            updatePlayerText();
+            aiTimer.start();
+        }
     }
 
     private void updateScreen() {
@@ -228,7 +244,6 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
         }
     }
 
-    // TODO: convert to menu
     private class PlayButton extends Button {
 
         public PlayButton(int x, int y) {
@@ -239,7 +254,6 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
             game = new ConnectGame(gameType.getPlayers());
             updateScreen();
             updatePlayerText();
-//            runAILoop();
             aiTimer.start();
         }
     }
