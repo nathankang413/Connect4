@@ -88,35 +88,35 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
 
     private void initMenuBar() {
         ProgramMenuBar menuBar = getMenuBar();
-        JMenu menu = new JMenu("Game Settings");
-        menuBar.add(menu);
+        JMenu gameOptions = new JMenu("Game Options");
+        menuBar.add(gameOptions);
 
         // AI Delay button
         JCheckBoxMenuItem delayButton = new JCheckBoxMenuItem("AI Delay");
         delayButton.setSelected(true);
         delayButton.addActionListener(e -> aiTimer.setDelay(AI_DELAY - aiTimer.getDelay()));
-        menu.add(delayButton);
+        gameOptions.add(delayButton);
 
         // Use Database button
         JCheckBoxMenuItem databaseButton = new JCheckBoxMenuItem("Use Database");
         databaseButton.addActionListener(e -> showDatabase = !showDatabase);
-        menu.add(databaseButton);
+        gameOptions.add(databaseButton);
 
         // Auto Reset button
         JCheckBoxMenuItem resetButton = new JCheckBoxMenuItem("Automatic Reset");
         resetButton.addActionListener(e -> autoReset = !autoReset);
-        menu.add(resetButton);
+        gameOptions.add(resetButton);
 
         // Game types buttons
-        menu.addSeparator();
+        gameOptions.addSeparator();
         ButtonGroup gameTypes = new ButtonGroup();
 
         // TODO: simplify?
         String[] names = new String[] {"2 Players", "1 Player (vs Algo)",
                 "1 Player (vs QLearn)", "Algo v Algo", "Algo v QLearn",
-                "QLearn v QLearn"};
+                "QLearn v QLearn", "QLearn Train Random"};
 
-        for (int i=0; i<6; i++) {
+        for (int i=0; i<names.length; i++) {
             JRadioButtonMenuItem button = new JRadioButtonMenuItem(names[i]);
             if (i==0) {
                 button.setSelected(true);
@@ -128,9 +128,10 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
                 case 3 -> button.addActionListener(e -> gameType = new GameType(1, 1));
                 case 4 -> button.addActionListener(e -> gameType = new GameType(1, 2));
                 case 5 -> button.addActionListener(e -> gameType = new GameType(2, 2));
+                case 6 -> button.addActionListener(e -> gameType = new GameType(3, 3));
             }
             gameTypes.add(button);
-            menu.add(button);
+            gameOptions.add(button);
         }
     }
 

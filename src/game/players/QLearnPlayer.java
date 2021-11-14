@@ -17,17 +17,21 @@ public class QLearnPlayer extends AIPlayer {
     private final double useRand;
     private final Map<String, Double[]> movesMap;
 
-    public QLearnPlayer() {
+    public QLearnPlayer(boolean onlyRand) {
 
         movesMap = new HashMap<>();
         readMovesMap();
 
         double numMapped = movesMap.size();
-        if (ONLY_RAND) {
+        if (onlyRand) {
             useRand = 1;
         } else {
             useRand = Math.exp(-numMapped / MAX_STATES);
         }
+    }
+
+    public QLearnPlayer() {
+        this(false);
     }
 
     public int play(int[][] board, int playerNum) {

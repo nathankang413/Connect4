@@ -7,12 +7,12 @@ public class GameType {
     private final int[] playerTypes;
 
     public GameType(int player1, int player2) {
-        // 0 - human, 1 - Algo, 2 - QLearn
+        // 0 - human, 1 - Algo, 2 - QLearn, 3 - QLearn-onlyRand
 
-        if (player1 > 2 || player1 < 0) {
+        if (player1 > 3 || player1 < 0) {
             throw new IllegalArgumentException("player1 type " + player1 + " is invalid.");
         }
-        if (player2 > 2 || player2 < 0) {
+        if (player2 > 3 || player2 < 0) {
             throw new IllegalArgumentException("player2 type " + player2 + " is invalid.");
         }
 
@@ -30,6 +30,7 @@ public class GameType {
                 case 0 -> players[(i + startPlayer) % 2] = new HumanPlayer();
                 case 1 -> players[(i + startPlayer) % 2] = new AlgorithmicPlayer();
                 case 2 -> players[(i + startPlayer) % 2] = new QLearnPlayer();
+                case 3 -> players[(i + startPlayer) % 2] = new QLearnPlayer(true);
             }
         }
 
