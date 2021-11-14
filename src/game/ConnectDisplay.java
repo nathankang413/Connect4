@@ -22,15 +22,17 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
     private Column[] frame;
     private Slot[][] positions;
     private TextDisplay title;
-    private PercentBar[] winRates;
+    private PercentBar[] winRateDisplays;
     private ConnectGame game;
     private final Timer aiTimer;
     private GameType gameType;
+    private boolean showDatabase;
 
     private ConnectDisplay() {
         addMouseListeners();
         gameType = new GameType(0, 0);
         aiTimer = new Timer(AI_DELAY, this);
+        showDatabase = false;
     }
 
     public static ConnectDisplay getInstance() {
@@ -70,14 +72,14 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
         }
 
         add(new PlayButton(BOARD_WIDTH + BUTTON_PADDING, TEXT_MARGIN));
-        add(new DatabaseButton(BOARD_WIDTH + BUTTON_PADDING, TEXT_MARGIN + 3*(BUTTON_HEIGHT + BUTTON_PADDING)));
 
         // win rate bars underneath the buttons
+        winRateDisplays = new PercentBar[7];
         for (int i=0; i<COLS; i++) {
-            winRates[i] = new PercentBar(BOARD_WIDTH + BUTTON_PADDING,
-                    TEXT_MARGIN + 4 * (BUTTON_HEIGHT + BUTTON_PADDING) + i * (PERCENT_BAR_HEIGHT + PERCENT_BAR_PADDING),
-                    0.5); // TODO: simplify y-value, remove magic number
-            add(winRates[i]); // TODO: should be toggled on and off
+            winRateDisplays[i] = new PercentBar(BOARD_WIDTH + BUTTON_PADDING,
+                    TEXT_MARGIN + BUTTON_HEIGHT + BUTTON_PADDING + i * (PERCENT_BAR_HEIGHT + PERCENT_BAR_PADDING),
+                    -1); // TODO: simplify y-value, remove magic number
+            add(winRateDisplays[i]);
         }
 
     }
@@ -87,13 +89,19 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
         JMenu menu = new JMenu("Game Settings");
         menuBar.add(menu);
 
-        JCheckBoxMenuItem cbItem = new JCheckBoxMenuItem("AI Delay");
-        cbItem.setSelected(true);
-        cbItem.addActionListener(e -> aiTimer.setDelay(AI_DELAY - aiTimer.getDelay()));
-        menu.add(cbItem);
+        // AI Delay button
+        JCheckBoxMenuItem delayButton = new JCheckBoxMenuItem("AI Delay");
+        delayButton.setSelected(true);
+        delayButton.addActionListener(e -> aiTimer.setDelay(AI_DELAY - aiTimer.getDelay()));
+        menu.add(delayButton);
 
+        // Use Database button
+        JCheckBoxMenuItem databaseButton = new JCheckBoxMenuItem("Use Database");
+        databaseButton.addActionListener(e -> showDatabase = !showDatabase);
+        menu.add(databaseButton);
+
+        // Game types buttons
         menu.addSeparator();
-
         ButtonGroup gameTypes = new ButtonGroup();
 
         // TODO: simplify?
@@ -148,6 +156,10 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
         }
     }
 
+    /**
+     * Runs on AITimer
+     * @param e AITimer ends? TODO: docs
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         runAI();
@@ -178,6 +190,15 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
                 positions[i][j].changeColor(game.getBoard()[i][j]);
             }
         }
+
+        double[] winRates = game.getWinRates();
+        for (int i=0; i<COLS; i++) {
+            if (showDatabase) {
+                winRateDisplays[i].changeRate(winRates[i]);
+            } else {
+                winRateDisplays[i].changeRate(-1);
+            }
+        }
     }
 
     private void updatePlayerText() {
@@ -189,6 +210,8 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
     }
 
     private void updateWinText() {
+        // TODO: some way to show the type of player than won (human, algo, qlearn)
+
         title.setColor(Color.BLUE);
         if (game.checkWin() % 1 == 0.5) {
             title.setLabel("It's a tie!!");
@@ -219,17 +242,6 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
             updatePlayerText();
 //            runAILoop();
             aiTimer.start();
-        }
-    }
-
-    private class DatabaseButton extends Button {
-
-        public DatabaseButton(int x, int y) {
-            super (x, y, "", Color.CYAN);
-        }
-
-        protected void buttonAction() {
-            // TODO: should create a new game with live PercentBars
         }
     }
 }

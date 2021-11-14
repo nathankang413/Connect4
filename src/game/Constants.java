@@ -38,7 +38,7 @@ public class Constants {
 
         public static final Color COLUMN_HIGHLIGHT = new Color(51,153,255);
 
-        public static final int AI_DELAY = 350;
+        public static final int AI_DELAY = 500;
     }
 
     public static class QLearn {
