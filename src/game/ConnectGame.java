@@ -19,8 +19,8 @@ import static game.Constants.QLearn.QUALITIES_FILE;
 
 public class ConnectGame {
     private static ConnectGame instance;
-    private int[][] board; // -1 - empty, 0 - player1, 1 - player2
     protected Player[] players;
+    private int[][] board; // -1 - empty, 0 - player1, 1 - player2
     private int currPlayer;
     private ArrayList<Move> currHistory;
     private Map<String, Double[]> fullHistory;
@@ -140,7 +140,6 @@ public class ConnectGame {
     }
 
 
-
     /**
      * Drops a piece in the given column
      *
@@ -236,7 +235,7 @@ public class ConnectGame {
         }
 
         double[][] winRates = new double[COLS][2];
-        for (int i=0; i<COLS; i++) {
+        for (int i = 0; i < COLS; i++) {
             String key = boardToString() + "-" + i;
             if (fullHistory.containsKey(key)) {
 

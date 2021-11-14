@@ -3,7 +3,10 @@ package game.util;
 import game.players.*;
 
 public class GameType {
-
+    // TODO: move to constants?
+    public final static int HUMAN = 0;
+    public final static int ALGORITHM = 1;
+    public final static int Q_LEARN = 2;
     private final int[] playerTypes;
 
     public GameType(int player1, int player2) {
