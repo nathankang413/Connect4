@@ -23,7 +23,11 @@ public class QLearnPlayer extends AIPlayer {
         readMovesMap();
 
         double numMapped = movesMap.size();
-        useRand = Math.exp(-numMapped / MAX_STATES);
+        if (ONLY_RAND) {
+            useRand = 1;
+        } else {
+            useRand = Math.exp(-numMapped / MAX_STATES);
+        }
     }
 
     public int play(int[][] board, int playerNum) {
