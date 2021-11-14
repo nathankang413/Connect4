@@ -13,7 +13,7 @@ public abstract class AIPlayer implements Player {
      */
     protected int checkDrop(int[][] board, int playerNum, int col) {
         // if piece would be out of bounds
-        if (board[0][col] > -1) return 0;
+        if (board[0][col] > -1) return -1;
 
         int[] dropPos = new int[2];
         for (int i = board.length - 1; i >= 0; i--) {
