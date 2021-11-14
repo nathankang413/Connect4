@@ -77,8 +77,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
         winRateDisplays = new PercentBar[7];
         for (int i=0; i<COLS; i++) {
             winRateDisplays[i] = new PercentBar(BOARD_WIDTH + BUTTON_PADDING,
-                    TEXT_MARGIN + BUTTON_HEIGHT + BUTTON_PADDING + i * (PERCENT_BAR_HEIGHT + PERCENT_BAR_PADDING),
-                    -1, 0); // TODO: simplify y-value, remove magic number
+                    TEXT_MARGIN + BUTTON_HEIGHT + BUTTON_PADDING + i * (PERCENT_BAR_HEIGHT + PERCENT_BAR_PADDING));
             add(winRateDisplays[i]);
         }
 

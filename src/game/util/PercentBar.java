@@ -45,6 +45,10 @@ public class PercentBar implements Addable{
         update(rate, numGames);
     }
 
+    public PercentBar(int x, int y) {
+        this(x, y, -1, 0);
+    }
+
     /**
      * @param rate the win rate in range [0,1]; negative win-rates signify that move has not been played
      * */
