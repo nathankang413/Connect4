@@ -42,7 +42,6 @@ public class Constants {
     }
 
     public static class QLearn {
-        public static final boolean ONLY_RAND = false;
         public static final String QUALITIES_FILE = "./Connect4/src/game/qualities.txt";
     }
 }
