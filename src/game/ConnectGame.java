@@ -230,12 +230,12 @@ public class ConnectGame {
         writeHistory();
     }
 
-    public double[] getWinRates() {
+    public double[][] getWinRates() {
         if (fullHistory == null) {
             readHistory();
         }
 
-        double[] winRates = new double[COLS];
+        double[][] winRates = new double[COLS][2];
         for (int i=0; i<COLS; i++) {
             String key = boardToString() + "-" + i;
             if (fullHistory.containsKey(key)) {
@@ -245,10 +245,12 @@ public class ConnectGame {
 
                 double winRate = (totalQ + count) / 2 / count;
 
-                winRates[i] = winRate;
+                winRates[i][0] = winRate;
+                winRates[i][1] = count;
 
             } else {
-                winRates[i] = -1;
+                winRates[i][0] = -1;
+                winRates[i][1] = 0;
             }
         }
 

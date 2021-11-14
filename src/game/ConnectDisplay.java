@@ -78,7 +78,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
         for (int i=0; i<COLS; i++) {
             winRateDisplays[i] = new PercentBar(BOARD_WIDTH + BUTTON_PADDING,
                     TEXT_MARGIN + BUTTON_HEIGHT + BUTTON_PADDING + i * (PERCENT_BAR_HEIGHT + PERCENT_BAR_PADDING),
-                    -1); // TODO: simplify y-value, remove magic number
+                    -1, 0); // TODO: simplify y-value, remove magic number
             add(winRateDisplays[i]);
         }
 
@@ -191,12 +191,12 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
             }
         }
 
-        double[] winRates = game.getWinRates();
+        double[][] winRates = game.getWinRates();
         for (int i=0; i<COLS; i++) {
             if (showDatabase) {
-                winRateDisplays[i].changeRate(winRates[i]);
+                winRateDisplays[i].update(winRates[i][0], (int) winRates[i][1]);
             } else {
-                winRateDisplays[i].changeRate(-1);
+                winRateDisplays[i].update(-1, 0);
             }
         }
     }
