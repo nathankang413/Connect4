@@ -12,6 +12,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import javax.swing.*;
 
 import static game.Constants.GUI.*;
@@ -111,25 +114,23 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
         gameOptions.addSeparator();
         ButtonGroup gameTypes = new ButtonGroup();
 
-        // TODO: simplify?
-        String[] names = new String[] {"2 Players", "1 Player (vs Algo)",
-                "1 Player (vs QLearn)", "Algo v Algo", "Algo v QLearn",
-                "QLearn v QLearn", "QLearn Train Random"};
+        Map<String, GameType> options = new LinkedHashMap<>();
+        options.put("2 Players", new GameType(GameType.HUMAN, GameType.HUMAN));
+        options.put("1 Player (vs Algo)", new GameType(GameType.HUMAN, GameType.ALGORITHM));
+        options.put("1 Player (vs QLearn)", new GameType(GameType.HUMAN, GameType.Q_LEARN));
+        options.put("Algo v Algo", new GameType(GameType.ALGORITHM, GameType.ALGORITHM));
+        options.put("Algo v QLearn", new GameType(GameType.ALGORITHM, GameType.Q_LEARN));
+        options.put("QLearn v QLearn", new GameType(GameType.Q_LEARN, GameType.Q_LEARN));
 
-        for (int i=0; i<names.length; i++) {
-            JRadioButtonMenuItem button = new JRadioButtonMenuItem(names[i]);
-            if (i==0) {
+        boolean first = true;
+        for (Map.Entry<String, GameType> entry : options.entrySet()) {
+            JRadioButtonMenuItem button = new JRadioButtonMenuItem(entry.getKey());
+            if (first) {
                 button.setSelected(true);
+                first = false;
             }
-            switch(i) { // TODO: simplify?
-                case 0 -> button.addActionListener(e -> gameType = new GameType(0, 0));
-                case 1 -> button.addActionListener(e -> gameType = new GameType(0, 1));
-                case 2 -> button.addActionListener(e -> gameType = new GameType(0, 2));
-                case 3 -> button.addActionListener(e -> gameType = new GameType(1, 1));
-                case 4 -> button.addActionListener(e -> gameType = new GameType(1, 2));
-                case 5 -> button.addActionListener(e -> gameType = new GameType(2, 2));
-                case 6 -> button.addActionListener(e -> gameType = new GameType(3, 3));
-            }
+
+            button.addActionListener(e -> gameType = entry.getValue());
             gameTypes.add(button);
             gameOptions.add(button);
         }
@@ -145,6 +146,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
                     col = j;
                 }
             }
+
             if (col == -1) return; // if click not on board
 
             // drop the piece
