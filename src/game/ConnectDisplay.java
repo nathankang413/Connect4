@@ -2,6 +2,7 @@ package game;
 
 import acm.graphics.GObject;
 import acm.program.GraphicsProgram;
+import acm.program.ProgramMenuBar;
 import game.players.HumanPlayer;
 import game.util.*;
 import game.util.Button;
@@ -23,11 +24,13 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
     private TextDisplay title;
     private PercentBar[] winRates;
     private ConnectGame game;
-    private final Timer timer;
+    private final Timer aiTimer;
+    private GameType gameType;
 
     private ConnectDisplay() {
         addMouseListeners();
-        timer = new Timer(AI_DELAY, this);
+        gameType = new GameType(0, 0);
+        aiTimer = new Timer(AI_DELAY, this);
     }
 
     public static ConnectDisplay getInstance() {
@@ -42,6 +45,8 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
      */
     @Override
     public void run() {
+
+        initMenuBar();
 
         this.setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         pause(WINDOW_RESIZE_WAIT);
@@ -64,11 +69,8 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
             }
         }
 
-        // buttons - TODO: convert to menu
-        for (int i = 0; i <= 2; i++) {
-            new PlayButton(BOARD_WIDTH + BUTTON_PADDING, TEXT_MARGIN + i * (BUTTON_HEIGHT + BUTTON_PADDING), 2 - i);
-        }
-        new DatabaseButton(BOARD_WIDTH + BUTTON_PADDING, TEXT_MARGIN + 3*(BUTTON_HEIGHT + BUTTON_PADDING));
+        add(new PlayButton(BOARD_WIDTH + BUTTON_PADDING, TEXT_MARGIN));
+        add(new DatabaseButton(BOARD_WIDTH + BUTTON_PADDING, TEXT_MARGIN + 3*(BUTTON_HEIGHT + BUTTON_PADDING)));
 
         // win rate bars underneath the buttons
         for (int i=0; i<COLS; i++) {
@@ -80,25 +82,69 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
 
     }
 
+    private void initMenuBar() {
+        ProgramMenuBar menuBar = getMenuBar();
+        JMenu menu = new JMenu("Game Settings");
+        menuBar.add(menu);
+
+        JCheckBoxMenuItem cbItem = new JCheckBoxMenuItem("AI Delay");
+        cbItem.setSelected(true);
+        cbItem.addActionListener(e -> aiTimer.setDelay(AI_DELAY - aiTimer.getDelay()));
+        menu.add(cbItem);
+
+        menu.addSeparator();
+
+        ButtonGroup gameTypes = new ButtonGroup();
+
+        // TODO: simplify?
+        String[] names = new String[] {"2 Players", "1 Player (vs Algo)",
+                "1 Player (vs QLearn)", "Algo v Algo", "Algo v QLearn",
+                "QLearn v QLearn"};
+
+        for (int i=0; i<6; i++) {
+            JRadioButtonMenuItem button = new JRadioButtonMenuItem(names[i]);
+            if (i==0) {
+                button.setSelected(true);
+            }
+            switch(i) { // TODO: simplify?
+                case 0 -> button.addActionListener(e -> gameType = new GameType(0, 0));
+                case 1 -> button.addActionListener(e -> gameType = new GameType(0, 1));
+                case 2 -> button.addActionListener(e -> gameType = new GameType(0, 2));
+                case 3 -> button.addActionListener(e -> gameType = new GameType(1, 1));
+                case 4 -> button.addActionListener(e -> gameType = new GameType(1, 2));
+                case 5 -> button.addActionListener(e -> gameType = new GameType(2, 2));
+            }
+            gameTypes.add(button);
+            menu.add(button);
+        }
+    }
+
     @Override
     public void mousePressed(MouseEvent mouseEvent) {
         if (game != null && game.checkWin() == EMPTY) {
-            // drop the piece
+            // determine the chosen column
             int col = -1;
             for (int j = 0; j < COLS; j++) {
                 if (frame[j].contains(mouseEvent.getX(), mouseEvent.getY())) {
                     col = j;
                 }
             }
-
             if (col == -1) return; // if click not on board
+
+            // drop the piece
             game.runHumanTurn(col);
+
+            // update screen
+            updatePlayerText();
+            updateScreen();
+
+            // handle win
             if (game.checkWin() != EMPTY) {
                 handleWin();
             }
-            updatePlayerText();
-            updateScreen();
-            timer.restart();
+
+            // reset ai timer
+            aiTimer.restart();
         }
     }
 
@@ -121,7 +167,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
 
     private void handleWin() {
         if (game.checkWin() == EMPTY) throw new RuntimeException("handleWin was called when no player has won yet.");
-        timer.stop();
+        aiTimer.stop();
         updateWinText();
         game.updateHistory();
     }
@@ -162,20 +208,17 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
 
     // TODO: convert to menu
     private class PlayButton extends Button {
-        private final int numPlayers;
 
-        public PlayButton(int x, int y, int numPlayers) {
-            super(x, y, numPlayers + " Player" + (numPlayers != 1 ? "s" : ""), Color.GREEN);
-
-            this.numPlayers = numPlayers;
+        public PlayButton(int x, int y) {
+            super(x, y, "Play Game", Color.GREEN);
         }
 
         protected void buttonAction() {
-            game = new ConnectGame(numPlayers);
+            game = new ConnectGame(gameType.getPlayers());
             updateScreen();
             updatePlayerText();
 //            runAILoop();
-            timer.start();
+            aiTimer.start();
         }
     }
 
