@@ -71,43 +71,6 @@ public class ConnectGame {
         currHistory = new ArrayList<>();
     }
 
-//    /**
-//     * Runs the main game loop
-//     *
-//     * @param startPlayer the starting player, either 0 or 1
-//     */
-//    public double playGame(int startPlayer) {
-//        return playGame(startPlayer, true);
-//    }
-//
-//    public double playGame(int startPlayer, boolean showBoard) {
-//        // game loop
-//        currPlayer = startPlayer;
-////        while (checkWin() < 0) {
-////            if (showBoard) {
-////                System.out.println();
-////                System.out.println("Player " + (currPlayer + 1) + "'s Turn");
-////                printBoard();
-////            }
-////            try {
-////                dropPiece(players[currPlayer].play(board, currPlayer), currPlayer);
-////            } catch (IllegalArgumentException e) {
-////                if (showBoard)
-////                    System.out.println("Player " + (currPlayer + 1) + " played an illegal move.");
-////                return 1 - currPlayer;
-////            }
-////            currPlayer = 1 - currPlayer;
-////        }
-////
-////        if (showBoard) {
-////            System.out.println();
-////            System.out.println("Player " + (checkWin() + 1) + " Wins!!");
-////            printBoard();
-////        }
-////
-//        return checkWin();
-//    }
-
     /**
      * Getter method for board
      *
@@ -149,22 +112,6 @@ public class ConnectGame {
     public Player currentPlayer() {
         return players[currPlayer];
     }
-
-//    /**
-//     * Adds piece to board given human input
-//     * @param col - the column to drop the next piece
-//     */
-//    public void move(int col) {
-//        if (!(players[currPlayer] instanceof HumanPlayer)) {
-//            throw new RuntimeException("Move cannot be called when it's the AI Player's turn.");
-//        }
-//        dropPiece(col, currPlayer);
-//        currPlayer = 1 - currPlayer;
-//        if (!(players[currPlayer] instanceof HumanPlayer)) {
-//            dropPiece(players[currPlayer].play(board, currPlayer), currPlayer);
-//            currPlayer = 1 - currPlayer;
-//        }
-//    }
 
     // TODO: condense AITurn and HumanTurn into 1 method?
     public void runAITurn() {
