@@ -79,6 +79,8 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
 
         add(new PlayButton(BOARD_WIDTH + BUTTON_PADDING, TEXT_MARGIN));
 
+        // TODO: label that shows number of total games at that position (leave for Kang)
+
         // win rate bars underneath the buttons
         winRateDisplays = new PercentBar[7];
         for (int i=0; i<COLS; i++) {
