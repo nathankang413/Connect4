@@ -19,7 +19,7 @@ import static game.Constants.QLearn.QUALITIES_FILE;
 
 public class ConnectGame {
     private static ConnectGame instance;
-    private final int[][] board; // -1 - empty, 0 - player1, 1 - player2
+    private int[][] board; // -1 - empty, 0 - player1, 1 - player2
     protected Player[] players;
     private int currPlayer;
     private ArrayList<Move> currHistory;
@@ -48,6 +48,18 @@ public class ConnectGame {
                 players[i] = new AlgorithmicPlayer();
             }
         }
+
+        initBoard();
+    }
+
+    public ConnectGame(Player[] players) {
+        this.players = players;
+
+        initBoard();
+    }
+
+    private void initBoard() {
+
         // initialize empty board
         board = new int[ROWS][COLS];
         for (int i = 0; i < ROWS; i++) {
@@ -57,18 +69,6 @@ public class ConnectGame {
         }
 
         currHistory = new ArrayList<>();
-    }
-
-    protected ConnectGame(Player[] players) {
-        this.players = players;
-
-        // initialize empty board
-        board = new int[ROWS][COLS];
-        for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < COLS; j++) {
-                board[i][j] = EMPTY;
-            }
-        }
     }
 
 //    /**
