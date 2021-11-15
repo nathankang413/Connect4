@@ -1,16 +1,11 @@
 package game;
 
-import game.players.AlgorithmicPlayer;
 import game.players.HumanPlayer;
 import game.players.Player;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.util.*;
 
 import static game.Constants.Game.*;
-import static game.Constants.QLearn.QUALITIES_FILE;
 
 /**
  * A Connect 4 Game
@@ -26,32 +21,10 @@ public class ConnectGame {
     private Map<String, Double[]> fullHistory;
 
     /**
-     * Creates a new ConnectGame object with the given number of players
-     * Remaining players are filled with AI
+     * Creates a new ConnectGame object with the given players
      *
-     * @param numHumans should be between 0 and 2, inclusive
+     * @param players contains the two players
      */
-    public ConnectGame(int numHumans) {
-        // numHumans: 0 - 2 AI, 1 - 1 Human/AI, 2 - 2 Human
-        if (numHumans > 2 || numHumans < 0) {
-            throw new IllegalArgumentException("numHumans " + numHumans + "is outside range 0-2");
-        }
-
-        currPlayer = 0;
-
-        // initialize correct number of Human/AI Players
-        players = new Player[2];
-        for (int i = 0; i < 2; i++) {
-            if (i < numHumans) {
-                players[i] = new HumanPlayer();
-            } else {
-                players[i] = new AlgorithmicPlayer();
-            }
-        }
-
-        initBoard();
-    }
-
     public ConnectGame(Player[] players) {
         this.players = players;
 
@@ -59,7 +32,6 @@ public class ConnectGame {
     }
 
     private void initBoard() {
-
         // initialize empty board
         board = new int[ROWS][COLS];
         for (int i = 0; i < ROWS; i++) {
@@ -80,31 +52,6 @@ public class ConnectGame {
         return board;
     }
 
-    /**
-     * Displays the text version of the board
-     */
-    public void printBoard() {
-        for (int i = 0; i < ROWS; i++) {
-            System.out.print("|");
-            for (int j = 0; j < COLS; j++) {
-                // show the correct piece
-                switch (board[i][j]) {
-                    case EMPTY -> System.out.print(" ");
-                    case PLAYER_1 -> System.out.print("X");
-                    case PLAYER_2 -> System.out.print("O");
-                }
-                System.out.print("|");
-            }
-            System.out.println();
-        }
-
-        // column labels
-        for (int i = 0; i < COLS; i++) {
-            System.out.print("-" + (i + 1));
-        }
-        System.out.println("-");
-    }
-
     public int currentPlayerNum() {
         return currPlayer;
     }
@@ -113,15 +60,14 @@ public class ConnectGame {
         return players[currPlayer];
     }
 
-    public void runTurn(int col) {
-        currHistory.add(new Move(boardToString(), col));
+    private void runTurn(int col) {
+        currHistory.add(new Move(DatabaseIO.boardToDatabaseString(board), col));
         try {
             dropPiece(col);
             currPlayer = 1 - currPlayer;
         } catch (IllegalArgumentException e) {
             System.out.println("" + e);
         }
-
     }
 
     public void runAITurn() {
@@ -208,8 +154,6 @@ public class ConnectGame {
     }
 
     public void updateHistory() {
-        readHistory();
-
         boolean tie = checkWin() == 0.5;
         boolean winner = true;
 
@@ -226,19 +170,18 @@ public class ConnectGame {
             winner = !winner;
         }
 
-        writeHistory();
+        DatabaseIO.writeHistory(fullHistory);
     }
 
     public double[][] getWinRates() {
         if (fullHistory == null) {
-            readHistory();
+            fullHistory = DatabaseIO.readHistory();
         }
 
         double[][] winRates = new double[COLS][2];
         for (int i = 0; i < COLS; i++) {
-            String key = boardToString() + "-" + i;
+            String key = DatabaseIO.boardToDatabaseString(board) + "-" + i;
             if (fullHistory.containsKey(key)) {
-
                 double totalQ = fullHistory.get(key)[0];
                 double count = fullHistory.get(key)[1];
 
@@ -266,53 +209,6 @@ public class ConnectGame {
         } else {
             fullHistory.put(key, new Double[]{value, 1.0});
         }
-    }
-
-    private void readHistory() {
-        fullHistory = new HashMap<>();
-
-        try {
-            Scanner fileRead = new Scanner(new File(QUALITIES_FILE));
-
-            // Read file line by line - insert into movesMap
-            while (fileRead.hasNextLine()) {
-                String readLine = fileRead.nextLine();
-                String[] splitString = readLine.split(":");
-                String moveString = splitString[0];
-                Double[] totalCount = {Double.parseDouble(splitString[1]), Double.parseDouble(splitString[2])};
-
-                fullHistory.put(moveString, totalCount);
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("Missing or invalid qualities.txt file: " + e);
-            throw new IllegalArgumentException("Missing or invalid qualities.txt file");
-        }
-    }
-
-    private void writeHistory() {
-        try {
-            PrintWriter fileWrite = new PrintWriter(QUALITIES_FILE);
-            TreeMap<String, Double[]> sortedHistory = new TreeMap<>(fullHistory);
-            for (Map.Entry<String, Double[]> entry : sortedHistory.entrySet()) {
-                Double[] totalCount = entry.getValue();
-                fileWrite.println(entry.getKey() + ":" + totalCount[0] + ":" + totalCount[1]);
-            }
-            fileWrite.flush();
-            fileWrite.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found");
-        }
-    }
-
-    private String boardToString() {
-        // TODO: dependent on "color" ie if player 1 goes first vs player 2
-        StringBuilder str = new StringBuilder();
-        for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < COLS; j++) {
-                str.append(board[i][j] + 1);
-            }
-        }
-        return str.toString();
     }
 
     private record Move(String state, int move) {

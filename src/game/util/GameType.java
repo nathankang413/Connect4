@@ -26,7 +26,7 @@ public class GameType {
     }
 
     private boolean invalidGameType(int type) {
-        return type != HUMAN && type != ALGORITHM && type != Q_LEARN;
+        return type != HUMAN && type != ALGORITHM && type != Q_LEARN && type != Q_LEARN_NEW && type != Q_LEARN_RAND;
     }
 
     public Player[] getPlayers() {

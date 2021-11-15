@@ -1,5 +1,7 @@
 package game.players;
 
+import game.DatabaseIO;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -29,8 +31,7 @@ public class QLearnPlayer extends AIPlayer {
      */
     public QLearnPlayer(int logic) {
 
-        movesMap = new HashMap<>();
-        readMovesMap();
+        movesMap = DatabaseIO.readHistory();
 
         double numMapped = movesMap.size();
 
@@ -76,7 +77,7 @@ public class QLearnPlayer extends AIPlayer {
             double min = 999;
             // find least-played moves
             for (int i = 0; i < COLS; i++) {
-                String stateMove = convertBoard(board) + "-" + i;
+                String stateMove = DatabaseIO.boardToDatabaseString(board) + "-" + i;
                 if (movesMap.containsKey(stateMove)) {
                     int count = (int) (double) movesMap.get(stateMove)[1];
                     if (count < min) {
@@ -122,7 +123,7 @@ public class QLearnPlayer extends AIPlayer {
             double bestQ = 0;
             int bestMove = -1;
             for (int i = 0; i < COLS; i++) {
-                String stateMove = convertBoard(board) + "-" + i;
+                String stateMove = DatabaseIO.boardToDatabaseString(board) + "-" + i;
                 if (movesMap.containsKey(stateMove)) {
                     double averageQ = movesMap.get(stateMove)[0] / movesMap.get(stateMove)[1];
                     if (averageQ > bestQ) {
@@ -145,34 +146,5 @@ public class QLearnPlayer extends AIPlayer {
             move = (int) (Math.random() * COLS);
         } while (checkDrop(board, playerNum, move) < 0);
         return move;
-    }
-
-    private void readMovesMap() {
-        try {
-            Scanner fileRead = new Scanner(new File(QUALITIES_FILE));
-
-            // Read file line by line - insert into movesMap
-            while (fileRead.hasNextLine()) {
-                String readLine = fileRead.nextLine();
-                String[] splitString = readLine.split(":");
-                String moveString = splitString[0];
-                Double[] totalCount = {Double.parseDouble(splitString[1]), Double.parseDouble(splitString[2])};
-
-                movesMap.put(moveString, totalCount);
-            }
-        } catch (Exception e) {
-            System.out.println("" + e);
-            throw new IllegalArgumentException("Missing or invalid qualities.txt file");
-        }
-    }
-
-    private String convertBoard(int[][] board) {
-        StringBuilder str = new StringBuilder();
-        for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < COLS; j++) {
-                str.append(board[i][j] + 1);
-            }
-        }
-        return str.toString();
     }
 }

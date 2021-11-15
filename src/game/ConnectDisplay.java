@@ -34,7 +34,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
 
     private ConnectDisplay() {
         addMouseListeners();
-        gameType = new GameType(0, 0);
+        gameType = new GameType(GameType.HUMAN, GameType.HUMAN);
         aiTimer = new Timer(AI_DELAY, this);
         showDatabase = false;
     }
@@ -51,7 +51,6 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
      */
     @Override
     public void run() {
-
         initMenuBar();
 
         this.setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
