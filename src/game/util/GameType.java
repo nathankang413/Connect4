@@ -1,6 +1,9 @@
 package game.util;
 
-import game.players.*;
+import game.players.AlgorithmicPlayer;
+import game.players.HumanPlayer;
+import game.players.Player;
+import game.players.QLearnPlayer;
 
 public class GameType {
     // TODO: move to constants?
@@ -12,35 +15,33 @@ public class GameType {
     private final int[] playerTypes;
 
     public GameType(int player1, int player2) {
-
-        // TODO: remove magic numbers
-        if (player1 > 4 || player1 < 0) {
+        if (invalidGameType(player1)) {
             throw new IllegalArgumentException("player1 type " + player1 + " is invalid.");
         }
-        if (player2 > 4 || player2 < 0) {
+        if (invalidGameType(player2)) {
             throw new IllegalArgumentException("player2 type " + player2 + " is invalid.");
         }
 
-        playerTypes = new int[] {player1, player2};
+        playerTypes = new int[]{player1, player2};
+    }
+
+    private boolean invalidGameType(int type) {
+        return type != HUMAN && type != ALGORITHM && type != Q_LEARN;
     }
 
     public Player[] getPlayers() {
-
         Player[] players = new Player[2];
 
-        int startPlayer = (int) (Math.random() + 0.5);
+        int startPlayer = (int) (Math.random() * 2);
 
-        for (int i=0; i<2; i++) {
+        for (int i = 0; i < 2; i++) {
             switch (playerTypes[i]) {
                 case HUMAN -> players[(i + startPlayer) % 2] = new HumanPlayer();
                 case ALGORITHM -> players[(i + startPlayer) % 2] = new AlgorithmicPlayer();
-                case Q_LEARN -> players[(i + startPlayer) % 2] = new QLearnPlayer(QLearnPlayer.NORMAL);
-                case Q_LEARN_NEW -> players[(i + startPlayer) % 2] = new QLearnPlayer(QLearnPlayer.NEW);
-                case Q_LEARN_RAND -> players[(i + startPlayer) % 2] = new QLearnPlayer(QLearnPlayer.RANDOM);
+                case Q_LEARN -> players[(i + startPlayer) % 2] = new QLearnPlayer();
             }
         }
 
         return players;
     }
-
 }

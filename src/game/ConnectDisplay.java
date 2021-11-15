@@ -254,7 +254,6 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
     }
 
     private class PlayButton extends Button {
-
         public PlayButton(int x, int y) {
             super(x, y, "Play Game", Color.GREEN);
         }
