@@ -2,18 +2,14 @@ package game.players;
 
 import game.DatabaseIO;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Scanner;
-import java.util.TreeMap;
-import java.util.HashMap;
 
 import static game.Constants.Game.*;
-import static game.Constants.QLearn.*;
 
+/**
+ * TODO: docs
+ */
 public class QLearnPlayer extends AIPlayer {
     private static final int MAX_STATES = 10000;
     private final double useRand;
@@ -26,7 +22,7 @@ public class QLearnPlayer extends AIPlayer {
     public static final int RANDOM = 2;
 
     /**
-     *
+     * TODO: docs
      * @param logic 0 - normal, 1 - new moves, 2 - random moves
      */
     public QLearnPlayer(int logic) {
@@ -52,10 +48,19 @@ public class QLearnPlayer extends AIPlayer {
         }
     }
 
+    /**
+     * TODO: docs
+     */
     public QLearnPlayer() {
         this(0);
     }
 
+    /**
+     * TODO: docs
+     * @param board
+     * @param playerNum
+     * @return
+     */
     public int play(int[][] board, int playerNum) {
         // if can win in one, play it
         for (int i = 0; i < board[0].length; i++) {
@@ -73,43 +78,7 @@ public class QLearnPlayer extends AIPlayer {
 
         // if using least-played move
         if (onlyNew) {
-            ArrayList<Integer> leastPlayed = new ArrayList<>();
-            double min = 999;
-            // find least-played moves
-            for (int i = 0; i < COLS; i++) {
-                String stateMove = DatabaseIO.boardToDatabaseString(board) + "-" + i;
-                if (movesMap.containsKey(stateMove)) {
-                    int count = (int) (double) movesMap.get(stateMove)[1];
-                    if (count < min) {
-                        leastPlayed = new ArrayList<>();
-                        leastPlayed.add(i);
-                        min = count;
-                    } else if (count == min) {
-                        leastPlayed.add(i);
-                    }
-                } else {
-                    if (min == 0) {
-                        leastPlayed.add(i);
-                    } else {
-                        leastPlayed = new ArrayList<>();
-                        leastPlayed.add(i);
-                        min = 0;
-                    }
-                }
-            }
-            // weed out illegal moves
-            for (int i=leastPlayed.size()-1; i>=0; i--) {
-                if (checkDrop(board, playerNum, leastPlayed.get(i)) < 0) {
-                    leastPlayed.remove(i);
-                }
-            }
-
-            // get random move from the leastPlayed
-            if (leastPlayed.size() <= 0) {
-                return getRandomMove(board, playerNum);
-            } else {
-                return leastPlayed.get((int) (Math.random() * leastPlayed.size()));
-            }
+            return getNewMove(board, playerNum);
         }
 
         // if using a random value, generate random value
@@ -119,27 +88,89 @@ public class QLearnPlayer extends AIPlayer {
 
         // if not, check best states
         else {
-            // System.out.println("Checking past experience");
-            double bestQ = 0;
-            int bestMove = -1;
-            for (int i = 0; i < COLS; i++) {
-                String stateMove = DatabaseIO.boardToDatabaseString(board) + "-" + i;
-                if (movesMap.containsKey(stateMove)) {
-                    double averageQ = movesMap.get(stateMove)[0] / movesMap.get(stateMove)[1];
-                    if (averageQ > bestQ) {
-                        bestMove = i;
-                        bestQ = averageQ;
-                    }
-                }
-            }
-            if (bestQ > 0) {
-                return bestMove;
-            } else {
-                return getRandomMove(board, playerNum);
-            }
+            return getBestMove(board, playerNum);
         }
     }
 
+    /**
+     * TODO: docs
+     * @param board
+     * @param playerNum
+     * @return
+     */
+    private int getBestMove(int[][] board, int playerNum) {
+        // System.out.println("Checking past experience");
+        double bestQ = 0;
+        int bestMove = -1;
+        for (int i = 0; i < COLS; i++) {
+            String stateMove = DatabaseIO.boardToDatabaseString(board) + "-" + i;
+            if (movesMap.containsKey(stateMove)) {
+                double averageQ = movesMap.get(stateMove)[0] / movesMap.get(stateMove)[1];
+                if (averageQ > bestQ) {
+                    bestMove = i;
+                    bestQ = averageQ;
+                }
+            }
+        }
+        if (bestQ > 0) {
+            return bestMove;
+        } else {
+            return getRandomMove(board, playerNum);
+        }
+    }
+
+    /**
+     * TODO: docs
+     * @param board
+     * @param playerNum
+     * @return
+     */
+    private int getNewMove(int[][] board, int playerNum) {
+        ArrayList<Integer> leastPlayed = new ArrayList<>();
+        double min = 999;
+        // find least-played moves
+        for (int i = 0; i < COLS; i++) {
+            String stateMove = DatabaseIO.boardToDatabaseString(board) + "-" + i;
+            if (movesMap.containsKey(stateMove)) {
+                int count = (int) (double) movesMap.get(stateMove)[1];
+                if (count < min) {
+                    leastPlayed = new ArrayList<>();
+                    leastPlayed.add(i);
+                    min = count;
+                } else if (count == min) {
+                    leastPlayed.add(i);
+                }
+            } else {
+                if (min == 0) {
+                    leastPlayed.add(i);
+                } else {
+                    leastPlayed = new ArrayList<>();
+                    leastPlayed.add(i);
+                    min = 0;
+                }
+            }
+        }
+        // weed out illegal moves
+        for (int i=leastPlayed.size()-1; i>=0; i--) {
+            if (checkDrop(board, playerNum, leastPlayed.get(i)) < 0) {
+                leastPlayed.remove(i);
+            }
+        }
+
+        // get random move from the leastPlayed
+        if (leastPlayed.size() <= 0) {
+            return getRandomMove(board, playerNum);
+        } else {
+            return leastPlayed.get((int) (Math.random() * leastPlayed.size()));
+        }
+    }
+
+    /**
+     * TODO: docs
+     * @param board
+     * @param playerNum
+     * @return
+     */
     private int getRandomMove(int[][] board, int playerNum) {
         int move;
         do { // generate randoms until get a legal move

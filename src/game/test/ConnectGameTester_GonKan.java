@@ -1,8 +1,6 @@
 package game.test;
 
-import game.ConnectGame;
 import game.ConnectDisplay;
-import static game.Constants.Game.*;
 
 /**
  * game.Tester class for ConnectGame

@@ -11,7 +11,6 @@ import static game.Constants.Game.*;
  * A Connect 4 Game
  * Maintains Human and AI players
  */
-
 public class ConnectGame {
     private static ConnectGame instance;
     protected Player[] players;
@@ -31,6 +30,9 @@ public class ConnectGame {
         initBoard();
     }
 
+    /**
+     * TODO: docs
+     */
     private void initBoard() {
         // initialize empty board
         board = new int[ROWS][COLS];
@@ -52,14 +54,26 @@ public class ConnectGame {
         return board;
     }
 
+    /**
+     * TODO: docs?
+     * @return
+     */
     public int currentPlayerNum() {
         return currPlayer;
     }
 
+    /**
+     * TODO: docs?
+     * @return
+     */
     public Player currentPlayer() {
         return players[currPlayer];
     }
 
+    /**
+     * TODO: docs
+     * @param col
+     */
     private void runTurn(int col) {
         currHistory.add(new Move(DatabaseIO.boardToDatabaseString(board), col));
         try {
@@ -70,6 +84,9 @@ public class ConnectGame {
         }
     }
 
+    /**
+     * TODO: docs
+     */
     public void runAITurn() {
         if (players[currPlayer] instanceof HumanPlayer) {
             throw new RuntimeException("runAITurn was called when it is a Human's turn.");
@@ -78,6 +95,10 @@ public class ConnectGame {
         runTurn(col);
     }
 
+    /**
+     * TODO: docs
+     * @param col
+     */
     public void runHumanTurn(int col) {
         if (!(players[currPlayer] instanceof HumanPlayer)) {
             throw new RuntimeException("runHumanTurn was called when it is an AI's turn.");
@@ -153,6 +174,9 @@ public class ConnectGame {
         return -1;
     }
 
+    /**
+     * TODO: docs
+     */
     public void updateHistory() {
         boolean tie = checkWin() == 0.5;
         boolean winner = true;
@@ -173,6 +197,10 @@ public class ConnectGame {
         DatabaseIO.writeHistory(fullHistory);
     }
 
+    /**
+     * TODO: docs
+     * @return
+     */
     public double[][] getWinRates() {
         if (fullHistory == null) {
             fullHistory = DatabaseIO.readHistory();
@@ -199,6 +227,11 @@ public class ConnectGame {
         return winRates;
     }
 
+    /**
+     * TODO: docs
+     * @param key
+     * @param value
+     */
     private void addToHistory(String key, double value) {
         // TODO: some bug with moves not being added when AI plays
         if (fullHistory.containsKey(key)) {
@@ -211,6 +244,9 @@ public class ConnectGame {
         }
     }
 
+    /**
+     * TODO: docs
+     */
     private record Move(String state, int move) {
         public String toString() {
             return state + "-" + move;

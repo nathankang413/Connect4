@@ -2,19 +2,25 @@ package game;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 
 import static game.Constants.Game.*;
 import static game.Constants.QLearn.*;
 
+/**
+ * TODO: docs
+ */
 public class DatabaseIO {
-    private static TreeMap<String, Double[]> movesMap;
-    private static int[][] board;
-    private static ArrayList<String> path;
-    private static Scanner user;
+//    private static TreeMap<String, Double[]> movesMap;
+//    private static int[][] board;
+//    private static ArrayList<String> path;
+//    private static Scanner user;
 
+    /**
+     * TODO: docs
+     * @return
+     */
     public static Map<String, Double[]> readHistory() {
         Map<String, Double[]> history = new HashMap<>();
         try {
@@ -36,6 +42,10 @@ public class DatabaseIO {
         return history;
     }
 
+    /**
+     * TODO: docs
+     * @param history
+     */
     public static void writeHistory(Map<String, Double[]> history) {
         try {
             PrintWriter fileWrite = new PrintWriter(QUALITIES_FILE);
@@ -51,8 +61,12 @@ public class DatabaseIO {
         }
     }
 
+    /**
+     * TODO: docs
+     * @param board
+     * @return
+     */
     public static String boardToDatabaseString(int[][] board) {
-        // TODO: dependent on "color" ie if player 1 goes first vs player 2
         StringBuilder str = new StringBuilder();
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {

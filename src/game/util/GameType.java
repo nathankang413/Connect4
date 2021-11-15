@@ -5,6 +5,9 @@ import game.players.HumanPlayer;
 import game.players.Player;
 import game.players.QLearnPlayer;
 
+/**
+ * TODO: docs
+ */
 public class GameType {
     // TODO: move to constants?
     public final static int HUMAN = 0;
@@ -14,6 +17,11 @@ public class GameType {
     public final static int Q_LEARN_RAND = 4;
     private final int[] playerTypes;
 
+    /**
+     * TODO: docs
+     * @param player1
+     * @param player2
+     */
     public GameType(int player1, int player2) {
         if (invalidGameType(player1)) {
             throw new IllegalArgumentException("player1 type " + player1 + " is invalid.");
@@ -25,10 +33,19 @@ public class GameType {
         playerTypes = new int[]{player1, player2};
     }
 
+    /**
+     * TODO: docs
+     * @param type
+     * @return
+     */
     private boolean invalidGameType(int type) {
         return type != HUMAN && type != ALGORITHM && type != Q_LEARN && type != Q_LEARN_NEW && type != Q_LEARN_RAND;
     }
 
+    /**
+     * TODO: docs
+     * @return
+     */
     public Player[] getPlayers() {
         Player[] players = new Player[2];
 

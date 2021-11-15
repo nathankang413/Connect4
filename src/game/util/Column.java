@@ -10,6 +10,9 @@ import static game.Constants.GUI.COLUMN_HIGHLIGHT;
 import static game.Constants.GUI.SPACING;
 import static game.Constants.Game.ROWS;
 
+/**
+ * TODO: docs
+ */
 public class Column extends GRect {
     public Column(int x, int y) {
         super(x, y, SPACING, ROWS * SPACING);

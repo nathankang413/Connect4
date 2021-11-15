@@ -12,7 +12,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.swing.*;
@@ -20,6 +19,9 @@ import javax.swing.*;
 import static game.Constants.GUI.*;
 import static game.Constants.Game.*;
 
+/**
+ * TODO: docs
+ */
 public class ConnectDisplay extends GraphicsProgram implements MouseListener, ActionListener {
     private static ConnectDisplay instance;
     private Column[] frame;
@@ -32,6 +34,9 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
     private boolean showDatabase;
     private boolean autoReset;
 
+    /**
+     * TODO: docs
+     */
     private ConnectDisplay() {
         addMouseListeners();
         gameType = new GameType(GameType.HUMAN, GameType.HUMAN);
@@ -39,6 +44,10 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
         showDatabase = false;
     }
 
+    /**
+     * TODO: docs
+     * @return
+     */
     public static ConnectDisplay getInstance() {
         if (instance == null) {
             instance = new ConnectDisplay();
@@ -90,6 +99,9 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
 
     }
 
+    /**
+     * TODO: docs
+     */
     private void initMenuBar() {
         ProgramMenuBar menuBar = getMenuBar();
         JMenu gameOptions = new JMenu("Game Options");
@@ -139,6 +151,10 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
         }
     }
 
+    /**
+     * TODO: docs
+     * @param mouseEvent
+     */
     @Override
     public void mousePressed(MouseEvent mouseEvent) {
         if (game != null && game.checkWin() == EMPTY) {
@@ -192,6 +208,9 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
         }
     }
 
+    /**
+     * TODO: docs
+     */
     private void handleWin() {
         if (game.checkWin() == EMPTY) throw new RuntimeException("handleWin was called when no player has won yet.");
 
@@ -207,6 +226,9 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
         }
     }
 
+    /**
+     * TODO: docs
+     */
     private void updateScreen() {
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
@@ -224,6 +246,9 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
         }
     }
 
+    /**
+     * TODO: docs
+     */
     private void updatePlayerText() {
         title.setLabel("Player " + (game.currentPlayerNum() + 1) + "'s Turn");
         switch (game.currentPlayerNum()) {
@@ -232,6 +257,9 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
         }
     }
 
+    /**
+     * TODO: docs
+     */
     private void updateWinText() {
         // TODO: some way to show the type of player than won (human, algo, qlearn)
 
@@ -246,17 +274,32 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
         }
     }
 
+    /**
+     * TODO: docs
+     * @param obj
+     */
     private void add(Addable obj) {
         for (GObject component : obj.getComponents()) {
             add(component);
         }
     }
 
+    /**
+     * TODO: docs
+     */
     private class PlayButton extends Button {
+        /**
+         * TODO: docs
+         * @param x
+         * @param y
+         */
         public PlayButton(int x, int y) {
             super(x, y, "Play Game", Color.GREEN);
         }
 
+        /**
+         * TODO: docs
+         */
         protected void buttonAction() {
             game = new ConnectGame(gameType.getPlayers());
             updateScreen();

@@ -3,7 +3,6 @@ package game.util;
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
 import acm.graphics.GRect;
-import game.ConnectDisplay;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -11,10 +10,20 @@ import java.awt.event.MouseEvent;
 
 import static game.Constants.GUI.*;
 
+/**
+ * TODO: docs
+ */
 public abstract class Button implements Addable{
     GRect buttonShape;
     GLabel buttonText;
 
+    /**
+     * TODO: docs
+     * @param x
+     * @param y
+     * @param str
+     * @param color
+     */
     public Button(int x, int y, String str, Color color) {
 
         buttonShape = new GRect(x, y, BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -39,8 +48,15 @@ public abstract class Button implements Addable{
         buttonText.setFont(BUTTON_FONT);
     }
 
+    /**
+     * TODO: docs
+     */
     protected abstract void buttonAction();
 
+    /**
+     * TODO: docs
+     * @return
+     */
     @Override
     public GObject[] getComponents() {
         return new GObject[] {buttonShape, buttonText};

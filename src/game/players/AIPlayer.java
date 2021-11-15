@@ -2,6 +2,9 @@ package game.players;
 
 import static game.Constants.Game.*;
 
+/**
+ * TODO: docs
+ */
 public abstract class AIPlayer implements Player {
     /**
      * Determines the "score" for a given drop. The score is defined as the largest streak of pieces this drop will form.

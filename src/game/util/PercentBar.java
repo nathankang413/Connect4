@@ -8,6 +8,9 @@ import java.awt.*;
 
 import static game.Constants.GUI.*;
 
+/**
+ * TODO: docs
+ */
 public class PercentBar implements Addable{
 
     private final GRect total;
@@ -18,6 +21,7 @@ public class PercentBar implements Addable{
     private final int posY;
 
     /**
+     * TODO: docs
      * @param x the x position of the upper left corner of the bar
      * @param y the y position of the upper left corner of the bar
      * @param rate the win rate in range [0,1]; negative win-rates signify that move has not been played
@@ -45,11 +49,17 @@ public class PercentBar implements Addable{
         update(rate, numGames);
     }
 
+    /**
+     * TODO: docs
+     * @param x
+     * @param y
+     */
     public PercentBar(int x, int y) {
         this(x, y, -1, 0);
     }
 
     /**
+     * TODO: docs
      * @param rate the win rate in range [0,1]; negative win-rates signify that move has not been played
      * */
     public void update(double rate, int numGames) {
@@ -70,6 +80,10 @@ public class PercentBar implements Addable{
                 posY+PERCENT_BAR_HEIGHT-PERCENT_BAR_PADDING);
     }
 
+    /**
+     * TODO: docs
+     * @return
+     */
     public GObject[] getComponents() {
         return new GObject[] {total, percent, rateLabel, countLabel};
     }
