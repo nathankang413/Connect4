@@ -15,23 +15,44 @@ import static game.Constants.QLearn.*;
 public class QLearnPlayer extends AIPlayer {
     private static final int MAX_STATES = 10000;
     private final double useRand;
+    private final boolean onlyNew;
     private final Map<String, Double[]> movesMap;
 
-    public QLearnPlayer(boolean onlyRand) {
+    // TODO: move to constants?
+    public static final int NORMAL = 0;
+    public static final int NEW = 1;
+    public static final int RANDOM = 2;
+
+    /**
+     *
+     * @param logic 0 - normal, 1 - new moves, 2 - random moves
+     */
+    public QLearnPlayer(int logic) {
 
         movesMap = new HashMap<>();
         readMovesMap();
 
         double numMapped = movesMap.size();
-        if (onlyRand) {
-            useRand = 1;
-        } else {
-            useRand = Math.exp(-numMapped / MAX_STATES);
+
+        switch (logic) {
+            case NORMAL -> {
+                onlyNew = false;
+                useRand = Math.exp(-numMapped / MAX_STATES);
+            }
+            case NEW -> {
+                onlyNew = true;
+                useRand = Math.exp(-numMapped / MAX_STATES);
+            }
+            case RANDOM -> {
+                onlyNew = false;
+                useRand = 1;
+            }
+            default -> throw new IllegalArgumentException("Invalid QLearn logic type: " + logic);
         }
     }
 
     public QLearnPlayer() {
-        this(false);
+        this(0);
     }
 
     public int play(int[][] board, int playerNum) {
@@ -49,15 +70,56 @@ public class QLearnPlayer extends AIPlayer {
             }
         }
 
+        // if using least-played move
+        if (onlyNew) {
+            ArrayList<Integer> leastPlayed = new ArrayList<>();
+            double min = 999;
+            // find least-played moves
+            for (int i = 0; i < COLS; i++) {
+                String stateMove = convertBoard(board) + "-" + i;
+                if (movesMap.containsKey(stateMove)) {
+                    int count = (int) (double) movesMap.get(stateMove)[1];
+                    if (count < min) {
+                        leastPlayed = new ArrayList<>();
+                        leastPlayed.add(i);
+                        min = count;
+                    } else if (count == min) {
+                        leastPlayed.add(i);
+                    }
+                } else {
+                    if (min == 0) {
+                        leastPlayed.add(i);
+                    } else {
+                        leastPlayed = new ArrayList<>();
+                        leastPlayed.add(i);
+                        min = 0;
+                    }
+                }
+            }
+            // weed out illegal moves
+            for (int i=leastPlayed.size()-1; i>=0; i--) {
+                if (checkDrop(board, playerNum, leastPlayed.get(i)) < 0) {
+                    leastPlayed.remove(i);
+                }
+            }
+
+            // get random move from the leastPlayed
+            if (leastPlayed.size() <= 0) {
+                return getRandomMove(board, playerNum);
+            } else {
+                return leastPlayed.get((int) (Math.random() * leastPlayed.size()));
+            }
+        }
+
         // if using a random value, generate random value
-        if (Math.random() < useRand) {
+        else if (Math.random() < useRand) {
             return getRandomMove(board, playerNum);
         }
 
         // if not, check best states
         else {
             // System.out.println("Checking past experience");
-            double bestQ = -1;
+            double bestQ = 0;
             int bestMove = -1;
             for (int i = 0; i < COLS; i++) {
                 String stateMove = convertBoard(board) + "-" + i;
@@ -69,7 +131,7 @@ public class QLearnPlayer extends AIPlayer {
                     }
                 }
             }
-            if (bestMove >= 0) {
+            if (bestQ > 0) {
                 return bestMove;
             } else {
                 return getRandomMove(board, playerNum);

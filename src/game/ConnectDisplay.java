@@ -31,14 +31,12 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
     private GameType gameType;
     private boolean showDatabase;
     private boolean autoReset;
-    private boolean qOnlyRand;
 
     private ConnectDisplay() {
         addMouseListeners();
         gameType = new GameType(0, 0);
         aiTimer = new Timer(AI_DELAY, this);
         showDatabase = false;
-        qOnlyRand = false;
     }
 
     public static ConnectDisplay getInstance() {
@@ -125,7 +123,8 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
         options.put("Algo v Algo", new GameType(GameType.ALGORITHM, GameType.ALGORITHM));
         options.put("Algo v QLearn", new GameType(GameType.ALGORITHM, GameType.Q_LEARN));
         options.put("QLearn v QLearn", new GameType(GameType.Q_LEARN, GameType.Q_LEARN));
-        options.put("QLearn Random Training", new GameType(GameType.Q_LEARN_RAND, GameType.Q_LEARN_RAND));
+        options.put("Exploratory Training", new GameType(GameType.Q_LEARN_NEW, GameType.Q_LEARN_NEW));
+        options.put("Random Training", new GameType(GameType.Q_LEARN_RAND, GameType.Q_LEARN_RAND));
 
         boolean first = true;
         for (Map.Entry<String, GameType> entry : options.entrySet()) {
