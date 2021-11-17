@@ -64,6 +64,13 @@ public class DatabaseIO {
     }
 
     /**
+     * @param file the new qualities file
+     */
+    public static void setQualitiesFile(File file) {
+        qualitiesFile = file;
+    }
+
+    /**
      * Converts a board state into string format used by database
      *
      * @param board the board state
