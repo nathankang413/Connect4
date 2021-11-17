@@ -20,7 +20,9 @@ import static game.Constants.GUI.*;
 import static game.Constants.Game.*;
 
 /**
- * TODO: docs
+ * A singleton display for a Connect4 Game
+ * Includes various options for game play
+ * Controls game flow
  */
 public class ConnectDisplay extends GraphicsProgram implements MouseListener, ActionListener {
     private static ConnectDisplay instance;
@@ -35,7 +37,8 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
     private boolean autoReset;
 
     /**
-     * TODO: docs
+     * Creates a new ConnectDisplay
+     * Game type is 2 human players by default
      */
     private ConnectDisplay() {
         addMouseListeners();
@@ -45,9 +48,9 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
     }
 
     /**
-     * TODO: docs
+     * Gets the instance of ConnectDisplay or makes one if it has not been instantiated
      *
-     * @return
+     * @return the instance of ConnectDisplay
      */
     public static ConnectDisplay getInstance() {
         if (instance == null) {
@@ -101,7 +104,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
     }
 
     /**
-     * TODO: docs
+     * Creates the menu bar with options for different game modes
      */
     private void initMenuBar() {
         ProgramMenuBar menuBar = getMenuBar();
@@ -166,9 +169,10 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
     }
 
     /**
-     * TODO: docs
+     * Handles mouse clicks
+     * Drops a piece in the corrent column on click
      *
-     * @param mouseEvent
+     * @param mouseEvent the mouse click
      */
     @Override
     public void mousePressed(MouseEvent mouseEvent) {
@@ -201,15 +205,18 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
     }
 
     /**
-     * Runs on AITimer
+     * Runs the AI loop when AITimer expires
      *
-     * @param e AITimer ends? TODO: docs
+     * @param e the AITimer event
      */
     @Override
     public void actionPerformed(ActionEvent e) {
         runAI();
     }
 
+    /**
+     * Runs the AI loop depending on the number of AIPLayers in the game
+     */
     private void runAI() {
         if (!(game.currentPlayer() instanceof HumanPlayer)) {
             if (game.checkWin() == EMPTY) {
@@ -225,7 +232,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
     }
 
     /**
-     * TODO: docs
+     * Ends the game and changes the display to match the winner
      */
     private void handleWin() {
         if (game.checkWin() == EMPTY) throw new RuntimeException("handleWin was called when no player has won yet.");
@@ -243,7 +250,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
     }
 
     /**
-     * TODO: docs
+     * Updates the screen to match the current board state
      */
     private void updateScreen() {
         for (int i = 0; i < ROWS; i++) {
@@ -263,7 +270,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
     }
 
     /**
-     * TODO: docs
+     * Updates the title to match the current player.
      */
     private void updatePlayerText() {
         title.setLabel("Player " + (game.currentPlayerNum() + 1) + "'s Turn");
@@ -274,14 +281,14 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
     }
 
     /**
-     * TODO: docs
+     * Updates the title to match the winning player
      */
     private void updateWinText() {
         title.setColor(Color.BLUE);
         if (game.checkWin() % 1 == 0.5) {
             title.setLabel("It's a tie!!");
         } else {
-            // TODO: some way to show the type of player than won (human, algo, qlearn)
+            // TODO: DOESN'T WORK - gets the wrong player
             String playerType = game.currentPlayer().getClass().toString().split("\\.")[2];
 
             switch ((int) game.checkWin()) {
@@ -292,9 +299,9 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
     }
 
     /**
-     * TODO: docs
+     * Adds the components of an Addable to the display
      *
-     * @param obj
+     * @param obj an Addable display element
      */
     private void add(Addable obj) {
         for (GObject component : obj.getComponents()) {
@@ -303,21 +310,21 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
     }
 
     /**
-     * TODO: docs
+     * A Button to start a new game with the current settings
      */
     private class PlayButton extends Button {
         /**
-         * TODO: docs
+         * Creates a new PlayButton at the given location
          *
-         * @param x
-         * @param y
+         * @param x the x coordinate of the PlayButton
+         * @param y the y coordinate of the PlayButton
          */
         public PlayButton(int x, int y) {
             super(x, y, "Play Game", Color.GREEN);
         }
 
         /**
-         * TODO: docs
+         * Initiates a new game when the button is pressed
          */
         protected void buttonAction() {
             game = new ConnectGame(gameType.getPlayers());
