@@ -69,8 +69,15 @@ public class ConnectGame {
      *
      * @return
      */
-    public Player currentPlayer() {
+    public Player getCurrentPlayer() {
         return players[currPlayer];
+    }
+
+    /**
+     * @return the player not currently playing
+     */
+    public Player getOtherPlayer() {
+        return players[1-currPlayer];
     }
 
     /**

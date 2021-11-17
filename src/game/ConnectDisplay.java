@@ -218,7 +218,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
      * Runs the AI loop depending on the number of AIPLayers in the game
      */
     private void runAI() {
-        if (!(game.currentPlayer() instanceof HumanPlayer)) {
+        if (!(game.getCurrentPlayer() instanceof HumanPlayer)) {
             if (game.checkWin() == EMPTY) {
                 game.runAITurn();
                 updateScreen();
@@ -289,7 +289,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
             title.setLabel("It's a tie!!");
         } else {
             // TODO: DOESN'T WORK - gets the wrong player
-            String playerType = game.currentPlayer().getClass().toString().split("\\.")[2];
+            String playerType = game.getOtherPlayer().getClass().toString().split("\\.")[2];
 
             switch ((int) game.checkWin()) {
                 case PLAYER_1 -> title.setLabel(String.format("Player 1 Wins! (%s)", playerType.charAt(0)));
