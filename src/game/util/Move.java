@@ -4,14 +4,16 @@ import static game.Constants.Game.COLS;
 import static game.Constants.Game.ROWS;
 
 /**
- * TODO: docs
+ * A Move record to store a board state and move
+ * For efficiency, mirror board states are treated the same
  */
 public record Move (int[][] board, int move) { // TODO: implement usage
 
     /**
-     * TODO: docs
+     * Converts the board state and move into a string
+     * Mirror boards are converted to the same string, the move remains correct relative to the mirrored board
      *
-     * @return
+     * @return a String representation of the board and move
      */
     public String toString() {
         StringBuilder exact = new StringBuilder();
