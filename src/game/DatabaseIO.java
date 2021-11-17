@@ -6,16 +6,13 @@ import java.io.PrintWriter;
 import java.util.*;
 
 import static game.Constants.Game.*;
-import static game.Constants.QLearn.*;
 
 /**
  * TODO: docs
  */
 public class DatabaseIO {
-//    private static TreeMap<String, Double[]> movesMap;
-//    private static int[][] board;
-//    private static ArrayList<String> path;
-//    private static Scanner user;
+
+    private static File qualitiesFile = new File("./src/game/qualities.txt");
 
     /**
      * TODO: docs
@@ -24,7 +21,7 @@ public class DatabaseIO {
     public static Map<String, Double[]> readHistory() {
         Map<String, Double[]> history = new HashMap<>();
         try {
-            Scanner fileRead = new Scanner(QUALITIES_FILE);
+            Scanner fileRead = new Scanner(qualitiesFile);
 
             // Read file line by line - insert into movesMap
             while (fileRead.hasNextLine()) {
@@ -36,10 +33,14 @@ public class DatabaseIO {
                 history.put(moveString, totalCount);
             }
         } catch (FileNotFoundException e) {
-            System.out.println("Missing or invalid qualities.txt file: " + e);
-            throw new IllegalArgumentException("Missing or invalid qualities.txt file");
+            System.out.println("Missing or invalid qualities.txt file: " + qualitiesFile);
+            throw new IllegalArgumentException("Missing or invalid qualities.txt file: " + qualitiesFile);
         }
         return history;
+    }
+
+    public static void setQualitiesFile(File file) {
+        qualitiesFile = file;
     }
 
     /**
@@ -48,7 +49,7 @@ public class DatabaseIO {
      */
     public static void writeHistory(Map<String, Double[]> history) {
         try {
-            PrintWriter fileWrite = new PrintWriter(QUALITIES_FILE);
+            PrintWriter fileWrite = new PrintWriter(qualitiesFile);
             TreeMap<String, Double[]> sortedHistory = new TreeMap<>(history);
             for (Map.Entry<String, Double[]> entry : sortedHistory.entrySet()) {
                 Double[] totalCount = entry.getValue();

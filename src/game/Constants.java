@@ -41,8 +41,4 @@ public class Constants {
 
         public static final int AI_DELAY = 500;
     }
-
-    public static class QLearn {
-        public static File QUALITIES_FILE;  // TODO: Move somewhere else
-    }
 }

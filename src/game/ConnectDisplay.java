@@ -149,6 +149,19 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
             gameTypes.add(button);
             gameOptions.add(button);
         }
+
+        // QLearn file menu
+        JMenu qLearnMenu = new JMenu("Q-Learn Options");
+        menuBar.add(qLearnMenu);
+        JMenuItem chooseFile = new JMenuItem("Select Qualities File");
+        qLearnMenu.add(chooseFile);
+        chooseFile.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            int returnValue = fileChooser.showOpenDialog(null);
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                DatabaseIO.setQualitiesFile(fileChooser.getSelectedFile());
+            }
+        });
     }
 
     /**
@@ -261,15 +274,16 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
      * TODO: docs
      */
     private void updateWinText() {
-        // TODO: some way to show the type of player than won (human, algo, qlearn)
-
         title.setColor(Color.BLUE);
         if (game.checkWin() % 1 == 0.5) {
             title.setLabel("It's a tie!!");
         } else {
+            // TODO: some way to show the type of player than won (human, algo, qlearn)
+            String playerType = game.currentPlayer().getClass().toString().split("\\.")[2];
+
             switch ((int) game.checkWin()) {
-                case PLAYER_1 -> title.setLabel("Player 1 Wins!");
-                case PLAYER_2 -> title.setLabel("Player 2 Wins!");
+                case PLAYER_1 -> title.setLabel(String.format("Player 1 Wins! (%s)", playerType.charAt(0)));
+                case PLAYER_2 -> title.setLabel(String.format("Player 2 Wins! (%s)", playerType.charAt(0)));
             }
         }
     }
