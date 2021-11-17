@@ -9,11 +9,10 @@ import java.util.Map;
 import static game.Constants.Game.*;
 
 /**
- * A Connect 4 Game
+ * A Connect4 Game
  * Maintains Human and AI players
  */
 public class ConnectGame {
-    private static ConnectGame instance;
     protected Player[] players;
     private int[][] board; // -1 - empty, 0 - player1, 1 - player2
     private int currPlayer;
@@ -32,7 +31,7 @@ public class ConnectGame {
     }
 
     /**
-     * Creates an emtpy board
+     * Creates an empty board
      */
     private void initBoard() {
         // initialize empty board
