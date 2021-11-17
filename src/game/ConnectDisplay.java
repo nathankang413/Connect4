@@ -170,7 +170,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
 
     /**
      * Handles mouse clicks
-     * Drops a piece in the corrent column on click
+     * Drops a piece in the current column on click
      *
      * @param mouseEvent the mouse click
      */
