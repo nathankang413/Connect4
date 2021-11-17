@@ -6,7 +6,7 @@ import game.players.Player;
 import game.players.QLearnPlayer;
 
 /**
- * TODO: docs
+ * A helper class to generate players for Connect4
  */
 public class GameType {
     // TODO: move to constants?
@@ -15,13 +15,14 @@ public class GameType {
     public final static int Q_LEARN = 2;
     public final static int Q_LEARN_NEW = 3;
     public final static int Q_LEARN_RAND = 4;
+
     private final int[] playerTypes;
 
     /**
-     * TODO: docs
+     * Creates a new GameType with the given types of players
      *
-     * @param player1
-     * @param player2
+     * @param player1 type of player 1
+     * @param player2 type of player 2
      */
     public GameType(int player1, int player2) {
         if (invalidGameType(player1)) {
@@ -35,19 +36,19 @@ public class GameType {
     }
 
     /**
-     * TODO: docs
+     * Checks whether the given player type is valid
      *
-     * @param type
-     * @return
+     * @param type the given player type
+     * @return true if the type is invalid
      */
     private boolean invalidGameType(int type) {
         return type != HUMAN && type != ALGORITHM && type != Q_LEARN && type != Q_LEARN_NEW && type != Q_LEARN_RAND;
     }
 
     /**
-     * TODO: docs
+     * Generates the correct players types in random order
      *
-     * @return
+     * @return an array of the correct players in random order
      */
     public Player[] getPlayers() {
         Player[] players = new Player[2];
