@@ -15,13 +15,12 @@ import static game.Constants.Game.ROWS;
  * TODO: docs
  */
 public class DatabaseIO {
-
     private static File qualitiesFile = new File("./src/game/qualities.txt");
 
     /**
-     * TODO: docs
+     * Reads in history of all games from database into a Map
      *
-     * @return
+     * @return a map of the history
      */
     public static Map<String, Double[]> readHistory() {
         Map<String, Double[]> history = new HashMap<>();
@@ -44,14 +43,10 @@ public class DatabaseIO {
         return history;
     }
 
-    public static void setQualitiesFile(File file) {
-        qualitiesFile = file;
-    }
-
     /**
-     * TODO: docs
+     * Writes the history of a completed game into the database
      *
-     * @param history
+     * @param history the history of the completed game
      */
     public static void writeHistory(Map<String, Double[]> history) {
         try {
@@ -69,10 +64,10 @@ public class DatabaseIO {
     }
 
     /**
-     * TODO: docs
+     * Converts a board state into string format used by database
      *
-     * @param board
-     * @return
+     * @param board the board state
+     * @return the string format
      */
     public static String boardToDatabaseString(int[][] board) {
         StringBuilder str = new StringBuilder();
