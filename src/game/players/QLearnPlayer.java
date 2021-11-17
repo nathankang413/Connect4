@@ -5,24 +5,24 @@ import game.DatabaseIO;
 import java.util.ArrayList;
 import java.util.Map;
 
-import static game.Constants.Game.*;
+import static game.Constants.Game.COLS;
 
 /**
  * TODO: docs
  */
 public class QLearnPlayer extends AIPlayer {
+    // TODO: move to constants?
+    public static final int NORMAL = 0;
+    public static final int NEW = 1;
+    public static final int RANDOM = 2;
     private static final int MAX_STATES = 10000;
     private final double useRand;
     private final boolean onlyNew;
     private final Map<String, Double[]> movesMap;
 
-    // TODO: move to constants?
-    public static final int NORMAL = 0;
-    public static final int NEW = 1;
-    public static final int RANDOM = 2;
-
     /**
      * TODO: docs
+     *
      * @param logic 0 - normal, 1 - new moves, 2 - random moves
      */
     public QLearnPlayer(int logic) {
@@ -57,6 +57,7 @@ public class QLearnPlayer extends AIPlayer {
 
     /**
      * TODO: docs
+     *
      * @param board
      * @param playerNum
      * @return
@@ -94,6 +95,7 @@ public class QLearnPlayer extends AIPlayer {
 
     /**
      * TODO: docs
+     *
      * @param board
      * @param playerNum
      * @return
@@ -121,6 +123,7 @@ public class QLearnPlayer extends AIPlayer {
 
     /**
      * TODO: docs
+     *
      * @param board
      * @param playerNum
      * @return
@@ -151,7 +154,7 @@ public class QLearnPlayer extends AIPlayer {
             }
         }
         // weed out illegal moves
-        for (int i=leastPlayed.size()-1; i>=0; i--) {
+        for (int i = leastPlayed.size() - 1; i >= 0; i--) {
             if (checkDrop(board, playerNum, leastPlayed.get(i)) < 0) {
                 leastPlayed.remove(i);
             }
@@ -167,6 +170,7 @@ public class QLearnPlayer extends AIPlayer {
 
     /**
      * TODO: docs
+     *
      * @param board
      * @param playerNum
      * @return

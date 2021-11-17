@@ -1,7 +1,6 @@
 package game;
 
 import java.awt.*;
-import java.io.File;
 
 public class Constants {
     public static class Game {
@@ -37,7 +36,7 @@ public class Constants {
         public static final int PERCENT_BAR_PADDING = 5;
         public static final String PERCENT_BAR_FONT = "Arial-20";
 
-        public static final Color COLUMN_HIGHLIGHT = new Color(51,153,255);
+        public static final Color COLUMN_HIGHLIGHT = new Color(51, 153, 255);
 
         public static final int AI_DELAY = 500;
     }

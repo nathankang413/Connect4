@@ -3,7 +3,7 @@ package game.test;
 import game.ConnectDisplay;
 
 /**
- * game.Tester class for ConnectGame
+ * Tester class for ConnectGame
  *
  * @author Nathan Gong and Nathan Kang
  */
