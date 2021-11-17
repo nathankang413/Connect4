@@ -6,7 +6,7 @@ package game.players;
 public interface Player {
 
     /**
-     * plays one turn of Connect4
+     * Plays one turn of Connect4
      *
      * @param board the current board state
      * @param playerNum the number of the player

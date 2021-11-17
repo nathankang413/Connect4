@@ -9,9 +9,9 @@ public abstract class AIPlayer implements Player {
     /**
      * Determines the "score" for a given drop. The score is defined as the largest streak of pieces this drop will form.
      *
-     * @param board - the board
+     * @param board     - the board
      * @param playerNum - number of current player
-     * @param col - the column of the drop
+     * @param col       - the column of the drop
      * @return the score
      */
     protected int checkDrop(int[][] board, int playerNum, int col) {

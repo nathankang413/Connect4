@@ -5,25 +5,24 @@ import game.DatabaseIO;
 import java.util.ArrayList;
 import java.util.Map;
 
-import static game.Constants.Game.*;
+import static game.Constants.Game.COLS;
 
 /**
  * An AIPLayer which uses previous games to select the optimal move
  * Contains various training modes
  */
 public class QLearnPlayer extends AIPlayer {
+    // TODO: move to constants?
+    public static final int NORMAL = 0;
+    public static final int NEW = 1;
+    public static final int RANDOM = 2;
     private static final int MAX_STATES = 10000;
     private final double useRand;
     private final boolean onlyNew;
     private final Map<String, Double[]> movesMap;
 
-    // TODO: move to constants?
-    public static final int NORMAL = 0;
-    public static final int NEW = 1;
-    public static final int RANDOM = 2;
-
     /**
-     * creates a new QLearnPlayer with the given training/logic style
+     * Creates a new QLearnPlayer with the given training/logic style
      *
      * @param logic 0 - normal, 1 - new moves, 2 - random moves
      */
@@ -51,14 +50,14 @@ public class QLearnPlayer extends AIPlayer {
     }
 
     /**
-     * creates a new QLearnPlayer with the normal logic style
+     * Creates a new QLearnPlayer with the normal logic style
      */
     public QLearnPlayer() {
         this(0);
     }
 
     /**
-     * plays one turn of Connect4 using the given logic style
+     * Plays one turn of Connect4 using the given logic style
      *
      * @param board the current board state
      * @param playerNum the number of the player
@@ -96,7 +95,7 @@ public class QLearnPlayer extends AIPlayer {
     }
 
     /**
-     * finds the optimal move in the current board state from previous stored games
+     * Finds the optimal move in the current board state from previous stored games
      *
      * @param board the current board state
      * @param playerNum the number of the player
@@ -124,7 +123,7 @@ public class QLearnPlayer extends AIPlayer {
     }
 
     /**
-     * finds the least played move in the position
+     * Finds the least played move in the position
      *
      * @param board the current board state
      * @param playerNum the number of the player
@@ -156,7 +155,7 @@ public class QLearnPlayer extends AIPlayer {
             }
         }
         // weed out illegal moves
-        for (int i=leastPlayed.size()-1; i>=0; i--) {
+        for (int i = leastPlayed.size() - 1; i >= 0; i--) {
             if (checkDrop(board, playerNum, leastPlayed.get(i)) < 0) {
                 leastPlayed.remove(i);
             }
@@ -171,7 +170,7 @@ public class QLearnPlayer extends AIPlayer {
     }
 
     /**
-     * gets a random legal move
+     * Gets a random legal move
      *
      * @param board the current board state
      * @param playerNum the number of the player

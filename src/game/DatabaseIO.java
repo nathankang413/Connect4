@@ -3,9 +3,13 @@ package game;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.TreeMap;
 
-import static game.Constants.Game.*;
+import static game.Constants.Game.COLS;
+import static game.Constants.Game.ROWS;
 
 /**
  * TODO: docs
@@ -16,6 +20,7 @@ public class DatabaseIO {
 
     /**
      * TODO: docs
+     *
      * @return
      */
     public static Map<String, Double[]> readHistory() {
@@ -45,6 +50,7 @@ public class DatabaseIO {
 
     /**
      * TODO: docs
+     *
      * @param history
      */
     public static void writeHistory(Map<String, Double[]> history) {
@@ -64,6 +70,7 @@ public class DatabaseIO {
 
     /**
      * TODO: docs
+     *
      * @param board
      * @return
      */

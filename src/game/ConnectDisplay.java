@@ -4,9 +4,10 @@ import acm.graphics.GObject;
 import acm.program.GraphicsProgram;
 import acm.program.ProgramMenuBar;
 import game.players.HumanPlayer;
-import game.util.*;
 import game.util.Button;
+import game.util.*;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,7 +15,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import javax.swing.*;
 
 import static game.Constants.GUI.*;
 import static game.Constants.Game.*;
@@ -24,12 +24,12 @@ import static game.Constants.Game.*;
  */
 public class ConnectDisplay extends GraphicsProgram implements MouseListener, ActionListener {
     private static ConnectDisplay instance;
+    private final Timer aiTimer;
     private Column[] frame;
     private Slot[][] positions;
     private TextDisplay title;
     private PercentBar[] winRateDisplays;
     private ConnectGame game;
-    private final Timer aiTimer;
     private GameType gameType;
     private boolean showDatabase;
     private boolean autoReset;
@@ -46,6 +46,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
 
     /**
      * TODO: docs
+     *
      * @return
      */
     public static ConnectDisplay getInstance() {
@@ -89,7 +90,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
 
         // win rate bars underneath the buttons
         winRateDisplays = new PercentBar[7];
-        for (int i=0; i<COLS; i++) {
+        for (int i = 0; i < COLS; i++) {
             winRateDisplays[i] = new PercentBar(BOARD_WIDTH + BUTTON_PADDING,
                     TEXT_MARGIN + BUTTON_HEIGHT + BUTTON_PADDING + i * (PERCENT_BAR_HEIGHT + PERCENT_BAR_PADDING));
             add(winRateDisplays[i]);
@@ -166,6 +167,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
 
     /**
      * TODO: docs
+     *
      * @param mouseEvent
      */
     @Override
@@ -200,6 +202,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
 
     /**
      * Runs on AITimer
+     *
      * @param e AITimer ends? TODO: docs
      */
     @Override
@@ -250,7 +253,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
         }
 
         double[][] winRates = game.getWinRates();
-        for (int i=0; i<COLS; i++) {
+        for (int i = 0; i < COLS; i++) {
             if (showDatabase) {
                 winRateDisplays[i].update(winRates[i][0], (int) winRates[i][1]);
             } else {
@@ -290,6 +293,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
 
     /**
      * TODO: docs
+     *
      * @param obj
      */
     private void add(Addable obj) {
@@ -304,6 +308,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
     private class PlayButton extends Button {
         /**
          * TODO: docs
+         *
          * @param x
          * @param y
          */

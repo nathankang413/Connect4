@@ -1,7 +1,8 @@
 package game.players;
 
 import java.util.Scanner;
-import static game.Constants.Game.*;
+
+import static game.Constants.Game.COLS;
 
 /**
  * A Human Player which gets inputs from human users

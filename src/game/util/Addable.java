@@ -9,6 +9,7 @@ public interface Addable {
 
     /**
      * TODO: docs
+     *
      * @return
      */
     GObject[] getComponents();

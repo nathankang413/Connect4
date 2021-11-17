@@ -3,7 +3,8 @@ package game;
 import game.players.HumanPlayer;
 import game.players.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Map;
 
 import static game.Constants.Game.*;
 
@@ -56,6 +57,7 @@ public class ConnectGame {
 
     /**
      * TODO: docs?
+     *
      * @return
      */
     public int currentPlayerNum() {
@@ -64,6 +66,7 @@ public class ConnectGame {
 
     /**
      * TODO: docs?
+     *
      * @return
      */
     public Player currentPlayer() {
@@ -72,6 +75,7 @@ public class ConnectGame {
 
     /**
      * TODO: docs
+     *
      * @param col
      */
     private void runTurn(int col) {
@@ -97,6 +101,7 @@ public class ConnectGame {
 
     /**
      * TODO: docs
+     *
      * @param col
      */
     public void runHumanTurn(int col) {
@@ -199,6 +204,7 @@ public class ConnectGame {
 
     /**
      * TODO: docs
+     *
      * @return
      */
     public double[][] getWinRates() {
@@ -229,6 +235,7 @@ public class ConnectGame {
 
     /**
      * TODO: docs
+     *
      * @param key
      * @param value
      */

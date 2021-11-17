@@ -19,6 +19,7 @@ public class GameType {
 
     /**
      * TODO: docs
+     *
      * @param player1
      * @param player2
      */
@@ -35,6 +36,7 @@ public class GameType {
 
     /**
      * TODO: docs
+     *
      * @param type
      * @return
      */
@@ -44,6 +46,7 @@ public class GameType {
 
     /**
      * TODO: docs
+     *
      * @return
      */
     public Player[] getPlayers() {
