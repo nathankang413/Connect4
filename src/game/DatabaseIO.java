@@ -12,7 +12,7 @@ import static game.Constants.Game.COLS;
 import static game.Constants.Game.ROWS;
 
 /**
- * TODO: docs
+ * A class to read and write move qualities data
  */
 public class DatabaseIO {
     private static File qualitiesFile = new File("./src/game/qualities.txt");

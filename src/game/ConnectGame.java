@@ -204,9 +204,9 @@ public class ConnectGame {
     }
 
     /**
-     * TODO: docs
+     * Calculates the win and play rates of each move in the current position
      *
-     * @return
+     * @return an array of win rate and play count arrays
      */
     public double[][] getWinRates() {
         if (fullHistory == null) {
@@ -235,13 +235,12 @@ public class ConnectGame {
     }
 
     /**
-     * TODO: docs
+     * Adds the given move and score to fullHistory
      *
-     * @param key
-     * @param value
+     * @param key the board-move pair
+     * @param value the resulting score
      */
     private void addToHistory(String key, double value) {
-        // TODO: some bug with moves not being added when AI plays
         if (fullHistory.containsKey(key)) {
             Double[] totalCount = fullHistory.get(key);
             totalCount[0] += value;
@@ -253,7 +252,7 @@ public class ConnectGame {
     }
 
     /**
-     * TODO: docs
+     * A Move record to store board states and the move made at the given state
      */
     private record Move(String state, int move) {
         public String toString() {
