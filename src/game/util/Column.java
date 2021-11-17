@@ -11,9 +11,13 @@ import static game.Constants.GUI.SPACING;
 import static game.Constants.Game.ROWS;
 
 /**
- * TODO: docs
+ * An individual Column in the Connect4 game
  */
 public class Column extends GRect {
+    /**
+     * @param x - x position of the column
+     * @param y - y position of column
+     */
     public Column(int x, int y) {
         super(x, y, SPACING, ROWS * SPACING);
 

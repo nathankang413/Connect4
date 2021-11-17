@@ -7,14 +7,12 @@ import java.awt.*;
 import static game.Constants.GUI.*;
 
 /**
- * TODO: docs
+ * Displays text
  */
 public class TextDisplay extends GLabel {
     /**
-     * TODO: docs
-     *
-     * @param str
-     * @param color
+     * @param str   the text to be displayed
+     * @param color the color of the text
      */
     public TextDisplay(String str, Color color) {
         super(str, TEXT_PADDING, TEXT_MARGIN - TEXT_PADDING);

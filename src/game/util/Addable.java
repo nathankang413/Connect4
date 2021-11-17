@@ -3,14 +3,12 @@ package game.util;
 import acm.graphics.GObject;
 
 /**
- * TODO: docs
+ * A GUI element class that's addable to GraphicsProgram display
  */
 public interface Addable {
 
     /**
-     * TODO: docs
-     *
-     * @return
+     * @return the constituent components of the GUI element
      */
     GObject[] getComponents();
 

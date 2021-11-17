@@ -11,20 +11,19 @@ import java.awt.event.MouseEvent;
 import static game.Constants.GUI.*;
 
 /**
- * TODO: docs
+ * A button with text that performs an action when clicked
  */
-public abstract class Button implements Addable{
+public abstract class Button implements Addable {
     GRect buttonShape;
     GLabel buttonText;
 
     /**
-     * TODO: docs
-     * @param x
-     * @param y
-     * @param str
-     * @param color
+     * @param x     - x position of button
+     * @param y     - y position of button
+     * @param label - text label of button
+     * @param color - button color
      */
-    public Button(int x, int y, String str, Color color) {
+    public Button(int x, int y, String label, Color color) {
 
         buttonShape = new GRect(x, y, BUTTON_WIDTH, BUTTON_HEIGHT);
         buttonShape.setFillColor(color);
@@ -33,32 +32,28 @@ public abstract class Button implements Addable{
         buttonShape.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if (
-                    e.getX() > x &&
-                    e.getX() < x + BUTTON_WIDTH &&
-                    e.getY() > y &&
-                    e.getY() < y + BUTTON_HEIGHT
-                ) {
-                    buttonAction();
-                }
+            if (
+                e.getX() > x &&
+                e.getX() < x + BUTTON_WIDTH &&
+                e.getY() > y &&
+                e.getY() < y + BUTTON_HEIGHT
+            ) {
+                buttonAction();
+            }
             }
         });
 
-        buttonText = new GLabel(str, x + BUTTON_PADDING, y + BUTTON_HEIGHT - BUTTON_PADDING);
+        buttonText = new GLabel(label, x + BUTTON_PADDING, y + BUTTON_HEIGHT - BUTTON_PADDING);
         buttonText.setFont(BUTTON_FONT);
     }
 
     /**
-     * TODO: docs
+     * The action that's performed when button is clicked
      */
     protected abstract void buttonAction();
 
-    /**
-     * TODO: docs
-     * @return
-     */
     @Override
     public GObject[] getComponents() {
-        return new GObject[] {buttonShape, buttonText};
+        return new GObject[]{buttonShape, buttonText};
     }
 }

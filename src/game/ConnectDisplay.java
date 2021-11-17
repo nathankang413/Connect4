@@ -255,7 +255,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
     private void updateScreen() {
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
-                positions[i][j].changeColor(game.getBoard()[i][j]);
+                positions[i][j].updateColor(game.getBoard()[i][j]);
             }
         }
 
