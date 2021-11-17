@@ -3,7 +3,7 @@ package game.players;
 import static game.Constants.Game.*;
 
 /**
- * TODO: docs
+ * An abstract Player class with capability to check moves
  */
 public abstract class AIPlayer implements Player {
     /**

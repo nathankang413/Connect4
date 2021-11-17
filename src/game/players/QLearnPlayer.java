@@ -8,7 +8,8 @@ import java.util.Map;
 import static game.Constants.Game.*;
 
 /**
- * TODO: docs
+ * An AIPLayer which uses previous games to select the optimal move
+ * Contains various training modes
  */
 public class QLearnPlayer extends AIPlayer {
     private static final int MAX_STATES = 10000;
@@ -22,7 +23,8 @@ public class QLearnPlayer extends AIPlayer {
     public static final int RANDOM = 2;
 
     /**
-     * TODO: docs
+     * creates a new QLearnPlayer with the given training/logic style
+     *
      * @param logic 0 - normal, 1 - new moves, 2 - random moves
      */
     public QLearnPlayer(int logic) {
@@ -49,17 +51,18 @@ public class QLearnPlayer extends AIPlayer {
     }
 
     /**
-     * TODO: docs
+     * creates a new QLearnPlayer with the normal logic style
      */
     public QLearnPlayer() {
         this(0);
     }
 
     /**
-     * TODO: docs
-     * @param board
-     * @param playerNum
-     * @return
+     * plays one turn of Connect4 using the given logic style
+     *
+     * @param board the current board state
+     * @param playerNum the number of the player
+     * @return the column in which to drop the piece
      */
     public int play(int[][] board, int playerNum) {
         // if can win in one, play it
@@ -93,10 +96,11 @@ public class QLearnPlayer extends AIPlayer {
     }
 
     /**
-     * TODO: docs
-     * @param board
-     * @param playerNum
-     * @return
+     * finds the optimal move in the current board state from previous stored games
+     *
+     * @param board the current board state
+     * @param playerNum the number of the player
+     * @return the optimal column in which to drop the piece
      */
     private int getBestMove(int[][] board, int playerNum) {
         // System.out.println("Checking past experience");
@@ -120,10 +124,11 @@ public class QLearnPlayer extends AIPlayer {
     }
 
     /**
-     * TODO: docs
-     * @param board
-     * @param playerNum
-     * @return
+     * finds the least played move in the position
+     *
+     * @param board the current board state
+     * @param playerNum the number of the player
+     * @return the column of the least played move
      */
     private int getNewMove(int[][] board, int playerNum) {
         ArrayList<Integer> leastPlayed = new ArrayList<>();
@@ -166,10 +171,11 @@ public class QLearnPlayer extends AIPlayer {
     }
 
     /**
-     * TODO: docs
-     * @param board
-     * @param playerNum
-     * @return
+     * gets a random legal move
+     *
+     * @param board the current board state
+     * @param playerNum the number of the player
+     * @return a random legal column to play
      */
     private int getRandomMove(int[][] board, int playerNum) {
         int move;
