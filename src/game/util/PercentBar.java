@@ -48,17 +48,17 @@ public class PercentBar implements Addable {
     }
 
     /**
-     * TODO: docs
+     * Creates a new PercentBar without data
      *
-     * @param x
-     * @param y
+     * @param x the x position of the upper left corner of the bar
+     * @param y the y position of the upper left corner of the bar
      */
     public PercentBar(int x, int y) {
         this(x, y, -1, 0);
     }
 
     /**
-     * TODO: docs
+     * Updates the bar fill and value to match the given rate
      *
      * @param rate the win rate in range [0,1]; negative win-rates signify that move has not been played
      */
@@ -79,6 +79,9 @@ public class PercentBar implements Addable {
                 posY + PERCENT_BAR_HEIGHT - PERCENT_BAR_PADDING);
     }
 
+    /**
+     * @return the constituent components of the GUI element
+     */
     @Override
     public GObject[] getComponents() {
         return new GObject[]{total, percent, rateLabel, countLabel};
