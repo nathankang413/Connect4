@@ -9,7 +9,6 @@ import game.players.QLearnPlayer;
  * A helper class to generate players for Connect4
  */
 public class GameType {
-    // TODO: move to constants?
     public final static int HUMAN = 0;
     public final static int ALGORITHM = 1;
     public final static int Q_LEARN = 2;
