@@ -24,7 +24,7 @@ public class DatabaseIO {
     public static Map<String, Double[]> readHistory() {
         Map<String, Double[]> history = new HashMap<>();
         try {
-            Scanner fileRead = new Scanner(new File(QUALITIES_FILE));
+            Scanner fileRead = new Scanner(QUALITIES_FILE);
 
             // Read file line by line - insert into movesMap
             while (fileRead.hasNextLine()) {

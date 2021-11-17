@@ -1,6 +1,7 @@
 package game;
 
 import java.awt.*;
+import java.io.File;
 
 public class Constants {
     public static class Game {
@@ -42,6 +43,6 @@ public class Constants {
     }
 
     public static class QLearn {
-        public static final String QUALITIES_FILE = "./src/game/qualities.txt";
+        public static File QUALITIES_FILE;  // TODO: Move somewhere else
     }
 }
