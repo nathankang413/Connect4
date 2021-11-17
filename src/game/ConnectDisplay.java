@@ -89,8 +89,6 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
 
         add(new PlayButton(BOARD_WIDTH + BUTTON_PADDING, TEXT_MARGIN));
 
-        // TODO: label that shows number of total games at that position (leave for Kang)
-
         // win rate bars underneath the buttons
         winRateDisplays = new PercentBar[7];
         for (int i = 0; i < COLS; i++) {
@@ -98,9 +96,6 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
                     TEXT_MARGIN + BUTTON_HEIGHT + BUTTON_PADDING + i * (PERCENT_BAR_HEIGHT + PERCENT_BAR_PADDING));
             add(winRateDisplays[i]);
         }
-
-        // TODO: back button for database reader
-
     }
 
     /**
@@ -288,7 +283,6 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
         if (game.checkWin() % 1 == 0.5) {
             title.setLabel("It's a tie!!");
         } else {
-            // TODO: DOESN'T WORK - gets the wrong player
             String playerType = game.getOtherPlayer().getClass().toString().split("\\.")[2];
 
             switch ((int) game.checkWin()) {

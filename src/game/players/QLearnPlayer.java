@@ -12,11 +12,12 @@ import static game.Constants.Game.COLS;
  * Contains various training modes
  */
 public class QLearnPlayer extends AIPlayer {
-    // TODO: move to constants?
     public static final int NORMAL = 0;
     public static final int NEW = 1;
     public static final int RANDOM = 2;
+
     private static final int MAX_STATES = 10000;
+
     private final double useRand;
     private final boolean onlyNew;
     private final Map<String, Double[]> movesMap;
