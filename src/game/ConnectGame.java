@@ -32,7 +32,7 @@ public class ConnectGame {
     }
 
     /**
-     * TODO: docs
+     * Creates an emtpy board
      */
     private void initBoard() {
         // initialize empty board
@@ -47,43 +47,37 @@ public class ConnectGame {
     }
 
     /**
-     * Getter method for board
-     *
-     * @return board
+     * @return the current board state
      */
     public int[][] getBoard() {
         return board;
     }
 
     /**
-     * TODO: docs?
-     *
-     * @return
+     * @return the current player number
      */
     public int currentPlayerNum() {
         return currPlayer;
     }
 
     /**
-     * TODO: docs?
-     *
-     * @return
+     * @return the current Player object
      */
     public Player getCurrentPlayer() {
         return players[currPlayer];
     }
 
     /**
-     * @return the player not currently playing
+     * @return the Player not currently playing
      */
     public Player getOtherPlayer() {
         return players[1-currPlayer];
     }
 
     /**
-     * TODO: docs
+     * Drops a piece at the given column and increments the player
      *
-     * @param col
+     * @param col the column in which to drop the piece
      */
     private void runTurn(int col) {
         currHistory.add(new Move(DatabaseIO.boardToDatabaseString(board), col));
@@ -96,7 +90,7 @@ public class ConnectGame {
     }
 
     /**
-     * TODO: docs
+     * Gets the AI move and runs a turn
      */
     public void runAITurn() {
         if (players[currPlayer] instanceof HumanPlayer) {
@@ -107,9 +101,9 @@ public class ConnectGame {
     }
 
     /**
-     * TODO: docs
+     * Runs a turn with the given column
      *
-     * @param col
+     * @param col the column in which to drop the piece
      */
     public void runHumanTurn(int col) {
         if (!(players[currPlayer] instanceof HumanPlayer)) {
@@ -187,7 +181,7 @@ public class ConnectGame {
     }
 
     /**
-     * TODO: docs
+     * Saves the game to the qualities file
      */
     public void updateHistory() {
         boolean tie = checkWin() == 0.5;
