@@ -7,7 +7,19 @@ import static game.Constants.Game.ROWS;
  * A Move record to store a board state and move
  * For efficiency, mirror board states are treated the same
  */
-public record Move(int[][] board, int move) { // TODO: implement usage
+public class Move { // TODO: implement usage
+
+    int[][] board;
+    int move;
+
+    public Move (int[][] board, int move) {
+        this.board = new int[ROWS][COLS];
+        for (int i=0; i<ROWS; i++) {
+            System.arraycopy(board[i], 0, this.board[i], 0, COLS);
+        }
+        this.move = move;
+    }
+
     /**
      * Converts the board state and move into a string
      * Mirror boards are converted to the same string, the move remains correct relative to the mirrored board
