@@ -7,7 +7,7 @@ import static game.Constants.Game.ROWS;
  * A Move record to store a board state and move
  * For efficiency, mirror board states are treated the same
  */
-public record Move(int[][] board, int move) { // TODO: implement usage
+public record Move(int[][] board, int move) implements Comparable<Move> { // TODO: implement usage
     /**
      * Converts the board state and move into a string
      * Mirror boards are converted to the same string, the move remains correct relative to the mirrored board
@@ -54,5 +54,10 @@ public record Move(int[][] board, int move) { // TODO: implement usage
     public boolean equals(Object o) {
         if (!(o instanceof Move m)) return false;
         return this.toString().equals(m.toString());
+    }
+
+    @Override
+    public int compareTo(Move o) {
+        return this.toString().compareTo(o.toString());
     }
 }
