@@ -7,11 +7,17 @@ import static game.Constants.Game.ROWS;
  * A Move record to store a board state and move
  * For efficiency, mirror board states are treated the same
  */
-public class Move implements Comparable<Move> { // TODO: implement usage
+public class Move implements Comparable<Move> {
 
     int[][] board;
     int move;
 
+    /**
+     * TODO: DOCS
+     *
+     * @param board
+     * @param move
+     */
     public Move (int[][] board, int move) {
         this.board = new int[ROWS][COLS];
         for (int i=0; i<ROWS; i++) {
@@ -39,7 +45,7 @@ public class Move implements Comparable<Move> { // TODO: implement usage
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode() { // used in HashMap
         return toString().hashCode();
     }
 
@@ -55,7 +61,7 @@ public class Move implements Comparable<Move> { // TODO: implement usage
         int[][] board = new int[ROWS][COLS];
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
-                board[i][j] = Character.getNumericValue(boardStr.charAt(i * COLS + j));
+                board[i][j] = Character.getNumericValue(boardStr.charAt(i * COLS + j)) - 1;
             }
         }
         int move = Integer.parseInt(split[1]);

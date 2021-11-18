@@ -3,7 +3,7 @@ package game.util;
 /**
  * TODO: DOCS
  */
-public class MoveHistory { // TODO: implement usage
+public class MoveMetrics {
     private int score, count;
 
     /**
@@ -12,28 +12,20 @@ public class MoveHistory { // TODO: implement usage
      * @param score
      * @param count
      */
-    public MoveHistory(int score, int count) {
+    public MoveMetrics(int score, int count) {
         this.score = score;
         this.count = count;
     }
 
-    /**
-     * @return
-     */
+
     public int getScore() {
         return score;
     }
 
-    /**
-     * @return
-     */
     public int getCount() {
         return count;
     }
 
-    /**
-     * @param score
-     */
     public void addScore(int score) {
         this.score += score;
     }

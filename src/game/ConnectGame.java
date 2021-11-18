@@ -3,11 +3,10 @@ package game;
 import game.players.HumanPlayer;
 import game.players.Player;
 import game.util.Move;
-import game.util.MoveHistory;
+import game.util.MoveMetrics;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Set;
 
 import static game.Constants.Game.*;
 
@@ -20,7 +19,7 @@ public class ConnectGame {
     private int[][] board; // -1 - empty, 0 - player1, 1 - player2
     private int currPlayer;
     private ArrayList<Move> currHistory;
-    private Map<Move, MoveHistory> fullHistory;
+    private Map<Move, MoveMetrics> fullHistory;
 
     /**
      * Creates a new ConnectGame object with the given players
@@ -82,7 +81,7 @@ public class ConnectGame {
      * @param col the column in which to drop the piece
      */
     private void runTurn(int col) {
-        currHistory.add(new Move(board, col)); //TODO: this will be buggy
+        currHistory.add(new Move(board, col));
         try {
             dropPiece(col);
             currPlayer = 1 - currPlayer;
@@ -217,7 +216,7 @@ public class ConnectGame {
 
         double[][] winRates = new double[COLS][2];
         for (int i = 0; i < COLS; i++) {
-            Move move = new Move(board, i);  //TODO this will create some bugs
+            Move move = new Move(board, i);
             if (fullHistory.containsKey(move)) {
                 double totalQ = fullHistory.get(move).getScore();
                 double count = fullHistory.get(move).getCount();
@@ -244,12 +243,12 @@ public class ConnectGame {
      */
     private void addToHistory(Move move, int score) {
         if (fullHistory.containsKey(move)) {
-            MoveHistory moveHistory = fullHistory.get(move);
+            MoveMetrics moveMetrics = fullHistory.get(move);
 
-            moveHistory.addScore(score);
-            moveHistory.incrementCount();
+            moveMetrics.addScore(score);
+            moveMetrics.incrementCount();
         } else {
-            fullHistory.put(move, new MoveHistory(score, 1));
+            fullHistory.put(move, new MoveMetrics(score, 1));
         }
     }
 }

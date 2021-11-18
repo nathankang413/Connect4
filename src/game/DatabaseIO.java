@@ -1,7 +1,7 @@
 package game;
 
 import game.util.Move;
-import game.util.MoveHistory;
+import game.util.MoveMetrics;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -15,15 +15,15 @@ import static game.Constants.Game.ROWS;
  * A class to read and write move qualities data
  */
 public class DatabaseIO {
-    private static File qualitiesFile = new File("./src/game/qualities.txt");
+    private static File qualitiesFile = new File("./src/game/test.txt");
 
     /**
      * Reads in history of all games from database into a Map
      *
      * @return a map of the history
      */
-    public static Map<Move, MoveHistory> readHistory() {
-        Map<Move, MoveHistory> history = new HashMap<>();
+    public static Map<Move, MoveMetrics> readHistory() {
+        Map<Move, MoveMetrics> history = new HashMap<>();
         try {
             Scanner fileRead = new Scanner(qualitiesFile);
 
@@ -32,9 +32,9 @@ public class DatabaseIO {
                 String readLine = fileRead.nextLine();
                 String[] split = readLine.split(":");
                 Move move = Move.fromString(split[0]);
-                MoveHistory moveHistory = new MoveHistory(Integer.parseInt(split[1]), Integer.parseInt(split[2]));
+                MoveMetrics moveMetrics = new MoveMetrics(Integer.parseInt(split[1]), Integer.parseInt(split[2]));
 
-                history.put(move, moveHistory);
+                history.put(move, moveMetrics);
             }
         } catch (FileNotFoundException e) {
             System.out.println("Missing or invalid qualities.txt file: " + qualitiesFile);
@@ -48,14 +48,14 @@ public class DatabaseIO {
      *
      * @param history the history of the completed game
      */
-    public static void writeHistory(Map<Move, MoveHistory> history) {
+    public static void writeHistory(Map<Move, MoveMetrics> history) {
         try {
             PrintWriter fileWrite = new PrintWriter(qualitiesFile);
-            Map<Move, MoveHistory> sortedHistory = new TreeMap<>(history);
-            for (Map.Entry<Move, MoveHistory> entry : sortedHistory.entrySet()) {
+            Map<Move, MoveMetrics> sortedHistory = new TreeMap<>(history);
+            for (Map.Entry<Move, MoveMetrics> entry : sortedHistory.entrySet()) {
                 Move move = entry.getKey();
-                MoveHistory moveHistory = entry.getValue();
-                fileWrite.println(move.toString() + ":" + moveHistory.getScore() + ":" + moveHistory.getCount());
+                MoveMetrics moveMetrics = entry.getValue();
+                fileWrite.println(move.toString() + ":" + moveMetrics.getScore() + ":" + moveMetrics.getCount());
             }
             fileWrite.flush();
             fileWrite.close();
