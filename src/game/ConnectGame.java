@@ -189,14 +189,13 @@ public class ConnectGame {
         boolean winner = true;
 
         // iterate backwards through currHistory, alternate winning and losing qualities
-        // TODO: get rid of magic numbers
         for (int i = currHistory.size() - 1; i >= 0; i--) {
             if (tie) {
-                addToHistory(currHistory.get(i), 0);
+                addToHistory(currHistory.get(i), TIE);
             } else if (winner) {
-                addToHistory(currHistory.get(i), 1);
+                addToHistory(currHistory.get(i), WIN);
             } else {
-                addToHistory(currHistory.get(i), -1);
+                addToHistory(currHistory.get(i), LOSS);
             }
             winner = !winner;
         }

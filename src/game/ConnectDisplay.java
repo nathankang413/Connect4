@@ -29,7 +29,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
     private final Timer aiTimer;
     private Column[] frame;
     private Slot[][] positions;
-    private TextDisplay title;
+    private Text title;
     private PercentBar[] winRateDisplays;
     private ConnectGame game;
     private GameType gameType;
@@ -69,7 +69,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
         this.setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         pause(WINDOW_RESIZE_WAIT);
 
-        title = new TextDisplay("Connect 4", Color.BLUE);
+        title = new Text("Connect 4", Color.BLUE);
         add(title);
 
         // set up frame and positions for display

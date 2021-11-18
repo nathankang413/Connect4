@@ -18,10 +18,10 @@ public abstract class Button implements Addable {
     GLabel buttonText;
 
     /**
-     * @param x     - x position of button
-     * @param y     - y position of button
-     * @param label - text label of button
-     * @param color - button color
+     * @param x     x position of button
+     * @param y     y position of button
+     * @param label text label of button
+     * @param color button color
      */
     public Button(int x, int y, String label, Color color) {
 

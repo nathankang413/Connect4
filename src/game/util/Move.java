@@ -18,7 +18,7 @@ public class Move implements Comparable<Move> {
      * @param board
      * @param move
      */
-    public Move (int[][] board, int move) {
+    public Move(int[][] board, int move) {
         this.board = new int[ROWS][COLS];
         for (int i=0; i<ROWS; i++) {
             System.arraycopy(board[i], 0, this.board[i], 0, COLS);

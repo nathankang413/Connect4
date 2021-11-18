@@ -109,7 +109,7 @@ public class QLearnPlayer extends AIPlayer {
         double bestQ = 0;
         int bestMove = -1;
         for (int i = 0; i < COLS; i++) {
-            Move move = new Move(board, i); //TODO: this will create some errors
+            Move move = new Move(board, i);
             if (movesMap.containsKey(move)) {
                 double averageQ = (double) movesMap.get(move).getScore() / movesMap.get(move).getCount();
                 if (averageQ > bestQ) {
@@ -137,7 +137,7 @@ public class QLearnPlayer extends AIPlayer {
         double min = 999;
         // find least-played moves
         for (int i = 0; i < COLS; i++) {
-            Move move = new Move(board, i); //TODO: this will create some errors
+            Move move = new Move(board, i);
             if (movesMap.containsKey(move)) {
                 int count = (int) (double) movesMap.get(move).getCount();
                 if (count < min) {

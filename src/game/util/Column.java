@@ -15,8 +15,8 @@ import static game.Constants.Game.ROWS;
  */
 public class Column extends GRect {
     /**
-     * @param x - x position of the column
-     * @param y - y position of column
+     * @param x x-position of the column
+     * @param y y-position of column
      */
     public Column(int x, int y) {
         super(x, y, SPACING, ROWS * SPACING);
