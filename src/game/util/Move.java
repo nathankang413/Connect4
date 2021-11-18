@@ -41,7 +41,7 @@ public class Move implements Comparable<Move> {
                 mirror.append(board[i][COLS - j - 1] + 1);
             }
         }
-        return exact.compareTo(mirror) < 0 ? exact + "-" + move : mirror + "-" + (COLS - move - 1);
+        return exact.compareTo(mirror) <= 0 ? exact + "-" + move : mirror + "-" + (COLS - move - 1);
     }
 
     @Override
