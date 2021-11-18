@@ -2,7 +2,7 @@ package game.players;
 
 import game.DatabaseIO;
 import game.util.Move;
-import game.util.MoveHistory;
+import game.util.MoveMetrics;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -22,7 +22,7 @@ public class QLearnPlayer extends AIPlayer {
 
     private final double useRand;
     private final boolean onlyNew;
-    private final Map<Move, MoveHistory> movesMap;
+    private final Map<Move, MoveMetrics> movesMap;
 
     /**
      * Creates a new QLearnPlayer with the given training/logic style

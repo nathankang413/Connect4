@@ -15,7 +15,7 @@ import static game.Constants.Game.ROWS;
  * A class to read and write move qualities data
  */
 public class DatabaseIO {
-    private static File qualitiesFile = new File("./src/game/test.txt");
+    private static File qualitiesFile = new File("./src/game/qualities.txt");
 
     /**
      * Reads in history of all games from database into a Map
