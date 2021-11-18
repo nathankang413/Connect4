@@ -67,4 +67,9 @@ public class Move { // TODO: implement usage
         if (!(o instanceof Move m)) return false;
         return this.toString().equals(m.toString());
     }
+
+    @Override
+    public int compareTo(Move o) {
+        return this.toString().compareTo(o.toString());
+    }
 }
