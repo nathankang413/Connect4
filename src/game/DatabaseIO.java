@@ -1,12 +1,12 @@
 package game;
 
+import game.util.Move;
+import game.util.MoveHistory;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.TreeMap;
+import java.util.*;
 
 import static game.Constants.Game.COLS;
 import static game.Constants.Game.ROWS;
@@ -22,19 +22,19 @@ public class DatabaseIO {
      *
      * @return a map of the history
      */
-    public static Map<String, Double[]> readHistory() {
-        Map<String, Double[]> history = new HashMap<>();
+    public static Map<Move, MoveHistory> readHistory() {
+        Map<Move, MoveHistory> history = new HashMap<>();
         try {
             Scanner fileRead = new Scanner(qualitiesFile);
 
             // Read file line by line - insert into movesMap
             while (fileRead.hasNextLine()) {
                 String readLine = fileRead.nextLine();
-                String[] splitString = readLine.split(":");
-                String moveString = splitString[0];
-                Double[] totalCount = {Double.parseDouble(splitString[1]), Double.parseDouble(splitString[2])};
+                String[] split = readLine.split(":");
+                Move move = Move.fromString(split[0]);
+                MoveHistory moveHistory = new MoveHistory(Integer.parseInt(split[1]), Integer.parseInt(split[2]));
 
-                history.put(moveString, totalCount);
+                history.put(move, moveHistory);
             }
         } catch (FileNotFoundException e) {
             System.out.println("Missing or invalid qualities.txt file: " + qualitiesFile);
@@ -48,13 +48,14 @@ public class DatabaseIO {
      *
      * @param history the history of the completed game
      */
-    public static void writeHistory(Map<String, Double[]> history) {
+    public static void writeHistory(Map<Move, MoveHistory> history) {
         try {
             PrintWriter fileWrite = new PrintWriter(qualitiesFile);
-            TreeMap<String, Double[]> sortedHistory = new TreeMap<>(history);
-            for (Map.Entry<String, Double[]> entry : sortedHistory.entrySet()) {
-                Double[] totalCount = entry.getValue();
-                fileWrite.println(entry.getKey() + ":" + totalCount[0] + ":" + totalCount[1]);
+            Map<Move, MoveHistory> sortedHistory = new TreeMap<>(history);
+            for (Map.Entry<Move, MoveHistory> entry : sortedHistory.entrySet()) {
+                Move move = entry.getKey();
+                MoveHistory moveHistory = entry.getValue();
+                fileWrite.println(move.toString() + ":" + moveHistory.getScore() + ":" + moveHistory.getCount());
             }
             fileWrite.flush();
             fileWrite.close();

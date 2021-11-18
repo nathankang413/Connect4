@@ -1,6 +1,8 @@
 package game.players;
 
 import game.DatabaseIO;
+import game.util.Move;
+import game.util.MoveHistory;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -20,7 +22,7 @@ public class QLearnPlayer extends AIPlayer {
 
     private final double useRand;
     private final boolean onlyNew;
-    private final Map<String, Double[]> movesMap;
+    private final Map<Move, MoveHistory> movesMap;
 
     /**
      * Creates a new QLearnPlayer with the given training/logic style
@@ -107,9 +109,9 @@ public class QLearnPlayer extends AIPlayer {
         double bestQ = 0;
         int bestMove = -1;
         for (int i = 0; i < COLS; i++) {
-            String stateMove = DatabaseIO.boardToDatabaseString(board) + "-" + i;
-            if (movesMap.containsKey(stateMove)) {
-                double averageQ = movesMap.get(stateMove)[0] / movesMap.get(stateMove)[1];
+            Move move = new Move(board, i); //TODO: this will create some errors
+            if (movesMap.containsKey(move)) {
+                double averageQ = (double) movesMap.get(move).getScore() / movesMap.get(move).getCount();
                 if (averageQ > bestQ) {
                     bestMove = i;
                     bestQ = averageQ;
@@ -135,9 +137,9 @@ public class QLearnPlayer extends AIPlayer {
         double min = 999;
         // find least-played moves
         for (int i = 0; i < COLS; i++) {
-            String stateMove = DatabaseIO.boardToDatabaseString(board) + "-" + i;
-            if (movesMap.containsKey(stateMove)) {
-                int count = (int) (double) movesMap.get(stateMove)[1];
+            Move move = new Move(board, i); //TODO: this will create some errors
+            if (movesMap.containsKey(move)) {
+                int count = (int) (double) movesMap.get(move).getCount();
                 if (count < min) {
                     leastPlayed = new ArrayList<>();
                     leastPlayed.add(i);

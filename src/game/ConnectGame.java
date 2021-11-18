@@ -2,9 +2,12 @@ package game;
 
 import game.players.HumanPlayer;
 import game.players.Player;
+import game.util.Move;
+import game.util.MoveHistory;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Set;
 
 import static game.Constants.Game.*;
 
@@ -17,7 +20,7 @@ public class ConnectGame {
     private int[][] board; // -1 - empty, 0 - player1, 1 - player2
     private int currPlayer;
     private ArrayList<Move> currHistory;
-    private Map<String, Double[]> fullHistory;
+    private Map<Move, MoveHistory> fullHistory;
 
     /**
      * Creates a new ConnectGame object with the given players
@@ -79,7 +82,7 @@ public class ConnectGame {
      * @param col the column in which to drop the piece
      */
     private void runTurn(int col) {
-        currHistory.add(new Move(DatabaseIO.boardToDatabaseString(board), col));
+        currHistory.add(new Move(board, col)); //TODO: this will be buggy
         try {
             dropPiece(col);
             currPlayer = 1 - currPlayer;
@@ -190,11 +193,11 @@ public class ConnectGame {
         // TODO: get rid of magic numbers
         for (int i = currHistory.size() - 1; i >= 0; i--) {
             if (tie) {
-                addToHistory(currHistory.get(i).toString(), 0.0);
+                addToHistory(currHistory.get(i), 0);
             } else if (winner) {
-                addToHistory(currHistory.get(i).toString(), 1.0);
+                addToHistory(currHistory.get(i), 1);
             } else {
-                addToHistory(currHistory.get(i).toString(), -1.0);
+                addToHistory(currHistory.get(i), -1);
             }
             winner = !winner;
         }
@@ -214,10 +217,10 @@ public class ConnectGame {
 
         double[][] winRates = new double[COLS][2];
         for (int i = 0; i < COLS; i++) {
-            String key = DatabaseIO.boardToDatabaseString(board) + "-" + i;
-            if (fullHistory.containsKey(key)) {
-                double totalQ = fullHistory.get(key)[0];
-                double count = fullHistory.get(key)[1];
+            Move move = new Move(board, i);  //TODO this will create some bugs
+            if (fullHistory.containsKey(move)) {
+                double totalQ = fullHistory.get(move).getScore();
+                double count = fullHistory.get(move).getCount();
 
                 double winRate = (totalQ + count) / 2 / count;
 
@@ -236,26 +239,17 @@ public class ConnectGame {
     /**
      * Adds the given move and score to fullHistory
      *
-     * @param key the board-move pair
-     * @param value the resulting score
+     * @param move  TODO
+     * @param score
      */
-    private void addToHistory(String key, double value) {
-        if (fullHistory.containsKey(key)) {
-            Double[] totalCount = fullHistory.get(key);
-            totalCount[0] += value;
-            totalCount[1]++;
-            fullHistory.put(key, totalCount);
-        } else {
-            fullHistory.put(key, new Double[]{value, 1.0});
-        }
-    }
+    private void addToHistory(Move move, int score) {
+        if (fullHistory.containsKey(move)) {
+            MoveHistory moveHistory = fullHistory.get(move);
 
-    /**
-     * A Move record to store board states and the move made at the given state
-     */
-    private record Move(String state, int move) {
-        public String toString() {
-            return state + "-" + move;
+            moveHistory.addScore(score);
+            moveHistory.incrementCount();
+        } else {
+            fullHistory.put(move, new MoveHistory(score, 1));
         }
     }
 }

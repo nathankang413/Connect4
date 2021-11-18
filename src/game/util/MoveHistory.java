@@ -3,45 +3,24 @@ package game.util;
 /**
  * TODO: DOCS
  */
-public class MoveHistory implements Comparable<MoveHistory> { // TODO: implement usage
-    private final Move move;
+public class MoveHistory { // TODO: implement usage
     private int score, count;
 
     /**
      * TODO: docs
      *
-     * @param move
      * @param score
      * @param count
      */
-    public MoveHistory(Move move, int score, int count) {
-        this.move = move;
+    public MoveHistory(int score, int count) {
         this.score = score;
         this.count = count;
     }
 
     /**
-     * TODO: docs
-     *
-     * @param o
      * @return
      */
-    @Override
-    public int compareTo(MoveHistory o) {
-        return move.toString().compareTo(o.getMove().toString());
-    }
-
-    /**
-     * @return
-     */
-    public Move getMove() {
-        return move;
-    }
-
-    /**
-     * @return
-     */
-    public double getScore() {
+    public int getScore() {
         return score;
     }
 
