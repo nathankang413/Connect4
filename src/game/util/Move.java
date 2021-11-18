@@ -7,7 +7,7 @@ import static game.Constants.Game.ROWS;
  * A Move record to store a board state and move
  * For efficiency, mirror board states are treated the same
  */
-public class Move { // TODO: implement usage
+public class Move implements Comparable<Move> { // TODO: implement usage
 
     int[][] board;
     int move;
