@@ -1,6 +1,5 @@
 package game.backend;
 
-import game.ui.ConnectDisplay;
 import game.util.Move;
 import game.util.MoveMetrics;
 

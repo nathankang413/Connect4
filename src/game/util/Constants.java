@@ -1,6 +1,6 @@
 package game.util;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class Constants {
     public static class Game {
