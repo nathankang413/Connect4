@@ -70,20 +70,4 @@ public class DatabaseIO {
     public static void setQualitiesFile(File file) {
         qualitiesFile = file;
     }
-
-    /**
-     * Converts a board state into string format used by database
-     *
-     * @param board the board state
-     * @return the string format
-     */
-    public static String boardToDatabaseString(int[][] board) {
-        StringBuilder str = new StringBuilder();
-        for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < COLS; j++) {
-                str.append(board[i][j] + 1);
-            }
-        }
-        return str.toString();
-    }
 }
