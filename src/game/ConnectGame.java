@@ -189,7 +189,7 @@ public class ConnectGame {
      */
     public double[][] getWinRates() {
         double[][] winRates = new double[COLS][2];
-        Map<Move, MoveMetrics> qualitiesMap = DatabaseIO.getInstance().getQualitiesMap();
+        Map<Move, MoveMetrics> qualitiesMap = DatabaseIO.getQualitiesMap();
 
         for (int i = 0; i < COLS; i++) {
             Move move = new Move(getBoard(), i);

@@ -3,6 +3,7 @@ package game.backend;
 import game.util.Move;
 import game.util.MoveMetrics;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -11,52 +12,58 @@ import java.util.*;
 import static game.util.Constants.Game.*;
 
 /**
- * A singleton class to read, store, and write move qualities data
+ * A class to read, store, and write move qualities data
  */
 public class DatabaseIO {
-    private static DatabaseIO instance;
     private static File qualitiesFile = new File("./src/game/backend/qualities.txt");
 
-    private Map<Move, MoveMetrics> qualitiesMap;
+    private static Map<Move, MoveMetrics> qualitiesMap;
 
-    private DatabaseIO() {
-        readFile();
-    }
-
-    public static DatabaseIO getInstance() {
-        if (instance == null) {
-            instance = new DatabaseIO();
+    /**
+     * Initializes the DatabaseIO if it hasn't been initialized already
+     *
+     * @return whether initialization was successful
+     */
+    public static boolean initialize() {
+        if (qualitiesMap == null) {
+            try {
+                readFile();
+            } catch (FileNotFoundException e) {
+                JOptionPane.showMessageDialog(null, "Missing qualities file");
+                qualitiesMap = null;
+                return false;
+            } catch(Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Qualities file invalid");
+                qualitiesMap = null;
+                return false;
+            }
         }
-        return instance;
+        return true;
     }
 
     /**
      * Reads in history of all games from file into a Map
      */
-    public void readFile() {
+    public static void readFile() throws FileNotFoundException {
+        Scanner fileRead = new Scanner(qualitiesFile);
         qualitiesMap = new HashMap<>();
-        try {
-            Scanner fileRead = new Scanner(qualitiesFile);
 
-            // Read file line by line - insert into movesMap
-            while (fileRead.hasNextLine()) {
-                String readLine = fileRead.nextLine();
-                String[] split = readLine.split(":");
-                Move move = Move.fromString(split[0]);
-                MoveMetrics moveMetrics = new MoveMetrics(Integer.parseInt(split[1]), Integer.parseInt(split[2]));
+        // Read file line by line - insert into movesMap
+        while (fileRead.hasNextLine()) {
+            String readLine = fileRead.nextLine();
+            String[] split = readLine.split(":");
+            Move move = Move.fromString(split[0]);
+            MoveMetrics moveMetrics = new MoveMetrics(Integer.parseInt(split[1]), Integer.parseInt(split[2]));
 
-                qualitiesMap.put(move, moveMetrics);
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("Missing or invalid qualities.txt file: " + qualitiesFile);
-            throw new IllegalArgumentException("Missing or invalid qualities.txt file: " + qualitiesFile);
+            qualitiesMap.put(move, moveMetrics);
         }
     }
 
     /**
      * Writes the current qualitiesMap to the file
      */
-    public void writeFile() {
+    public static void writeFile() {
         try {
             PrintWriter fileWrite = new PrintWriter(qualitiesFile);
             Map<Move, MoveMetrics> sortedHistory = new TreeMap<>(qualitiesMap);
@@ -79,7 +86,7 @@ public class DatabaseIO {
      * @param gameHistory a ArrayList of moves made in one game
      * @param tie whether the game ended in a tie
      */
-    public void addToHistory(ArrayList<Move> gameHistory, boolean tie) {
+    public static void addToHistory(ArrayList<Move> gameHistory, boolean tie) {
         boolean winner = true;
 
         // iterate backwards through currHistory, alternate winning and losing qualities
@@ -101,7 +108,7 @@ public class DatabaseIO {
      * @param move the move that has been played
      * @param score the resulting score of the move
      */
-    public void addToHistory(Move move, int score) {
+    public static void addToHistory(Move move, int score) {
         if (qualitiesMap.containsKey(move)) {
             MoveMetrics moveMetrics = qualitiesMap.get(move);
 
@@ -117,9 +124,9 @@ public class DatabaseIO {
      *
      * @return the qualities Map
      */
-    public Map<Move, MoveMetrics> getQualitiesMap() {
+    public static Map<Move, MoveMetrics> getQualitiesMap() {
         if (qualitiesMap == null) {
-            readFile();
+            initialize();
         }
 
         return qualitiesMap;

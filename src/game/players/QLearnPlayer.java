@@ -28,7 +28,7 @@ public class QLearnPlayer extends AIPlayer {
      * @param logic 2 - normal, 3 - new moves, 4 - random moves (constants from GameType)
      */
     public QLearnPlayer(int logic) {
-        qualitiesMap = DatabaseIO.getInstance().getQualitiesMap();
+        qualitiesMap = DatabaseIO.getQualitiesMap();
 
         int numMapped = qualitiesMap.size();
 

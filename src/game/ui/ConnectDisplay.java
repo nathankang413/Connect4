@@ -168,7 +168,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
         // save file button
         JMenuItem saveFile = new JMenuItem("Save Qualities File");
         qLearnMenu.add(saveFile);
-        saveFile.addActionListener(e -> DatabaseIO.getInstance().writeFile());
+        saveFile.addActionListener(e -> DatabaseIO.writeFile());
     }
 
     /**
@@ -242,8 +242,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
 
         aiTimer.stop();
         updateWinText();
-//        game.updateHistory();
-        DatabaseIO.getInstance().addToHistory(game.getGameHistory(), game.checkWin()==((double) PLAYER_1 + PLAYER_2) / 2);
+        DatabaseIO.addToHistory(game.getGameHistory(), game.checkWin()==((double) PLAYER_1 + PLAYER_2) / 2);
 
         if (autoReset) {
             game = new ConnectGame(gameType.getPlayers());
@@ -314,7 +313,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
 
     @Override
     public void exit() {
-        DatabaseIO.getInstance().writeFile();
+        DatabaseIO.writeFile();
 
         super.exit();
     }
@@ -337,10 +336,13 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
          * Initiates a new game when the button is pressed
          */
         protected void buttonAction() {
-            game = new ConnectGame(gameType.getPlayers());
-            updateScreen();
-            updatePlayerText();
-            aiTimer.start();
+            boolean initSuccessful = DatabaseIO.initialize();
+            if (initSuccessful) {
+                game = new ConnectGame(gameType.getPlayers());
+                updateScreen();
+                updatePlayerText();
+                aiTimer.start();
+            }
         }
     }
 }
