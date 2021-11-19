@@ -138,11 +138,11 @@ public class ConnectGame {
      *
      * @return -1 for no win, 0 or 1 for which player wins, 0.5 for tie
      */
-    public double checkWin() {  // TODO: Magic numbers?
+    public double checkWin() {
         // check for tie
         for (int i = 0; i < COLS; i++) {
             if (board[0][i] < 0) break;
-            else if (i >= COLS - 1) return 0.5;
+            else if (i >= COLS - 1) return ((double) PLAYER_1+PLAYER_2) / 2;
         }
 
         int[][] dirs = {{0, 1}, {1, 1}, {1, 0}, {1, -1}};
@@ -180,7 +180,7 @@ public class ConnectGame {
             }
         }
 
-        return -1;
+        return EMPTY;
     }
 
     /**

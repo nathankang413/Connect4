@@ -281,7 +281,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
      */
     private void updateWinText() {
         title.setColor(Color.BLUE);
-        if (game.checkWin() % 1 == 0.5) {
+        if (game.checkWin() == ((double) PLAYER_1 + PLAYER_2) / 2) {
             title.setLabel("It's a tie!!");
         } else {
             String playerType = game.getOtherPlayer().getClass().toString().split("\\.")[2];
