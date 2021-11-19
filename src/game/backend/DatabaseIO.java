@@ -67,6 +67,8 @@ public class DatabaseIO {
      * Writes the current qualitiesMap to the file
      */
     public static void writeFile() {
+        if (qualitiesMap.size() <= 0) return;
+
         try {
             PrintWriter fileWrite = new PrintWriter(qualitiesFile);
             Map<Move, MoveMetrics> sortedHistory = new TreeMap<>(qualitiesMap);
