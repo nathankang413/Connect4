@@ -262,11 +262,13 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
             }
         }
 
-        double[][] winRates = game.getWinRates();
-        for (int i = 0; i < COLS; i++) {
-            if (showDatabase) {
+        if (showDatabase) {
+            double[][] winRates = game.getWinRates();
+            for (int i = 0; i < COLS; i++) {
                 winRateDisplays[i].update(winRates[i][0], (int) winRates[i][1]);
-            } else {
+            }
+        } else {
+            for (int i = 0; i < COLS; i++) {
                 winRateDisplays[i].update(-1, 0);
             }
         }

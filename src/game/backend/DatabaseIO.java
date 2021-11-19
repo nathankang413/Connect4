@@ -15,7 +15,7 @@ import static game.util.Constants.Game.*;
  * A class to read, store, and write move qualities data
  */
 public class DatabaseIO {
-    private static File qualitiesFile = new File("./src/game/backend/qualities.txt");
+    private static File qualitiesFile = new File("qualities.txt");
 
     private static Map<Move, MoveMetrics> qualitiesMap;
 
@@ -29,7 +29,10 @@ public class DatabaseIO {
             try {
                 readFile();
             } catch (FileNotFoundException e) {
-                JOptionPane.showMessageDialog(null, "Missing qualities file");
+                JOptionPane.showMessageDialog(null, """
+                        Missing qualities file\s
+                        In Q-Learn Options, either Select a Qualities file or\s
+                        press Save Qualities File to create a new file.""");
                 qualitiesMap = null;
                 return false;
             } catch(Exception e) {
