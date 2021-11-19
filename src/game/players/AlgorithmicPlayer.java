@@ -3,7 +3,7 @@ package game.players;
 import java.util.ArrayList;
 import java.util.List;
 
-import static game.Constants.Game.WIN_COND;
+import static game.util.Constants.Game.WIN_COND;
 
 /**
  * An AI Player which determines moves algorithmically

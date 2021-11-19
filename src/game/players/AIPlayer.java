@@ -1,6 +1,6 @@
 package game.players;
 
-import static game.Constants.Game.*;
+import static game.util.Constants.Game.*;
 
 /**
  * An abstract Player class with capability to check moves

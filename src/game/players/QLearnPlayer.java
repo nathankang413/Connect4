@@ -1,6 +1,6 @@
 package game.players;
 
-import game.DatabaseIO;
+import game.backend.DatabaseIO;
 import game.util.GameType;
 import game.util.Move;
 import game.util.MoveMetrics;
@@ -8,8 +8,8 @@ import game.util.MoveMetrics;
 import java.util.ArrayList;
 import java.util.Map;
 
-import static game.Constants.Game.COLS;
-import static game.Constants.Game.WIN_COND;
+import static game.util.Constants.Game.COLS;
+import static game.util.Constants.Game.WIN_COND;
 
 /**
  * An AIPLayer which uses previous games to select the optimal move

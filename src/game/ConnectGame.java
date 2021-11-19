@@ -1,5 +1,6 @@
 package game;
 
+import game.backend.DatabaseIO;
 import game.players.HumanPlayer;
 import game.players.Player;
 import game.util.Move;
@@ -8,7 +9,7 @@ import game.util.MoveMetrics;
 import java.util.ArrayList;
 import java.util.Map;
 
-import static game.Constants.Game.*;
+import static game.util.Constants.Game.*;
 
 /**
  * A Connect4 Game

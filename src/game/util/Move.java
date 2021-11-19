@@ -1,7 +1,7 @@
 package game.util;
 
-import static game.Constants.Game.COLS;
-import static game.Constants.Game.ROWS;
+import static game.util.Constants.Game.COLS;
+import static game.util.Constants.Game.ROWS;
 
 /**
  * A Move record to store a board state and move
