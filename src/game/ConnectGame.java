@@ -182,6 +182,34 @@ public class ConnectGame {
         return EMPTY;
     }
 
+    /**
+     * Gets the win and play rates of every move in the position
+     *
+     * @return the win and play rates of every move in the position
+     */
+    public double[][] getWinRates() {
+        double[][] winRates = new double[COLS][2];
+        Map<Move, MoveMetrics> qualitiesMap = DatabaseIO.getInstance().getQualitiesMap();
+
+        for (int i = 0; i < COLS; i++) {
+            Move move = new Move(getBoard(), i);
+            if (qualitiesMap.containsKey(move)) {
+                int totalQ = qualitiesMap.get(move).getScore();
+                int count = qualitiesMap.get(move).getCount();
+
+                double winRate = (double) (totalQ + count) / 2 / count;
+
+                winRates[i][0] = winRate;
+                winRates[i][1] = count;
+            } else {
+                winRates[i][0] = -1;
+                winRates[i][1] = 0;
+            }
+        }
+
+        return winRates;
+    }
+
     public ArrayList<Move> getGameHistory() {
         return gameHistory;
     }

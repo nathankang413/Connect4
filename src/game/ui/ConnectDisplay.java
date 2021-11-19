@@ -263,7 +263,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
             }
         }
 
-        double[][] winRates = getWinRates();
+        double[][] winRates = game.getWinRates();
         for (int i = 0; i < COLS; i++) {
             if (showDatabase) {
                 winRateDisplays[i].update(winRates[i][0], (int) winRates[i][1]);
@@ -310,29 +310,6 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
         for (GObject component : obj.getComponents()) {
             add(component);
         }
-    }
-
-    private double[][] getWinRates() {
-        double[][] winRates = new double[COLS][2];
-        Map<Move, MoveMetrics> qualitiesMap = DatabaseIO.getInstance().getQualitiesMap();
-
-        for (int i = 0; i < COLS; i++) {
-            Move move = new Move(game.getBoard(), i);
-            if (qualitiesMap.containsKey(move)) {
-                int totalQ = qualitiesMap.get(move).getScore();
-                int count = qualitiesMap.get(move).getCount();
-
-                double winRate = (double) (totalQ + count) / 2 / count;
-
-                winRates[i][0] = winRate;
-                winRates[i][1] = count;
-            } else {
-                winRates[i][0] = -1;
-                winRates[i][1] = 0;
-            }
-        }
-
-        return winRates;
     }
 
     @Override
