@@ -8,9 +8,6 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.*;
 
-import static game.Constants.Game.COLS;
-import static game.Constants.Game.ROWS;
-
 /**
  * A class to read and write move qualities data
  */
