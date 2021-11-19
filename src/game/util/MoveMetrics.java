@@ -1,16 +1,17 @@
 package game.util;
 
 /**
- * TODO: DOCS
+ * A record to store the count of games played from a certain move
+ * and the total score of those games
  */
 public class MoveMetrics {
     private int score, count;
 
     /**
-     * TODO: docs
+     * Creates a new MoveMetrics class with the given score and count
      *
-     * @param score
-     * @param count
+     * @param score the total score of the move
+     * @param count the number of times the move has been played
      */
     public MoveMetrics(int score, int count) {
         this.score = score;

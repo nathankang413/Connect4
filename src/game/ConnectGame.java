@@ -237,8 +237,8 @@ public class ConnectGame {
     /**
      * Adds the given move and score to fullHistory
      *
-     * @param move  TODO
-     * @param score
+     * @param move the move that has been played
+     * @param score the resulting score of the move
      */
     private void addToHistory(Move move, int score) {
         if (fullHistory.containsKey(move)) {

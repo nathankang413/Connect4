@@ -13,10 +13,10 @@ public class Move implements Comparable<Move> {
     int move;
 
     /**
-     * TODO: DOCS
+     * Creates a new Move to store the given board and move
      *
-     * @param board
-     * @param move
+     * @param board the current game board
+     * @param move the move made
      */
     public Move(int[][] board, int move) {
         this.board = new int[ROWS][COLS];
