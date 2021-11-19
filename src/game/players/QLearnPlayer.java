@@ -1,6 +1,7 @@
 package game.players;
 
 import game.DatabaseIO;
+import game.util.GameType;
 import game.util.Move;
 import game.util.MoveMetrics;
 
@@ -8,16 +9,13 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import static game.Constants.Game.COLS;
+import static game.Constants.Game.WIN_COND;
 
 /**
  * An AIPLayer which uses previous games to select the optimal move
  * Contains various training modes
  */
 public class QLearnPlayer extends AIPlayer {
-    public static final int NORMAL = 0;
-    public static final int NEW = 1;
-    public static final int RANDOM = 2;
-
     private static final int MAX_STATES = 10000;
 
     private final double useRand;
@@ -27,24 +25,23 @@ public class QLearnPlayer extends AIPlayer {
     /**
      * Creates a new QLearnPlayer with the given training/logic style
      *
-     * @param logic 0 - normal, 1 - new moves, 2 - random moves
+     * @param logic 2 - normal, 3 - new moves, 4 - random moves (constants from GameType)
      */
     public QLearnPlayer(int logic) {
-
         movesMap = DatabaseIO.readHistory();
 
-        double numMapped = movesMap.size();
+        int numMapped = movesMap.size();
 
         switch (logic) {
-            case NORMAL -> {
+            case GameType.Q_LEARN -> {
                 onlyNew = false;
-                useRand = Math.exp(-numMapped / MAX_STATES);
+                useRand = Math.exp(- (double) numMapped / MAX_STATES);
             }
-            case NEW -> {
+            case GameType.Q_LEARN_NEW -> {
                 onlyNew = true;
-                useRand = Math.exp(-numMapped / MAX_STATES);
+                useRand = Math.exp(- (double) numMapped / MAX_STATES);
             }
-            case RANDOM -> {
+            case GameType.Q_LEARN_RAND -> {
                 onlyNew = false;
                 useRand = 1;
             }
@@ -56,7 +53,7 @@ public class QLearnPlayer extends AIPlayer {
      * Creates a new QLearnPlayer with the normal logic style
      */
     public QLearnPlayer() {
-        this(0);
+        this(GameType.Q_LEARN);
     }
 
     /**
@@ -69,14 +66,14 @@ public class QLearnPlayer extends AIPlayer {
     public int play(int[][] board, int playerNum) {
         // if can win in one, play it
         for (int i = 0; i < board[0].length; i++) {
-            if (checkDrop(board, playerNum, i) == 4) {
+            if (checkDrop(board, playerNum, i) == WIN_COND) {
                 return i;
             }
         }
 
         // if opponent can win in one, prevent it
         for (int i = 0; i < board[0].length; i++) {
-            if (checkDrop(board, 1 - playerNum, i) == 4) {
+            if (checkDrop(board, 1 - playerNum, i) == WIN_COND) {
                 return i;
             }
         }

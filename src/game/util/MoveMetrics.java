@@ -27,6 +27,11 @@ public class MoveMetrics {
         return count;
     }
 
+    /**
+     * Adds to the score by a certain amount
+     *
+     * @param score the amount to be added
+     */
     public void addScore(int score) {
         this.score += score;
     }

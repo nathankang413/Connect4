@@ -3,16 +3,13 @@ package game.players;
 import java.util.ArrayList;
 import java.util.List;
 
+import static game.Constants.Game.WIN_COND;
+
 /**
  * An AI Player which determines moves algorithmically
  */
 public class AlgorithmicPlayer extends AIPlayer {
-    /**
-     * Plays one turn of connect for
-     *
-     * @param board the game board
-     * @return the column to drop the piece, zero-indexed
-     */
+    @Override
     public int play(int[][] board, int playerNum) {
         // find the drops which will make the biggest connect
         List<Integer> bestDrops = new ArrayList<>();
@@ -34,7 +31,7 @@ public class AlgorithmicPlayer extends AIPlayer {
 
         // if the opponent can win in one, prevent it
         for (int i = 0; i < board[0].length; i++) {
-            if (checkDrop(board, 1 - playerNum, i) == 4) {
+            if (checkDrop(board, 1 - playerNum, i) == WIN_COND) {
                 return i;
             }
         }

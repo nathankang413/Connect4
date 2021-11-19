@@ -59,8 +59,8 @@ public class GameType {
                 case HUMAN -> players[(i + startPlayer) % 2] = new HumanPlayer();
                 case ALGORITHM -> players[(i + startPlayer) % 2] = new AlgorithmicPlayer();
                 case Q_LEARN -> players[(i + startPlayer) % 2] = new QLearnPlayer();
-                case Q_LEARN_NEW -> players[(i + startPlayer) % 2] = new QLearnPlayer(QLearnPlayer.NEW);
-                case Q_LEARN_RAND -> players[(i + startPlayer) % 2] = new QLearnPlayer(QLearnPlayer.RANDOM);
+                case Q_LEARN_NEW -> players[(i + startPlayer) % 2] = new QLearnPlayer(GameType.Q_LEARN_NEW);
+                case Q_LEARN_RAND -> players[(i + startPlayer) % 2] = new QLearnPlayer(GameType.Q_LEARN_RAND);
             }
         }
 

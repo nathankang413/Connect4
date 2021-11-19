@@ -90,7 +90,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
         add(new PlayButton(BOARD_WIDTH + BUTTON_PADDING, TEXT_MARGIN));
 
         // win rate bars underneath the buttons
-        winRateDisplays = new PercentBar[7];
+        winRateDisplays = new PercentBar[COLS];
         for (int i = 0; i < COLS; i++) {
             winRateDisplays[i] = new PercentBar(BOARD_WIDTH + BUTTON_PADDING,
                     TEXT_MARGIN + BUTTON_HEIGHT + BUTTON_PADDING + i * (PERCENT_BAR_HEIGHT + PERCENT_BAR_PADDING));

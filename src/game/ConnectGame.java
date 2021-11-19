@@ -16,7 +16,7 @@ import static game.Constants.Game.*;
  */
 public class ConnectGame {
     protected Player[] players;
-    private int[][] board; // -1 - empty, 0 - player1, 1 - player2
+    private int[][] board;
     private int currPlayer;
     private ArrayList<Move> currHistory;
     private Map<Move, MoveMetrics> fullHistory;
@@ -135,9 +135,10 @@ public class ConnectGame {
     /**
      * Checks the board state for a 4-in-a-row
      *
-     * @return -1 for no win, 0 or 1 for which player wins
+     * @return -1 for no win, 0 or 1 for which player wins, 0.5 for tie
      */
-    public double checkWin() {
+    public double checkWin() {  // TODO: Magic numbers?
+        // check for tie
         for (int i = 0; i < COLS; i++) {
             if (board[0][i] < 0) break;
             else if (i >= COLS - 1) return 0.5;
@@ -224,7 +225,6 @@ public class ConnectGame {
 
                 winRates[i][0] = winRate;
                 winRates[i][1] = count;
-
             } else {
                 winRates[i][0] = -1;
                 winRates[i][1] = 0;

@@ -9,18 +9,18 @@ public abstract class AIPlayer implements Player {
     /**
      * Determines the "score" for a given drop. The score is defined as the largest streak of pieces this drop will form.
      *
-     * @param board     - the board
-     * @param playerNum - number of current player
-     * @param col       - the column of the drop
+     * @param board     the board
+     * @param playerNum number of current player
+     * @param col       the column of the drop
      * @return the score
      */
     protected int checkDrop(int[][] board, int playerNum, int col) {
         // if piece would be out of bounds
-        if (board[0][col] > -1) return -1;
+        if (board[0][col] != EMPTY) return -1;
 
         int[] dropPos = new int[2];
         for (int i = board.length - 1; i >= 0; i--) {
-            if (board[i][col] == -1) {
+            if (board[i][col] == EMPTY) {
                 dropPos[0] = i;
                 dropPos[1] = col;
                 break;
@@ -54,15 +54,13 @@ public abstract class AIPlayer implements Player {
                         break;
                     }
                     if (count >= WIN_COND) {
-                        return 4;
+                        return WIN_COND;
                     }
                 }
             }
 
-            // update maxConnect if necessary
-            if (count > maxConnect) {
-                maxConnect = count;
-            }
+            // update maxConnect
+            maxConnect = Math.max(count, maxConnect);
         }
 
         return maxConnect;
