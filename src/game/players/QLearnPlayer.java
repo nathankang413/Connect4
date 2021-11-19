@@ -18,9 +18,9 @@ import static game.util.Constants.Game.WIN_COND;
 public class QLearnPlayer extends AIPlayer {
     private static final int MAX_STATES = 10000;
 
+    private final Map<Move, MoveMetrics> qualitiesMap;
     private final double useRand;
     private final boolean onlyNew;
-    private final Map<Move, MoveMetrics> movesMap;
 
     /**
      * Creates a new QLearnPlayer with the given training/logic style
@@ -28,9 +28,9 @@ public class QLearnPlayer extends AIPlayer {
      * @param logic 2 - normal, 3 - new moves, 4 - random moves (constants from GameType)
      */
     public QLearnPlayer(int logic) {
-        movesMap = DatabaseIO.readHistory();
+        qualitiesMap = DatabaseIO.getInstance().getQualitiesMap();
 
-        int numMapped = movesMap.size();
+        int numMapped = qualitiesMap.size();
 
         switch (logic) {
             case GameType.Q_LEARN -> {
@@ -107,8 +107,8 @@ public class QLearnPlayer extends AIPlayer {
         int bestMove = -1;
         for (int i = 0; i < COLS; i++) {
             Move move = new Move(board, i);
-            if (movesMap.containsKey(move)) {
-                double averageQ = (double) movesMap.get(move).getScore() / movesMap.get(move).getCount();
+            if (qualitiesMap.containsKey(move)) {
+                double averageQ = (double) qualitiesMap.get(move).getScore() / qualitiesMap.get(move).getCount();
                 if (averageQ > bestQ) {
                     bestMove = i;
                     bestQ = averageQ;
@@ -135,8 +135,8 @@ public class QLearnPlayer extends AIPlayer {
         // find least-played moves
         for (int i = 0; i < COLS; i++) {
             Move move = new Move(board, i);
-            if (movesMap.containsKey(move)) {
-                int count = (int) (double) movesMap.get(move).getCount();
+            if (qualitiesMap.containsKey(move)) {
+                int count = (int) (double) qualitiesMap.get(move).getCount();
                 if (count < min) {
                     leastPlayed = new ArrayList<>();
                     leastPlayed.add(i);

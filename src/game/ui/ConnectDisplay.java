@@ -150,9 +150,11 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
             gameOptions.add(button);
         }
 
-        // QLearn file menu
+        // QLearn options menu
         JMenu qLearnMenu = new JMenu("Q-Learn Options");
         menuBar.add(qLearnMenu);
+
+        // choose file button
         JMenuItem chooseFile = new JMenuItem("Select Qualities File");
         qLearnMenu.add(chooseFile);
         chooseFile.addActionListener(e -> {
@@ -162,6 +164,11 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
                 DatabaseIO.setQualitiesFile(fileChooser.getSelectedFile());
             }
         });
+
+        // save file button
+        JMenuItem saveFile = new JMenuItem("Save Qualities File");
+        qLearnMenu.add(saveFile);
+        saveFile.addActionListener(e -> DatabaseIO.getInstance().writeFile());
     }
 
     /**
@@ -235,7 +242,8 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
 
         aiTimer.stop();
         updateWinText();
-        game.updateHistory();
+//        game.updateHistory();
+        DatabaseIO.getInstance().addToHistory(game.getGameHistory(), game.checkWin()==((double) PLAYER_1 + PLAYER_2) / 2);
 
         if (autoReset) {
             game = new ConnectGame(gameType.getPlayers());
@@ -255,7 +263,7 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
             }
         }
 
-        double[][] winRates = game.getWinRates();
+        double[][] winRates = getWinRates();
         for (int i = 0; i < COLS; i++) {
             if (showDatabase) {
                 winRateDisplays[i].update(winRates[i][0], (int) winRates[i][1]);
@@ -302,6 +310,36 @@ public class ConnectDisplay extends GraphicsProgram implements MouseListener, Ac
         for (GObject component : obj.getComponents()) {
             add(component);
         }
+    }
+
+    private double[][] getWinRates() {
+        double[][] winRates = new double[COLS][2];
+        Map<Move, MoveMetrics> qualitiesMap = DatabaseIO.getInstance().getQualitiesMap();
+
+        for (int i = 0; i < COLS; i++) {
+            Move move = new Move(game.getBoard(), i);
+            if (qualitiesMap.containsKey(move)) {
+                int totalQ = qualitiesMap.get(move).getScore();
+                int count = qualitiesMap.get(move).getCount();
+
+                double winRate = (double) (totalQ + count) / 2 / count;
+
+                winRates[i][0] = winRate;
+                winRates[i][1] = count;
+            } else {
+                winRates[i][0] = -1;
+                winRates[i][1] = 0;
+            }
+        }
+
+        return winRates;
+    }
+
+    @Override
+    public void exit() {
+        DatabaseIO.getInstance().writeFile();
+
+        super.exit();
     }
 
     /**

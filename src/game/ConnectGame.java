@@ -19,8 +19,7 @@ public class ConnectGame {
     protected Player[] players;
     private int[][] board;
     private int currPlayer;
-    private ArrayList<Move> currHistory;
-    private Map<Move, MoveMetrics> fullHistory;
+    private ArrayList<Move> gameHistory;
 
     /**
      * Creates a new ConnectGame object with the given players
@@ -45,7 +44,7 @@ public class ConnectGame {
             }
         }
 
-        currHistory = new ArrayList<>();
+        gameHistory = new ArrayList<>();
     }
 
     /**
@@ -82,7 +81,7 @@ public class ConnectGame {
      * @param col the column in which to drop the piece
      */
     private void runTurn(int col) {
-        currHistory.add(new Move(board, col));
+        gameHistory.add(new Move(board, col));
         try {
             dropPiece(col);
             currPlayer = 1 - currPlayer;
@@ -183,73 +182,8 @@ public class ConnectGame {
         return EMPTY;
     }
 
-    /**
-     * Saves the game to the qualities file
-     */
-    public void updateHistory() {
-        boolean tie = checkWin() == 0.5;
-        boolean winner = true;
-
-        // iterate backwards through currHistory, alternate winning and losing qualities
-        for (int i = currHistory.size() - 1; i >= 0; i--) {
-            if (tie) {
-                addToHistory(currHistory.get(i), TIE);
-            } else if (winner) {
-                addToHistory(currHistory.get(i), WIN);
-            } else {
-                addToHistory(currHistory.get(i), LOSS);
-            }
-            winner = !winner;
-        }
-
-        DatabaseIO.writeHistory(fullHistory);
-    }
-
-    /**
-     * Calculates the win and play rates of each move in the current position
-     *
-     * @return an array of win rate and play count arrays
-     */
-    public double[][] getWinRates() {
-        if (fullHistory == null) {
-            fullHistory = DatabaseIO.readHistory();
-        }
-
-        double[][] winRates = new double[COLS][2];
-        for (int i = 0; i < COLS; i++) {
-            Move move = new Move(board, i);
-            if (fullHistory.containsKey(move)) {
-                double totalQ = fullHistory.get(move).getScore();
-                double count = fullHistory.get(move).getCount();
-
-                double winRate = (totalQ + count) / 2 / count;
-
-                winRates[i][0] = winRate;
-                winRates[i][1] = count;
-            } else {
-                winRates[i][0] = -1;
-                winRates[i][1] = 0;
-            }
-        }
-
-        return winRates;
-    }
-
-    /**
-     * Adds the given move and score to fullHistory
-     *
-     * @param move the move that has been played
-     * @param score the resulting score of the move
-     */
-    private void addToHistory(Move move, int score) {
-        if (fullHistory.containsKey(move)) {
-            MoveMetrics moveMetrics = fullHistory.get(move);
-
-            moveMetrics.addScore(score);
-            moveMetrics.incrementCount();
-        } else {
-            fullHistory.put(move, new MoveMetrics(score, 1));
-        }
+    public ArrayList<Move> getGameHistory() {
+        return gameHistory;
     }
 }
 
